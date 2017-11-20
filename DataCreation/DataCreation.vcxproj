@@ -149,7 +149,6 @@
     <ClCompile Include="DataCreation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataFactory.h" />
     <ClInclude Include="Data\Data.h" />
     <ClInclude Include="Data\DataStructs.h" />
     <ClInclude Include="Data\ListTest.h" />
@@ -194,10 +193,10 @@
     <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\version.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3ext.h" />
-    <ClInclude Include="FileCreation.h" />
+    <ClInclude Include="DataManagement\Headers\FileCreation.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Data.db" />
+    <None Include="Database\Data.db" />
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />
     <None Include="Dependencies\Includes\ASSIMP\Compiler\color4.inl" />

@@ -222,7 +222,7 @@ int CreateStruct(void* db, int argc, char** argv, char** azColName)
 	sqlite3* openedDB = static_cast<sqlite3*>(db);
 	if (argv[0])
 	{
-		std::string fileName = "Data/";
+		std::string fileName = "Database/";
 
 		StructName = argv[0];
 
