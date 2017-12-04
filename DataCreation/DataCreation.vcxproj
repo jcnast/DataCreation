@@ -146,9 +146,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetManagement\Source\SceneConversion.cpp" />
     <ClCompile Include="DataCreation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h" />
+    <ClInclude Include="AssetManagement\Headers\SceneConversion.h" />
     <ClInclude Include="Data\Data.h" />
     <ClInclude Include="Data\DataStructs.h" />
     <ClInclude Include="Data\ListTest.h" />
