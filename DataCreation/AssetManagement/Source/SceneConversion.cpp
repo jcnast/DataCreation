@@ -5,17 +5,13 @@
 // for folder creation
 #include <Windows.h>
 
-#include "ASSIMP\Compiler\cimport.h"
-#include "ASSIMP\Compiler\scene.h"
-#include "ASSIMP\Compiler\postprocess.h"
-#include "ASSIMP\Compiler\material.h"
-
-using namespace std;
+#include "ASSIMP/cimport.h"
+#include "ASSIMP/scene.h"
+#include "ASSIMP/postprocess.h"
+#include "ASSIMP/material.h"
 
 namespace SceneConversion
 {
-	string CurrentExportFolder;
-
 	void ConvertFilesForScene(string importFileName, string exportFolderName)
 	{
 		cout << "Converting files for <<" << importFileName << ">>, exporting to <<" << exportFolderName << ">>" << endl;
@@ -24,7 +20,8 @@ namespace SceneConversion
 
 		if (!loadedScene)
 		{
-			cout << "Could not load file <<" << importFileName << ">>: " << aiGetErrorString() << endl;
+			cout << "Could not load file <<" << importFileName << ">>" << endl;
+			cout << "ASSIMP ERROR: "<< aiGetErrorString() << endl;
 			return;
 		}
 
@@ -41,9 +38,9 @@ namespace SceneConversion
 			CurrentExportFolder = folderPath;
 		}
 
-		int numberOfMeshes = loadedScene->mNumMeshes;
+		uint32_t numberOfMeshes = loadedScene->mNumMeshes;
 
-		for (int meshIndex = 0; meshIndex < numberOfMeshes; meshIndex++)
+		for (uint32_t meshIndex = 0u; meshIndex < numberOfMeshes; meshIndex++)
 		{
 			cout << "Creating file for mesh <<" << meshIndex << ">> out of <<" << meshIndex << ">>" << endl;
 			CreateFileForMesh(loadedScene, loadedScene->mMeshes[meshIndex], meshIndex, false); // update this bool to be correct once we allow importing of this type of mesh
@@ -54,7 +51,7 @@ namespace SceneConversion
 		aiReleaseImport(loadedScene);
 	}
 
-	void CreateFileForMesh(const aiScene* loadedScene, const aiMesh* mesh, int meshIndex, bool usesTexture)
+	void CreateFileForMesh(const aiScene* loadedScene, const aiMesh* mesh, uint32_t meshIndex, bool usesTexture)
 	{
 		cout << "Creating file to hold mesh information for <<" << mesh->mName.data << ">>" << endl;
 
@@ -66,7 +63,7 @@ namespace SceneConversion
 
 		cout << "Reading positions and normals from ASSIMP mesh data..." << endl;
 		// get vertices from assimp into our format
-		for (int vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++)
+		for (uint32_t vertexIndex = 0u; vertexIndex < mesh->mNumVertices; vertexIndex++)
 		{
 			// get vertex and normal from mesh data
 			positions.push_back(mesh->mVertices[vertexIndex]);
@@ -88,6 +85,12 @@ namespace SceneConversion
 
 		string meshFileName = "MATERIAL_" + to_string(meshIndex);
 		ofstream meshFile = OpenFile(CurrentExportFolder, meshFileName);
+
+		if (!meshFile.is_open())
+		{
+			cout << "Could not open file <<" << CurrentExportFolder << meshFileName << ">>" << endl;
+			return;
+		}
 
 		cout << "Writing to <<" << CurrentExportFolder << meshFileName << ">>" << endl;
 		meshFile << "positions\n";
@@ -112,7 +115,7 @@ namespace SceneConversion
 		CreateFileForMaterial(loadedScene->mMaterials[mesh->mMaterialIndex], mesh->mMaterialIndex);
 	}
 
-	void CreateFileForMaterial(const aiMaterial* material, int materialIndex)
+	void CreateFileForMaterial(const aiMaterial* material, uint32_t materialIndex)
 	{
 		cout << "Creating file to hold material information for index <<" << materialIndex << ">> in file <<MATERIAL_" << materialIndex << ">>" << endl;
 		// material values
@@ -131,14 +134,26 @@ namespace SceneConversion
 		// store values in file
 		string materialFileName = "MATERIAL_" + to_string(materialIndex);
 		ofstream materialFile = OpenFile(CurrentExportFolder, materialFileName);
+
+		if (!materialFile.is_open())
+		{
+			cout << "Could not open file <<" << CurrentExportFolder << materialFileName << ">>" << endl;
+			return;
+		}
+
 		StartWritingToFile(CurrentExportFolder, materialFileName, materialFile, "spec ", specularColor.r, specularColor.g, specularColor.b, specularColor.a);
+
 		CloseFile(materialFile, CurrentExportFolder, materialFileName);
 	}
 
 	bool CreateFolder(string path)
 	{
 		const wchar_t* wcharPath = wstring(path.begin(), path.end()).c_str();
-		return CreateDirectory(wcharPath, nullptr);
+		if (CreateDirectory(wcharPath, nullptr))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	ofstream OpenFile(string path, string file)
@@ -146,6 +161,8 @@ namespace SceneConversion
 		cout << "Opening file <<" << path << file << ">>" << endl;
 		ofstream openedFile;
 		openedFile.open(path + file);
+
+		return openedFile;
 	}
 
 	void CloseFile(ofstream& openedFile, string path, string file)

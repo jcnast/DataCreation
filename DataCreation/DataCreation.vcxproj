@@ -86,8 +86,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,8 +116,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,42 +158,42 @@
     <ClInclude Include="Data\PrimaryForeignKeyTest.h" />
     <ClInclude Include="Data\Test.h" />
     <ClInclude Include="Data\Test2.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\ai_assert.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\anim.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\camera.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\cexport.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\cfileio.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\cimport.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\color4.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\config.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\DefaultLogger.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\defs.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\Exporter.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\Importer.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\importerdesc.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\IOStream.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\IOSystem.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\light.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\Logger.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\LogStream.hpp" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\material.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\matrix3x3.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\matrix4x4.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\mesh.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\metadata.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\NullLogger.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\ai_assert.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\anim.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\camera.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\cexport.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\cfileio.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\cimport.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\color4.h" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\poppack1.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\postprocess.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\ProgressHandler.hpp" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\pstdint.h" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\pushpack1.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\quaternion.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\scene.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\texture.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\types.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\vector2.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\vector3.h" />
-    <ClInclude Include="Dependencies\Includes\ASSIMP\Compiler\version.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\config.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\DefaultLogger.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\defs.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\Exporter.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\Importer.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\importerdesc.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\IOStream.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\IOSystem.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\light.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\Logger.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\LogStream.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\material.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\matrix3x3.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\matrix4x4.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\mesh.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\metadata.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\NullLogger.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\postprocess.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\ProgressHandler.hpp" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\quaternion.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\scene.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\texture.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\types.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\vector2.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\vector3.h" />
+    <ClInclude Include="Dependencies\Includes\ASSIMP\version.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3ext.h" />
     <ClInclude Include="DataManagement\Headers\FileCreation.h" />
@@ -202,13 +202,13 @@
     <None Include="Database\Data.db" />
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\color4.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\material.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\matrix3x3.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\matrix4x4.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\quaternion.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\vector2.inl" />
-    <None Include="Dependencies\Includes\ASSIMP\Compiler\vector3.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\color4.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\material.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\matrix3x3.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\matrix4x4.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\quaternion.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\vector2.inl" />
+    <None Include="Dependencies\Includes\ASSIMP\vector3.inl" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\Libs\ASSIMP\assimp.lib" />
