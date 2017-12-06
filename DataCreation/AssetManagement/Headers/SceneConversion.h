@@ -12,8 +12,8 @@ struct aiMaterial;
 
 namespace SceneConversion
 {
-	string SceneStoragePath = "Assets/";
-	string CurrentExportFolder;
+	static string SceneStoragePath = "Assets/";
+	static string CurrentExportFolder = "";
 
 	void ConvertFilesForScene(string importFileName, string exportFileName);
 
@@ -26,7 +26,16 @@ namespace SceneConversion
 	void ConvertAnimationsToFile(const aiScene* scene, int animationIndex);
 	*/
 
-	bool CreateFolder(string path);
+	// the below should be in it's own generalized folder
+	enum class CreateFolderResult
+	{
+		AlreadyExists,
+		Created,
+		Error
+	};
+	CreateFolderResult CreateFolder(string path);
+	bool FolderExists(string path);
+
 	ofstream OpenFile(string path, string file);
 	void CloseFile(ofstream& openedFile, string path, string file);
 

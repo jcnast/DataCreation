@@ -14,7 +14,7 @@ namespace SceneConversion
 {
 	void ConvertFilesForScene(string importFileName, string exportFolderName)
 	{
-		cout << "Converting files for <<" << importFileName << ">>, exporting to <<" << exportFolderName << ">>" << endl;
+		cout << "Converting files for <<" << importFileName.c_str() << ">>, exporting to <<" << exportFolderName.c_str() << ">>" << endl;
 		// this process preset also INCLUDES the flag to make all faces based on triangles
 		const aiScene* loadedScene = aiImportFile(importFileName.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -26,15 +26,21 @@ namespace SceneConversion
 		}
 
 		string folderPath = SceneStoragePath + exportFolderName;
-		bool folderCreated = CreateFolder(folderPath);
+		CreateFolderResult folderCreated = CreateFolder(folderPath);
 
-		if (!folderCreated)
+		if (folderCreated == CreateFolderResult::Error)
 		{
-			cout << "Could not create folder at " << folderPath << ">>" << endl;
+			cout << "Could not create folder at " << folderPath << ">>: ERROR" << endl;
 			return;
+		}
+		else if (folderCreated == CreateFolderResult::AlreadyExists)
+		{
+			cout << "Could not create folder at " << folderPath << ">>: ALREADY EXISTS" << endl;
+			CurrentExportFolder = folderPath;
 		}
 		else
 		{
+			cout << "Created folder at " << folderPath << ">>" << endl;
 			CurrentExportFolder = folderPath;
 		}
 
@@ -83,7 +89,7 @@ namespace SceneConversion
 			faces.push_back(mesh->mFaces[faceIndex].mIndices[2u]);
 		}
 
-		string meshFileName = "MATERIAL_" + to_string(meshIndex);
+		string meshFileName = "MESH_" + to_string(meshIndex) + ".msh";
 		ofstream meshFile = OpenFile(CurrentExportFolder, meshFileName);
 
 		if (!meshFile.is_open())
@@ -93,20 +99,27 @@ namespace SceneConversion
 		}
 
 		cout << "Writing to <<" << CurrentExportFolder << meshFileName << ">>" << endl;
-		meshFile << "positions\n";
+		WriteToFile(meshFile, "positions\n");
 		for (uint32_t positionIndex = 0u; positionIndex < positions.size(); positionIndex++)
 		{
 			WriteToFileCSV(meshFile, positions[positionIndex].x, positions[positionIndex].y, positions[positionIndex].z);
+			WriteToFile(meshFile, "\n");
 		}
-		meshFile << "normals\n";
+		WriteToFile(meshFile, "normals\n");
 		for (uint32_t normalIndex = 0u; normalIndex < normals.size(); normalIndex++)
 		{
 			WriteToFileCSV(meshFile, normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
+			WriteToFile(meshFile, "\n");
 		}
-		meshFile << "indices\n";
-		for (uint32_t faceIndex = 0u; faceIndex << faces.size(); faceIndex += 3) // += 3 because 3 vertices to a face (triangles)
+		WriteToFile(meshFile, "indices\n");
+		for (uint32_t faceIndex = 0u; faceIndex < faces.size(); faceIndex += 3) // += 3 because 3 vertices to a face (triangles)
 		{
 			WriteToFileCSV(meshFile, faces[faceIndex], faces[faceIndex + 1], faces[faceIndex + 2]);
+
+			if (faceIndex < faces.size() - 1)
+			{
+				WriteToFile(meshFile, "\n");
+			}
 		}
 
 		CloseFile(meshFile, CurrentExportFolder, meshFileName);
@@ -132,7 +145,7 @@ namespace SceneConversion
 		aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess);
 
 		// store values in file
-		string materialFileName = "MATERIAL_" + to_string(materialIndex);
+		string materialFileName = "MATERIAL_" + to_string(materialIndex) + ".mat";
 		ofstream materialFile = OpenFile(CurrentExportFolder, materialFileName);
 
 		if (!materialFile.is_open())
@@ -146,10 +159,39 @@ namespace SceneConversion
 		CloseFile(materialFile, CurrentExportFolder, materialFileName);
 	}
 
-	bool CreateFolder(string path)
+	CreateFolderResult CreateFolder(string path)
 	{
-		const wchar_t* wcharPath = wstring(path.begin(), path.end()).c_str();
-		if (CreateDirectory(wcharPath, nullptr))
+		if (path.empty())
+		{
+			return CreateFolderResult::Error;
+		}
+
+		if (FolderExists(path))
+		{
+			return CreateFolderResult::AlreadyExists;
+		}
+
+		auto codePage = GetACP();
+		int sz = MultiByteToWideChar(codePage, 0, &path[0], (int)path.size(), 0, 0);
+		wstring wPath(sz, 0);
+		MultiByteToWideChar(codePage, 0, &path[0], (int)path.size(), &wPath[0], sz);
+
+		if (CreateDirectory(wPath.c_str(), nullptr))
+		{
+			return CreateFolderResult::Created;
+		}
+		return CreateFolderResult::Error;
+	}
+
+	bool FolderExists(string path)
+	{
+		auto fileAttributes = GetFileAttributesA(path.c_str());
+
+		if (fileAttributes == INVALID_FILE_ATTRIBUTES)
+		{
+			return false;
+		}
+		else if (fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			return true;
 		}
@@ -158,16 +200,16 @@ namespace SceneConversion
 
 	ofstream OpenFile(string path, string file)
 	{
-		cout << "Opening file <<" << path << file << ">>" << endl;
+		cout << "Opening file <<" << path << "/" << file << ">>" << endl;
 		ofstream openedFile;
-		openedFile.open(path + file);
+		openedFile.open(path + "/" + file);
 
 		return openedFile;
 	}
 
 	void CloseFile(ofstream& openedFile, string path, string file)
 	{
-		cout << "Closing file <<" << path << file << ">>" << endl;
+		cout << "Closing file <<" << path << "/" << file << ">>" << endl;
 		openedFile.close();
 	}
 }
