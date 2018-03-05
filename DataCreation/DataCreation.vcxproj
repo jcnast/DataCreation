@@ -148,10 +148,15 @@
   <ItemGroup>
     <ClCompile Include="AssetManagement\Source\SceneConversion.cpp" />
     <ClCompile Include="DataCreation.cpp" />
+    <ClCompile Include="DataManagement\IO\Headers\Folder.h" />
+    <ClCompile Include="DataManagement\IO\Source\File.cpp" />
+    <ClCompile Include="DataManagement\IO\Source\Folder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h" />
     <ClInclude Include="AssetManagement\Headers\SceneConversion.h" />
+    <ClInclude Include="DataManagement\IO\Headers\File.h" />
+    <ClInclude Include="DataManagement\IO\Headers\IODefs.h" />
     <ClInclude Include="Data\Data.h" />
     <ClInclude Include="Data\DataStructs.h" />
     <ClInclude Include="Data\ListTest.h" />
@@ -199,6 +204,8 @@
     <ClInclude Include="DataManagement\Headers\FileCreation.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\ExportedAssets\MI\MATERIAL_0.mat" />
+    <None Include="Assets\ExportedAssets\MI\MESH_0.msh" />
     <None Include="Database\Data.db" />
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />

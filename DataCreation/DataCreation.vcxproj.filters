@@ -21,6 +21,15 @@
     <ClCompile Include="AssetManagement\Source\SceneConversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataManagement\IO\Headers\Folder.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManagement\IO\Source\Folder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManagement\IO\Source\File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h">
@@ -164,6 +173,12 @@
     <ClInclude Include="Dependencies\Includes\ASSIMP\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataManagement\IO\Headers\File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManagement\IO\Headers\IODefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
@@ -190,6 +205,8 @@
     <None Include="Dependencies\Includes\ASSIMP\vector3.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Assets\ExportedAssets\MI\MESH_0.msh" />
+    <None Include="Assets\ExportedAssets\MI\MATERIAL_0.mat" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />

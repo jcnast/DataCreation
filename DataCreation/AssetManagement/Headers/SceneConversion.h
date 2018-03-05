@@ -12,7 +12,7 @@ struct aiMaterial;
 
 namespace SceneConversion
 {
-	static string SceneStoragePath = "Assets/";
+	static string SceneStoragePath = "C:/Users/Jagger/Desktop/Coding/VisualStudios/DataCreation/DataCreation/Assets/ExportedAssets/";
 	static string CurrentExportFolder = "";
 
 	void ConvertFilesForScene(string importFileName, string exportFileName);
@@ -25,58 +25,4 @@ namespace SceneConversion
 	void CreateImageForMesh(const aiMesh* mesh, int imageIndex);
 	void ConvertAnimationsToFile(const aiScene* scene, int animationIndex);
 	*/
-
-	// the below should be in it's own generalized folder
-	enum class CreateFolderResult
-	{
-		AlreadyExists,
-		Created,
-		Error
-	};
-	CreateFolderResult CreateFolder(string path);
-	bool FolderExists(string path);
-
-	ofstream OpenFile(string path, string file);
-	void CloseFile(ofstream& openedFile, string path, string file);
-
-	template <typename T>
-	void WriteToFile(ofstream& openedFile, T arg)
-	{
-		openedFile << arg;
-	}
-
-	template <typename T, typename ...Ts>
-	void WriteToFile(ofstream& openedFile, T arg, Ts ...args)
-	{
-		WriteToFile(openedFile, forward<T>(arg));
-		WriteToFile(openedFile, forward<Ts>(args)...);
-	}
-
-	template <typename T>
-	void WriteToFileCSV(ofstream& openedFile, T arg)
-	{
-		WriteToFile(openedFile, forward<T>(arg));;
-	}
-
-	template <typename T, typename ...Ts>
-	void WriteToFileCSV(ofstream& openedFile, T arg, Ts ...args)
-	{
-		WriteToFile(openedFile, forward<T>(arg));
-		WriteToFile(openedFile, ", ");
-		WriteToFileCSV(openedFile, forward<Ts>(args)...);
-	}
-
-	template <typename ...Ts>
-	void StartWritingToFile(string path, string file, ofstream& openedFile, Ts ...args)
-	{
-		cout << "Writing to <<" << path << file << ">>" << endl;
-		WriteToFile(openedFile, forward<Ts>(args)...);
-	}
-
-	template <typename ...Ts>
-	void StartWritingToFileCSV(string path, string file, ofstream& openedFile, Ts ...args)
-	{
-		cout << "Writing to <<" << path << file << ">>" << endl;
-		WriteToFileCSV(openedFile, forward<Ts>(args)...);
-	}
 }

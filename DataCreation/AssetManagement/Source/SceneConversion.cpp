@@ -5,6 +5,9 @@
 // for folder creation
 #include <Windows.h>
 
+#include "DataManagement/IO/Headers/File.h"
+#include "DataManagement/IO/Headers/Folder.h"
+
 #include "ASSIMP/cimport.h"
 #include "ASSIMP/scene.h"
 #include "ASSIMP/postprocess.h"
@@ -26,14 +29,14 @@ namespace SceneConversion
 		}
 
 		string folderPath = SceneStoragePath + exportFolderName;
-		CreateFolderResult folderCreated = CreateFolder(folderPath);
+		Data::IO::CreateFolderResult folderCreated = Data::IO::CreateFolder(folderPath);
 
-		if (folderCreated == CreateFolderResult::Error)
+		if (folderCreated == Data::IO::CreateFolderResult::Error)
 		{
 			cout << "Could not create folder at " << folderPath << ">>: ERROR" << endl;
 			return;
 		}
-		else if (folderCreated == CreateFolderResult::AlreadyExists)
+		else if (folderCreated == Data::IO::CreateFolderResult::AlreadyExists)
 		{
 			cout << "Could not create folder at " << folderPath << ">>: ALREADY EXISTS" << endl;
 			CurrentExportFolder = folderPath;
@@ -90,39 +93,46 @@ namespace SceneConversion
 		}
 
 		string meshFileName = "MESH_" + to_string(meshIndex) + ".msh";
-		ofstream meshFile = OpenFile(CurrentExportFolder, meshFileName);
+		Data::IO::File meshFile = Data::IO::File(CurrentExportFolder, meshFileName);
+		meshFile.Open();
 
-		if (!meshFile.is_open())
+		if (!meshFile.FileStream.is_open())
 		{
-			cout << "Could not open file <<" << CurrentExportFolder << meshFileName << ">>" << endl;
+			cout << "Could not open file <<" << meshFile.GetFullPath() << ">>" << endl;
 			return;
 		}
 
 		cout << "Writing to <<" << CurrentExportFolder << meshFileName << ">>" << endl;
-		WriteToFile(meshFile, "positions\n");
+
+		meshFile.Write("positions", mesh->mNumVertices);
+		meshFile.CreateNewLine();
 		for (uint32_t positionIndex = 0u; positionIndex < positions.size(); positionIndex++)
 		{
-			WriteToFileCSV(meshFile, positions[positionIndex].x, positions[positionIndex].y, positions[positionIndex].z);
-			WriteToFile(meshFile, "\n");
+			meshFile.Write(positions[positionIndex].x, positions[positionIndex].y, positions[positionIndex].z);
+			meshFile.CreateNewLine();
 		}
-		WriteToFile(meshFile, "normals\n");
+
+		meshFile.Write("normals", mesh->mNumVertices);
+		meshFile.CreateNewLine();
 		for (uint32_t normalIndex = 0u; normalIndex < normals.size(); normalIndex++)
 		{
-			WriteToFileCSV(meshFile, normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
-			WriteToFile(meshFile, "\n");
+			meshFile.Write(normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
+			meshFile.CreateNewLine();
 		}
-		WriteToFile(meshFile, "indices\n");
+
+		meshFile.Write("indices", mesh->mNumFaces * 3u);
+		meshFile.CreateNewLine();
 		for (uint32_t faceIndex = 0u; faceIndex < faces.size(); faceIndex += 3) // += 3 because 3 vertices to a face (triangles)
 		{
-			WriteToFileCSV(meshFile, faces[faceIndex], faces[faceIndex + 1], faces[faceIndex + 2]);
+			meshFile.Write(faces[faceIndex], faces[faceIndex + 1], faces[faceIndex + 2]);
 
 			if (faceIndex < faces.size() - 1)
 			{
-				WriteToFile(meshFile, "\n");
+				meshFile.CreateNewLine();
 			}
 		}
 
-		CloseFile(meshFile, CurrentExportFolder, meshFileName);
+		meshFile.Close();
 
 		// create file for material
 		CreateFileForMaterial(loadedScene->mMaterials[mesh->mMaterialIndex], mesh->mMaterialIndex);
@@ -134,82 +144,35 @@ namespace SceneConversion
 		// material values
 		aiColor4D specularColor;
 		aiColor4D diffuseColor;
-		aiColor4D ambientColot;
+		aiColor4D ambientColor;
 		float shininess;
 
 		cout << "Getting material information from assimp..." << endl;
 		// get values from assimp material
 		aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &specularColor);
 		aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuseColor);
-		aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColot);
+		aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
 		aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess);
 
 		// store values in file
 		string materialFileName = "MATERIAL_" + to_string(materialIndex) + ".mat";
-		ofstream materialFile = OpenFile(CurrentExportFolder, materialFileName);
+		Data::IO::File materialFile = Data::IO::File(CurrentExportFolder, materialFileName);
+		materialFile.Open();
 
-		if (!materialFile.is_open())
+		if (!materialFile.FileStream.is_open())
 		{
 			cout << "Could not open file <<" << CurrentExportFolder << materialFileName << ">>" << endl;
 			return;
 		}
 
-		StartWritingToFile(CurrentExportFolder, materialFileName, materialFile, "spec ", specularColor.r, specularColor.g, specularColor.b, specularColor.a);
+		materialFile.Write("spec ", specularColor.r, specularColor.g, specularColor.b, specularColor.a);
+		materialFile.CreateNewLine();
+		materialFile.Write("diff", diffuseColor.r, diffuseColor.g, diffuseColor.b, diffuseColor.a);
+		materialFile.CreateNewLine();
+		materialFile.Write("amb", ambientColor.r, ambientColor.g, ambientColor.b, ambientColor.a);
+		materialFile.CreateNewLine();
+		materialFile.Write("shin", shininess);
 
-		CloseFile(materialFile, CurrentExportFolder, materialFileName);
-	}
-
-	CreateFolderResult CreateFolder(string path)
-	{
-		if (path.empty())
-		{
-			return CreateFolderResult::Error;
-		}
-
-		if (FolderExists(path))
-		{
-			return CreateFolderResult::AlreadyExists;
-		}
-
-		auto codePage = GetACP();
-		int sz = MultiByteToWideChar(codePage, 0, &path[0], (int)path.size(), 0, 0);
-		wstring wPath(sz, 0);
-		MultiByteToWideChar(codePage, 0, &path[0], (int)path.size(), &wPath[0], sz);
-
-		if (CreateDirectory(wPath.c_str(), nullptr))
-		{
-			return CreateFolderResult::Created;
-		}
-		return CreateFolderResult::Error;
-	}
-
-	bool FolderExists(string path)
-	{
-		auto fileAttributes = GetFileAttributesA(path.c_str());
-
-		if (fileAttributes == INVALID_FILE_ATTRIBUTES)
-		{
-			return false;
-		}
-		else if (fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	ofstream OpenFile(string path, string file)
-	{
-		cout << "Opening file <<" << path << "/" << file << ">>" << endl;
-		ofstream openedFile;
-		openedFile.open(path + "/" + file);
-
-		return openedFile;
-	}
-
-	void CloseFile(ofstream& openedFile, string path, string file)
-	{
-		cout << "Closing file <<" << path << "/" << file << ">>" << endl;
-		openedFile.close();
+		materialFile.Close();
 	}
 }
