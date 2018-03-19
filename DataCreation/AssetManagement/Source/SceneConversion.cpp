@@ -108,7 +108,7 @@ namespace SceneConversion
 		meshFile.CreateNewLine();
 		for (uint32_t positionIndex = 0u; positionIndex < positions.size(); positionIndex++)
 		{
-			meshFile.Write(positions[positionIndex].x, positions[positionIndex].y, positions[positionIndex].z);
+			meshFile.Write((positions[positionIndex].x / 100.0f), (positions[positionIndex].y / 100.0f), (positions[positionIndex].z / 100.0f));
 			meshFile.CreateNewLine();
 		}
 
