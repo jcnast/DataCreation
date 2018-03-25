@@ -1,10 +1,19 @@
-#include "DataManagement/IO/Headers/Folder.h"
+#include "Core/IO/Headers/Folder.h"
 
-namespace Data
+/*
+Need to figure out how we want to split this for different operating systems. Maybe the standard
+has a better way to do this.
+
+Or, we don't need to care since directory CREATION will only happen when creating data.
+The game running itself should only ever be READING from already created directories.
+*/
+#include <Windows.h>
+
+namespace Core
 {
 	namespace IO
 	{
-		CreateFolderResult CreateFolder(string path)
+		CreateFolderResult CreateFolder(String path)
 		{
 			if (path.empty())
 			{
@@ -28,7 +37,7 @@ namespace Data
 			return CreateFolderResult::Error;
 		}
 
-		bool FolderExists(string path)
+		bool FolderExists(String path)
 		{
 			auto fileAttributes = GetFileAttributesA(path.c_str());
 

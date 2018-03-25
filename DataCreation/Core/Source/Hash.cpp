@@ -2,14 +2,6 @@
 
 namespace Core
 {
-	Hash::Hash()
-		: H(StartHashValue)
-	{}
-
-	Hash::Hash(const Hash& h)
-		: H(h.H)
-	{}
-
 	void HashValue(char b, Hash& existingHash)
 	{
 		int shift = 7; // shifting by ALMOST the whole byte, so some overlap is maintained - should make order matter more

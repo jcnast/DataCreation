@@ -1,14 +1,15 @@
 #pragma once
 
 #include "IODefs.h"
+#include "File.h"
 
-namespace Data
+namespace Core
 {
 	namespace IO
 	{
-		IOFStreamChar OpenFileIO(String file);
-		IFStreamChar OpenFileI(String file);
-		OFStreamChar OpenFileO(String file);
+		File OpenFile(FilePath file);
+		File OpenFile(FilePath file);
+		File OpenFile(FilePath file);
 
 		String GetCWD();
 	}

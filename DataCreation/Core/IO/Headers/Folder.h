@@ -2,9 +2,7 @@
 
 #include "IODefs.h"
 
-using namespace std;
-
-namespace Data
+namespace Core
 {
 	namespace IO
 	{
@@ -15,8 +13,8 @@ namespace Data
 			Error
 		};
 
-		CreateFolderResult CreateFolder(string path);
-		bool FolderExists(string path);
+		CreateFolderResult CreateFolder(String path);
+		bool FolderExists(String path);
 
 		// Functions to be done later:
 

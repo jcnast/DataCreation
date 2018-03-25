@@ -150,14 +150,14 @@
     <ClCompile Include="Core\CoreUnitTests.cpp" />
     <ClCompile Include="Core\Functionality\Source\Scheduler.cpp" />
     <ClCompile Include="Core\Functionality\Source\Subscription.cpp" />
+    <ClCompile Include="Core\IO\Source\File.cpp" />
+    <ClCompile Include="Core\IO\Source\Folder.cpp" />
     <ClCompile Include="Core\IO\Source\IOUtils.cpp" />
     <ClCompile Include="Core\Math\UnitTests\MatrixTests.cpp" />
     <ClCompile Include="Core\Math\UnitTests\VectorTests.cpp" />
+    <ClCompile Include="Core\Source\Exception.cpp" />
     <ClCompile Include="Core\Source\Hash.cpp" />
     <ClCompile Include="DataCreation.cpp" />
-    <ClCompile Include="DataManagement\IO\Headers\Folder.h" />
-    <ClCompile Include="DataManagement\IO\Source\File.cpp" />
-    <ClCompile Include="DataManagement\IO\Source\Folder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h" />
@@ -188,12 +188,16 @@
     <ClInclude Include="Core\Geometric\Headers\UtilityFunctions.h" />
     <ClInclude Include="Core\Headers\AllCore.h" />
     <ClInclude Include="Core\Headers\CoreDefs.h" />
+    <ClInclude Include="Core\Headers\Exception.h" />
     <ClInclude Include="Core\Headers\Hash.h" />
     <ClInclude Include="Core\Headers\ListDefs.h" />
     <ClInclude Include="Core\Headers\MapDefs.h" />
     <ClInclude Include="Core\Headers\PtrDefs.h" />
     <ClInclude Include="Core\Headers\TemplateDefs.h" />
     <ClInclude Include="Core\Headers\TimeDefs.h" />
+    <ClInclude Include="Core\IO\Headers\Exception.h" />
+    <ClInclude Include="Core\IO\Headers\File.h" />
+    <ClInclude Include="Core\IO\Headers\Folder.h" />
     <ClInclude Include="Core\IO\Headers\IODefs.h" />
     <ClInclude Include="Core\IO\Headers\IOUtils.h" />
     <ClInclude Include="Core\Math\Headers\Axis.h" />
@@ -218,8 +222,6 @@
     <ClInclude Include="Core\Math\UnitTests\MatrixTests.h" />
     <ClInclude Include="Core\Math\UnitTests\VectorTests.h" />
     <ClInclude Include="Core\Source\HashTest.h" />
-    <ClInclude Include="DataManagement\IO\Headers\File.h" />
-    <ClInclude Include="DataManagement\IO\Headers\IODefs.h" />
     <ClInclude Include="Data\Data.h" />
     <ClInclude Include="Data\DataStructs.h" />
     <ClInclude Include="Data\Data\Headers\DataItem.h" />

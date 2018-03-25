@@ -11,8 +11,13 @@ namespace Core
 	{
 		uint H;
 
-		constexpr Hash();
-		constexpr Hash(const Hash& h);
+		constexpr Hash()
+			: H(StartHashValue)
+		{}
+
+		constexpr Hash(const Hash& h)
+			: H(h.H)
+		{}
 
 		template <typename T>
 		constexpr Hash(T&& t)

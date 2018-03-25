@@ -1,18 +1,20 @@
-#include "DataManagement/IO/Headers/File.h"
+#include "Core/IO/Headers/File.h"
 
-namespace Data
+#include "Core/Debugging/Headers/Macros.h"
+
+namespace Core
 {
 	namespace IO
 	{
-		File::File(string path, string fileName, ios::openmode permissions, Endian endian)
-			: FilePath(path), FileName(fileName), FilePermissions(permissions), FileEndian(endian), CursorPosition(0), FileLength(0)
+		File::File(FilePath path, OpenMode permissions, Endian endian)
+			: Path(path), FilePermissions(permissions), FileEndian(endian), CursorPosition(0), FileLength(0)
 		{
 
 		}
 
-		string File::GetFullPath()
+		String File::GetFullPath()
 		{
-			return (FilePath + "/" + FileName);
+			return (Path.GetFullPath());
 		}
 
 		void File::Open()
@@ -36,6 +38,10 @@ namespace Data
 				if (Create())
 				{
 					Open();
+				}
+				else
+				{
+					throw IOException("File <" + GetFullPath() + "> was unable to be opened");
 				}
 			}
 		}

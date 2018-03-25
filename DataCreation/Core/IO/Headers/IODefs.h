@@ -2,14 +2,15 @@
 
 #include "Core/Headers/CoreDefs.h"
 
+#include "Core/IO/Headers/Exception.h"
+
 #include <ios>
 #include <sstream>
 #include <fstream>
 
 using namespace std;
-using namespace Core;
 
-namespace Data
+namespace Core
 {
 	namespace IO
 	{
@@ -37,5 +38,31 @@ namespace Data
 		using ISStreamChar = ISStream<char>;
 		using OSStreamChar = OSStream<char>;
 		using IOSStreamChar = SStream<char>;
+
+		using OpenMode = ios::openmode;
+
+		enum class Endian
+		{
+			Big,
+			Little
+		};
+
+		struct FilePath
+		{
+			String File;
+			String Path;
+
+			String GetFullPath() const
+			{
+				return (File + Path);
+			}
+		};
+
+		constexpr OpenMode DefaultPermissions = ios::in | ios::out;
+
+		inline constexpr bool HasPermission(OpenMode userPermissions, OpenMode permission)
+		{
+			return ((userPermissions & permission) > 0);
+		}
 	}
 }

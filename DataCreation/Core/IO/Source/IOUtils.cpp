@@ -1,4 +1,4 @@
-#include "Data/IO/Headers/IOUtils.h"
+#include "Core/IO/Headers/IOUtils.h"
 
 #include "Core/Debugging/Headers/Macros.h"
 
@@ -6,33 +6,39 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-namespace Data
+namespace Core
 {
 	namespace IO
 	{
-		IOFStreamChar OpenFileIO(String file)
+		File OpenFileIO(FilePath file)
 		{
-			IOFStreamChar openedFile(file);
+			File openedFile(file);
 
-			MESSAGE(openedFile.is_open(), "File <<" + file + ">> failed to open");
+			openedFile.Open();
+
+			MESSAGE(openedFile.FileStream.is_open(), "File <<" + file.GetFullPath() + ">> failed to open");
 
 			return openedFile;
 		}
 
-		IFStreamChar OpenFileI(String file)
+		File OpenFileI(FilePath file)
 		{
-			IFStreamChar openedFile(file);
+			File openedFile(file, ios::in);
 
-			MESSAGE(openedFile.is_open(), "File <<" + file + ">> failed to open");
+			openedFile.Open();
+
+			MESSAGE(openedFile.FileStream.is_open(), "File <<" + file.GetFullPath() + ">> failed to open");
 
 			return openedFile;
 		}
 
-		OFStreamChar OpenFileO(String file)
+		File OpenFileO(FilePath file)
 		{
-			OFStreamChar openedFile(file);
+			File openedFile(file, ios::out);
 
-			MESSAGE(openedFile.is_open(), "File <<" + file + ">> failed to open");
+			openedFile.Open();
+
+			MESSAGE(openedFile.FileStream.is_open(), "File <<" + file.GetFullPath() + ">> failed to open");
 
 			return openedFile;
 		}

@@ -5,8 +5,8 @@
 // for folder creation
 #include <Windows.h>
 
-#include "DataManagement/IO/Headers/File.h"
-#include "DataManagement/IO/Headers/Folder.h"
+#include "Core/IO/Headers/File.h"
+#include "Core/IO/Headers/Folder.h"
 
 #include "ASSIMP/cimport.h"
 #include "ASSIMP/scene.h"
@@ -29,14 +29,14 @@ namespace SceneConversion
 		}
 
 		string folderPath = SceneStoragePath + exportFolderName;
-		Data::IO::CreateFolderResult folderCreated = Data::IO::CreateFolder(folderPath);
+		Core::IO::CreateFolderResult folderCreated = Core::IO::CreateFolder(folderPath);
 
-		if (folderCreated == Data::IO::CreateFolderResult::Error)
+		if (folderCreated == Core::IO::CreateFolderResult::Error)
 		{
 			cout << "Could not create folder at " << folderPath << ">>: ERROR" << endl;
 			return;
 		}
-		else if (folderCreated == Data::IO::CreateFolderResult::AlreadyExists)
+		else if (folderCreated == Core::IO::CreateFolderResult::AlreadyExists)
 		{
 			cout << "Could not create folder at " << folderPath << ">>: ALREADY EXISTS" << endl;
 			CurrentExportFolder = folderPath;
@@ -93,7 +93,7 @@ namespace SceneConversion
 		}
 
 		string meshFileName = "MESH_" + to_string(meshIndex) + ".msh";
-		Data::IO::File meshFile = Data::IO::File(CurrentExportFolder, meshFileName);
+		Core::IO::File meshFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, meshFileName });
 		meshFile.Open();
 
 		if (!meshFile.FileStream.is_open())
@@ -156,7 +156,7 @@ namespace SceneConversion
 
 		// store values in file
 		string materialFileName = "MATERIAL_" + to_string(materialIndex) + ".mat";
-		Data::IO::File materialFile = Data::IO::File(CurrentExportFolder, materialFileName);
+		Core::IO::File materialFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, materialFileName });
 		materialFile.Open();
 
 		if (!materialFile.FileStream.is_open())
