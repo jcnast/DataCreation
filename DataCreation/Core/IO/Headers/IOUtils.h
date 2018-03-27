@@ -7,9 +7,9 @@ namespace Core
 {
 	namespace IO
 	{
-		File OpenFile(FilePath file);
-		File OpenFile(FilePath file);
-		File OpenFile(FilePath file);
+		File OpenFileIO(FilePath file);
+		File OpenFileI(FilePath file);
+		File OpenFileO(FilePath file);
 
 		String GetCWD();
 	}

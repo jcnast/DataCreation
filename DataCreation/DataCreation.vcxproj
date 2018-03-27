@@ -158,6 +158,10 @@
     <ClCompile Include="Core\Source\Exception.cpp" />
     <ClCompile Include="Core\Source\Hash.cpp" />
     <ClCompile Include="DataCreation.cpp" />
+    <ClCompile Include="DataManagement\Source\HashTesting.cpp" />
+    <ClCompile Include="Data\Rendering\Source\MaterialData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\MeshData.cpp" />
+    <ClCompile Include="Data\Source\DataUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h" />
@@ -221,13 +225,21 @@
     <ClInclude Include="Core\Math\UnitTests\MathUnitTests.h" />
     <ClInclude Include="Core\Math\UnitTests\MatrixTests.h" />
     <ClInclude Include="Core\Math\UnitTests\VectorTests.h" />
+    <ClInclude Include="Core\Serialization\Headers\Serialization.h" />
+    <ClInclude Include="Core\Serialization\Headers\SerializationDefs.h" />
+    <ClInclude Include="Core\Serialization\Headers\SerializationUtils.h" />
     <ClInclude Include="Core\Source\HashTest.h" />
+    <ClInclude Include="DataManagement\Headers\HashTesting.h" />
     <ClInclude Include="Data\Data.h" />
     <ClInclude Include="Data\DataStructs.h" />
     <ClInclude Include="Data\Data\Headers\DataItem.h" />
     <ClInclude Include="Data\Data\Headers\DataType.h" />
+    <ClInclude Include="Data\Headers\DataUtils.h" />
     <ClInclude Include="Data\ListTest.h" />
     <ClInclude Include="Data\PrimaryForeignKeyTest.h" />
+    <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
+    <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
+    <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h" />
     <ClInclude Include="Data\Test.h" />
     <ClInclude Include="Data\Test2.h" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\ai_assert.h" />
@@ -287,6 +299,9 @@
   <ItemGroup>
     <Library Include="Dependencies\Libs\ASSIMP\assimp.lib" />
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DataManagement\Headers\EnglishWords.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

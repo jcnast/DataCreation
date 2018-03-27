@@ -1,11 +1,29 @@
 #pragma once
 
 #include "CoreDefs.h"
+#include "PtrDefs.h"
 #include "TemplateDefs.h"
+
+// delete once working
+#include <iostream>
 
 namespace Core
 {
 	const uint StartHashValue = 1431655765; // Bits: 01010101010101010101010101010101
+
+	struct Hash;
+
+	Hash HashValue(String s);
+	void HashValue(String s, Hash& existingHash);
+
+	Hash HashValue(char b);
+	void HashValue(char b, Hash& existingHash);
+
+	template <typename T>
+	void HashValue(T&& type, Hash& existingHash);
+
+	template <typename T>
+	Hash HashValue(T&& type);
 
 	struct Hash
 	{
@@ -19,28 +37,49 @@ namespace Core
 			: H(h.H)
 		{}
 
-		template <typename T>
-		constexpr Hash(T&& t)
+		Hash& operator=(const Hash& h)
 		{
-			H = HashValue(Forward<T>(t));
+			H = h.H;
+
+			return (*this);
 		}
 
-		constexpr operator uint()
+		template <typename T>
+		Hash& operator=(T&& t)
+		{
+			H = HashValue(Forward<T>(t), (*this));
+
+			return (*this);
+		}
+
+		Hash& operator+(const Hash& h) = delete;
+
+		template <typename T>
+		Hash& operator+(T&& t)
+		{
+			HashValue(t, (*this));
+
+			return (*this);
+		}
+
+		constexpr operator uint() const
 		{
 			return H;
 		}
 	};
 
-	void HashValue(char b, Hash& existingHash);
-		
 	template <typename T>
 	void HashValue(T&& type, Hash& existingHash)
 	{
 		int numBytes = sizeof(type);
 
+		// this should be redone once serialization stuff is working
+		Ptr<const char> typeBytes = reinterpret_cast<Ptr<const char>>(&type); // <- this is not being consistent
+
 		for (int i = 0; i < numBytes; i++)
 		{
-			char byte = (type >> (i * 8));
+			// pending the serialization stuff, maybe this works
+			char byte = typeBytes[i];
 
 			HashValue(byte, existingHash);
 		}

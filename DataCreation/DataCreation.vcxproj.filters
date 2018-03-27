@@ -51,6 +51,18 @@
     <ClCompile Include="Core\Source\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Data\Source\DataUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Rendering\Source\MaterialData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Rendering\Source\MeshData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManagement\Source\HashTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h">
@@ -380,6 +392,30 @@
     <ClInclude Include="Core\IO\Headers\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Data\Headers\DataUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\MaterialData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\MeshData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManagement\Headers\HashTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Serialization\Headers\SerializationDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Serialization\Headers\SerializationUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Serialization\Headers\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
@@ -412,5 +448,8 @@
   <ItemGroup>
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />
     <Library Include="Dependencies\Libs\ASSIMP\assimp.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DataManagement\Headers\EnglishWords.txt" />
   </ItemGroup>
 </Project>

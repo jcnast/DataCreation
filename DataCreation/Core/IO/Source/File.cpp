@@ -17,6 +17,12 @@ namespace Core
 			return (Path.GetFullPath());
 		}
 
+		void File::SetPermissions(OpenMode permissions)
+		{
+			Close();
+			Open();
+		}
+
 		void File::Open()
 		{
 			cout << "Opening file <<" << GetFullPath() << ">>" << endl;
@@ -26,10 +32,10 @@ namespace Core
 			if (FileStream.is_open())
 			{
 				FileStream.seekg(0, FileStream.end);
-				FileLength = FileStream.tellg();
+				FileLength = uint(FileStream.tellg());
 
 				FileStream.seekg(0, FileStream.beg);
-				CursorPosition = FileStream.tellg();
+				CursorPosition = uint(FileStream.tellg());
 			}
 			else
 			{
@@ -78,12 +84,32 @@ namespace Core
 
 			Open();
 		}
+		
+		bool File::GoToPosition(uint position)
+		{
+			if (position > FileLength)
+			{
+				return false;
+			}
+
+			FileStream.seekg(position, FileStream.beg);
+			CursorPosition = uint(FileStream.tellg());
+
+			return true;
+		}
+
+		uint File::GetPosition()
+		{
+			return CursorPosition;
+		}
 
 		bool File::MoveToNextLine()
 		{
 			if (HasPermission(FilePermissions, ios::in) && CursorPosition < FileLength)
 			{
 				FileStream.ignore(unsigned(-1), '\n');
+				CursorPosition = uint(FileStream.tellg());
+
 				return true;
 			}
 
@@ -93,6 +119,23 @@ namespace Core
 		bool File::CreateNewLine()
 		{
 			return Write('\n');
+		}
+
+		String File::GetLine()
+		{			
+			if (HasPermission(FilePermissions, ios::in) && CursorPosition < FileLength)
+			{
+				String Line;
+				if (!std::getline(FileStream, Line))
+				{
+					throw EOFException("End of <" + GetFullPath() + "> reached");
+				}
+
+				CursorPosition = uint(FileStream.tellg());
+
+				return Line;
+			}
+			throw IOException("Can't get line for this file - incorrect permissions or invalid position");
 		}
 	}
 }

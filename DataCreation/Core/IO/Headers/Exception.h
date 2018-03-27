@@ -10,5 +10,10 @@ namespace Core
 		{
 			using Exception::Exception;
 		};
+
+		struct EOFException : IOException
+		{
+			using IOException::IOException;
+		};
 	}
 }

@@ -26,6 +26,8 @@ namespace Core
 
 			String GetFullPath();
 
+			void SetPermissions(OpenMode permissions = DefaultPermissions);
+
 			void Open();
 			void Close();
 
@@ -33,15 +35,28 @@ namespace Core
 			bool Delete();
 			void Clear();
 
+			bool GoToPosition(uint position);
+			uint GetPosition();
+
 			bool MoveToNextLine();
 			bool CreateNewLine();
+
+			String GetLine();
 
 			template <typename T>
 			bool Read(T&& target)
 			{
-				if (HasPermission(FilePermissions, ios::in) && CursorPosition < FileLength)
+				if (HasPermission(FilePermissions, ios::in) && (!HasPermission(FilePermissions, ios::binary) || (CursorPosition < FileLength)))
 				{
-					ReadToTarget(target);
+					try
+					{
+						ReadToTarget(target);
+					}
+					catch (EOFException& e)
+					{
+						std::cout << e.GetError() << std::endl;
+						return false;
+					}
 
 					return true;
 				}
@@ -65,7 +80,7 @@ namespace Core
 				if (HasPermission(FilePermissions, ios::out))
 				{
 					FileStream << source;
-					CursorPosition = FileStream.tellg();
+					CursorPosition = uint(FileStream.tellp());
 
 					return true;
 				}
@@ -78,7 +93,6 @@ namespace Core
 			{
 				if (Write(source))
 				{
-					Write(" ");
 					return Write(forward<Ts>(args)...);
 				}
 				return false;
@@ -88,15 +102,19 @@ namespace Core
 			template <typename T>
 			void ReadToTarget(T&& target)
 			{
+				if (FileStream.eof())
+				{
+					throw EOFException("End of <" + GetFullPath() + "> reached");
+				}
 				if (HasPermission(FilePermissions, ios::binary))
 				{
-					throw exception;
+					throw IOException("File <" + GetFullPath() + "> does not have READ permissions");
 					//ReadBinaryToTarget(target);
 				}
 				else
 				{
 					FileStream >> target;
-					CursorPosition = FileStream.tellg();
+					CursorPosition = uint(FileStream.tellg());
 				}
 			}
 
@@ -118,16 +136,16 @@ namespace Core
 			{
 				if (HasPermission(FilePermissions, ios::binary))
 				{
-					throw exception;
+					throw IOException("File <" + GetFullPath() + "> does not have WRITE permissions");
 					//WriteBinaryFromSource(source);
 				}
 				else
 				{
 					source >> FileStream;
-					CursorPosition = FileStream.tellg();
+					CursorPosition = FileStream.tellp();
 
 					FileStream.seekg(0, FileStream.end);
-					FileLength = FileStream.tellg();
+					FileLength = FileStream.tellp();
 
 					FileStream.seekg(CursorPosition, FileStream.beg);
 				}

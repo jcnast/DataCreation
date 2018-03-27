@@ -2,6 +2,33 @@
 
 namespace Core
 {
+
+	Hash HashValue(String s)
+	{
+		Hash newHash;
+
+		HashValue(s, newHash);
+
+		return newHash;
+	}
+
+	void HashValue(String s, Hash& existingHash)
+	{
+		for (int i = 0; i < s.length(); i++)
+		{
+			HashValue(s.c_str()[i], existingHash);
+		}
+	}
+
+	Hash HashValue(char b)
+	{
+		Hash newHash;
+
+		HashValue(b, newHash);
+
+		return newHash;
+	}
+
 	void HashValue(char b, Hash& existingHash)
 	{
 		int shift = 7; // shifting by ALMOST the whole byte, so some overlap is maintained - should make order matter more
