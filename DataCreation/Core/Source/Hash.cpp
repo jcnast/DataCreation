@@ -54,6 +54,26 @@ namespace Core
 			 11   |       16          |       192
 			 17   |       26          |      2670
 			 13   |        3          |      0
+
+			salt value notes:
+			            (116 000)          (500 000)
+			salt | string collisions | int collisions
+			 37   |        3          |       0
+			 17   |        5          |       0
+			 11   |        6          |       0
+			 13   |        3          |       0
+
+			 pepper value notes:
+			 (116 000)          (500 000)
+			 pepper | string collisions | int collisions
+			 27   |        3          |       0
+			127   |        6          |       0
+			 67   |        8          |       0
+
+			 General notes:
+			 - Shift seems to have the greatest effect on collisions
+			 - Average string speed: 117.388 nano seconds ( 1.17388 * 10^(-5) )
+			 - Average integer speed: 52.8337 nano seconds ( 5.28337 * 10^(-7) )
 		*/
 		int shift = 13; // shift value should be within range [1, 31] (i.e. - do not lose information, and apply some form of shift)
 		int nonShift = (32 - shift); // the rest of the bits are those that are not lost due to shifting
