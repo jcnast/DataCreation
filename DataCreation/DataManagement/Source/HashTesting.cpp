@@ -109,9 +109,9 @@ void TestHashes()
 		HashedUints.Open();
 		HashedUints.Clear();
 
-		uint upToNum = 216554;
+		int upToNum = 1000000;
 
-		for (uint i = 0; i < upToNum; i++)
+		for (int i = 0; i < upToNum; i++)
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 
@@ -125,19 +125,19 @@ void TestHashes()
 			HashedUints.Write(i, " ", hashedUint.H, " ", dt);
 			HashedUints.CreateNewLine();
 		}
-		std::cout << "Done hashing uints" << std::endl;
+		std::cout << "Done hashing ints" << std::endl;
 		HashedUints.SetPermissions(ios::in);
 		HashedUints.GoToPosition(0);
 
 		double uintAverageTime = 0;
 		uint numUintCollisions = 0;
 
-		uint intThatWasHashed;
+		int intThatWasHashed;
 		uint hashedUint;
 		double time;
 		StreamPos uintPosition = 0;
 
-		Map<uint, List<uint>> hashUintMapping;
+		Map<uint, List<int>> hashUintMapping;
 
 		while (HashedUints.Read(intThatWasHashed, hashedUint, time))
 		{
@@ -165,7 +165,7 @@ void TestHashes()
 			{
 				numUintCollisions += factorial(hashUintMapping[key.first].size() - 1);
 
-				std::cout << "The following words collided: ";
+				std::cout << "The following numbers collided: ";
 				for (auto word : hashUintMapping[key.first])
 				{
 					std::cout << word << " - ";

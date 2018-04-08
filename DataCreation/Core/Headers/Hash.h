@@ -13,6 +13,10 @@ namespace Core
 
 	struct Hash;
 
+	// these may not be needed anymore since hashing function was improved with different shift value
+	Hash HashValue(uint u);
+	void HashValue(uint u, Hash& existingHash);
+
 	Hash HashValue(String s);
 	void HashValue(String s, Hash& existingHash);
 
@@ -20,10 +24,9 @@ namespace Core
 	void HashValue(char b, Hash& existingHash);
 
 	template <typename T>
-	void HashValue(T&& type, Hash& existingHash);
-
-	template <typename T>
 	Hash HashValue(T&& type);
+	template <typename T>
+	void HashValue(T&& type, Hash& existingHash);
 
 	struct Hash
 	{
@@ -69,6 +72,16 @@ namespace Core
 	};
 
 	template <typename T>
+	Hash HashValue(T&& type)
+	{
+		Hash newHash;
+
+		HashValue(type, newHash);
+
+		return newHash;
+	}
+
+	template <typename T>
 	void HashValue(T&& type, Hash& existingHash)
 	{
 		int numBytes = sizeof(type);
@@ -83,16 +96,6 @@ namespace Core
 
 			HashValue(byte, existingHash);
 		}
-	}
-
-	template <typename T>
-	Hash HashValue(T&& type)
-	{
-		Hash newHash;
-
-		HashValue(type, newHash);
-
-		return newHash;
 	}
 
 	/*

@@ -2,6 +2,19 @@
 
 namespace Core
 {
+	Hash HashValue(uint u)
+	{
+		Hash newHash;
+
+		newHash.H = u;
+
+		return newHash;
+	}
+
+	void HashValue(uint u, Hash& existingHash)
+	{
+		existingHash.H += u;
+	}
 
 	Hash HashValue(String s)
 	{
@@ -31,10 +44,21 @@ namespace Core
 
 	void HashValue(char b, Hash& existingHash)
 	{
-		int shift = 7; // shifting by ALMOST the whole byte, so some overlap is maintained - should make order matter more
+		/*
+			Shift value notes:
+			            (58 000)          (500 000)
+			shift | string collisions | int collisions
+			  8   |        2          |      1157
+			  4   |       38          |  24031746
+			 12   |        4          |       384
+			 11   |       16          |       192
+			 17   |       26          |      2670
+			 13   |        3          |      0
+		*/
+		int shift = 13; // shift value should be within range [1, 31] (i.e. - do not lose information, and apply some form of shift)
 		int nonShift = (32 - shift); // the rest of the bits are those that are not lost due to shifting
 
-		int salt = 37; // can be any number, should be odd, ideally prime
+		int salt = 13; // can be any number, should be odd, ideally prime and not so large to lose much information
 		int pepper = 27; // can be any number, should be odd, ideally prime
 
 		uint saltedB = (b * salt);
@@ -42,11 +66,11 @@ namespace Core
 
 		existingHash.H += pepper; // salt the resulting hash (+ instead of * since * would cause overflow and lose data more often (this may not even be needed)
 
-		uint lB = (existingHash.H << nonShift); // get the bits that would be lost by the shift
+		uint lostBits = (existingHash.H << nonShift); // get the bits that would be lost by the shift
 
 		existingHash.H >>= shift; // shift bits
 
-		existingHash.H += lB; // add the missing bits back
+		existingHash.H += lostBits; // add the missing bits back
 	}
 
 	// SEE HEADER
