@@ -7,7 +7,7 @@ namespace Core
 	namespace IO
 	{
 		File::File(FilePath path, OpenMode permissions, Endian endian)
-			: Path(path), FilePermissions(permissions), FileEndian(endian), CursorPosition(0), FileLength(0)
+			: Path(path), FilePermissions(permissions), FileEndian(endian)
 		{
 
 		}
@@ -20,6 +20,9 @@ namespace Core
 		void File::SetPermissions(OpenMode permissions)
 		{
 			Close();
+
+			FilePermissions = permissions;
+
 			Open();
 		}
 
@@ -29,15 +32,7 @@ namespace Core
 
 			FileStream.open(GetFullPath(), FilePermissions);
 
-			if (FileStream.is_open())
-			{
-				FileStream.seekg(0, FileStream.end);
-				FileLength = uint(FileStream.tellg());
-
-				FileStream.seekg(0, FileStream.beg);
-				CursorPosition = uint(FileStream.tellg());
-			}
-			else
+			if (!FileStream.is_open())
 			{
 				cout << "File could not open, attempting to create and then reopening" << endl;
 
@@ -84,31 +79,76 @@ namespace Core
 
 			Open();
 		}
-		
-		bool File::GoToPosition(uint position)
+
+		void File::Reset()
 		{
-			if (position > FileLength)
-			{
-				return false;
-			}
-
-			FileStream.seekg(position, FileStream.beg);
-			CursorPosition = uint(FileStream.tellg());
-
-			return true;
+			FileStream.clear();
 		}
 
-		uint File::GetPosition()
+		bool File::AtEndOfFile()
 		{
-			return CursorPosition;
+			return FileStream.eof();
+		}
+
+		bool File::CanRead()
+		{
+			return HasPermission(FilePermissions, ios::in);
+		}
+
+		bool File::CanWrite()
+		{
+			return HasPermission(FilePermissions, ios::out);
+		}
+
+		StreamPos File::GetLength()
+		{
+			auto currentPos = GetPosition();
+
+			GoToPosition(0, false);
+			auto finalPosition = GetPosition();
+
+			GoToPosition(currentPos);
+
+			return finalPosition;
+		}
+		
+		void File::GoToPosition(StreamPos position, bool start)
+		{
+			auto origin = start ? ios::beg : ios::end;
+			if (CanRead())
+			{
+				FileStream.seekg(position, origin);
+			}
+			else if (CanWrite())
+			{
+				FileStream.seekp(position, origin);
+			}
+
+			if (position != GetPosition())
+			{
+				throw IOException("Failed to jump to desired position");
+			}
+		}
+
+		StreamPos File::GetPosition()
+		{
+			if (CanRead())
+			{
+				return FileStream.tellg();
+			}
+			else if (CanWrite())
+			{
+				return FileStream.tellp();
+			}
+
+			throw IOException("Trying to get position from <" + GetFullPath() + "> when file is closed");
 		}
 
 		bool File::MoveToNextLine()
 		{
-			if (HasPermission(FilePermissions, ios::in) && CursorPosition < FileLength)
+			if (CanRead())
 			{
 				FileStream.ignore(unsigned(-1), '\n');
-				CursorPosition = uint(FileStream.tellg());
 
 				return true;
 			}
@@ -123,19 +163,18 @@ namespace Core
 
 		String File::GetLine()
 		{			
-			if (HasPermission(FilePermissions, ios::in) && CursorPosition < FileLength)
+			if (CanRead())
 			{
 				String Line;
 				if (!std::getline(FileStream, Line))
 				{
-					throw EOFException("End of <" + GetFullPath() + "> reached");
+					return "";
 				}
-
-				CursorPosition = uint(FileStream.tellg());
 
 				return Line;
 			}
-			throw IOException("Can't get line for this file - incorrect permissions or invalid position");
+
+			throw IOException("Can't get line for this file - incorrect permissions");
 		}
 	}
 }

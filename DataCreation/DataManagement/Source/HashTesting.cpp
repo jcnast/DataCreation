@@ -2,6 +2,7 @@
 
 #include "Core/Headers/CoreDefs.h"
 #include "Core/Headers/Hash.h"
+#include "Core/Headers/MapDefs.h"
 #include "Core/Headers/TimeDefs.h"
 
 #include "Core/IO/Headers/IOUtils.h"
@@ -17,10 +18,10 @@ void TestHashes()
 	String filePath = GetCWD() + "/DataManagement/Headers/";
 
 	{
-		File AllWords(FilePath{ filePath, "EnglishWords.txt" });
+		File AllWords(FilePath{ filePath, "EnglishWords.txt" }, ios::in);
 		AllWords.Open();
 
-		File HashedWords(FilePath{ filePath, "HashedEnglishWords.txt" });
+		File HashedWords(FilePath{ filePath, "HashedEnglishWords.txt" }, ios::out);
 		HashedWords.Open();
 		HashedWords.Clear();
 
@@ -50,6 +51,7 @@ void TestHashes()
 			wordCount++;
 		}
 		std::cout << "Done hashing words" << std::endl;
+		HashedWords.SetPermissions(ios::in);
 		HashedWords.GoToPosition(0);
 
 		double wordAverageTime = 0;
@@ -58,42 +60,44 @@ void TestHashes()
 		String wordThatWasHashed;
 		uint hashedWord;
 		double time;
-		uint wordPosition = 0;
+		StreamPos wordPosition = 0;
+
+		Map<uint, List<String>> hashWordMapping;
+
 		while (HashedWords.Read(wordThatWasHashed, hashedWord, time))
 		{
-			HashedWords.MoveToNextLine();
-			wordPosition = HashedWords.GetPosition();
-
 			// use time to keep finding average
 			wordAverageTime += time;
 
-			// go through file to determine hash collisions
-			String word;
-			uint hashedWordCompare;
-			String previousWord = "";
-			uint previousHashedWordCompare = 0;
-			while (HashedWords.Read(word, hashedWordCompare))
-			{
-				if (previousHashedWordCompare == hashedWordCompare)
-				{
-					std::cout << "Two exact hashes (except for end of file due to bug); Previous Info: " << previousWord << ", " << previousHashedWordCompare;
-					std::cout << ", CurrentInfo: " << word << ", " << hashedWordCompare << std::endl;
-				}
-
-				HashedWords.MoveToNextLine();
-
-				if (hashedWord == hashedWordCompare)
-				{
-					numWordCollisions++;
-				}
-
-				previousWord = word;
-				previousHashedWordCompare = hashedWordCompare;
-			}
-
-			HashedWords.GoToPosition(wordPosition);
+			hashWordMapping[hashedWord].push_back(wordThatWasHashed);
 		}
 		wordAverageTime /= wordCount;
+
+		auto factorial = [](int i)
+		{
+			int result = i;
+			while (i > 1)
+			{
+				result *= --i;
+			}
+
+			return result;
+		};
+
+		for (auto key : hashWordMapping)
+		{
+			if (hashWordMapping[key.first].size() > 1)
+			{
+				numWordCollisions += factorial(hashWordMapping[key.first].size() - 1);
+
+				std::cout << "The following words collided: ";
+				for (auto word : hashWordMapping[key.first])
+				{
+					std::cout << word << " - ";
+				}
+				std::cout << std::endl;
+			}
+		}
 
 		// return result (# collisions and average time)
 		std::cout << "Collisions: " << numWordCollisions << ", Average Time: " << wordAverageTime << std::endl;
@@ -101,11 +105,13 @@ void TestHashes()
 
 	{
 		// do the same with all numbers in uint
-		File HashedUints(FilePath{ filePath, "HashedUintss.txt" });
+		File HashedUints(FilePath{ filePath, "HashedUints.txt" }, ios::out);
 		HashedUints.Open();
 		HashedUints.Clear();
 
-		for (uint i = 1; i > 0; i++)
+		uint upToNum = 216554;
+
+		for (uint i = 0; i < upToNum; i++)
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 
@@ -116,43 +122,57 @@ void TestHashes()
 			std::chrono::duration<double> elapsed = (end - start);
 			double dt = elapsed.count();
 
-			HashedUints.Write(hashedUint.H, " ", dt);
+			HashedUints.Write(i, " ", hashedUint.H, " ", dt);
 			HashedUints.CreateNewLine();
 		}
 		std::cout << "Done hashing uints" << std::endl;
+		HashedUints.SetPermissions(ios::in);
+		HashedUints.GoToPosition(0);
 
 		double uintAverageTime = 0;
 		uint numUintCollisions = 0;
 
+		uint intThatWasHashed;
 		uint hashedUint;
 		double time;
-		uint uintPosition = 0;
-		while (HashedUints.Read(hashedUint))
+		StreamPos uintPosition = 0;
+
+		Map<uint, List<uint>> hashUintMapping;
+
+		while (HashedUints.Read(intThatWasHashed, hashedUint, time))
 		{
-			HashedUints.Read(time);
-
-			HashedUints.MoveToNextLine();
-			uintPosition = HashedUints.GetPosition();
-
 			// use time to keep finding average
 			uintAverageTime += time;
 
-			// go through file to determine hash collisions
-			uint hashedUintCompare;
+			hashUintMapping[hashedUint].push_back(intThatWasHashed);
+		}
+		uintAverageTime /= upToNum;
 
-			while (HashedUints.Read(hashedUintCompare))
+		auto factorial = [](int i)
+		{
+			int result = i;
+			while (i > 1)
 			{
-				HashedUints.MoveToNextLine();
-
-				if (hashedUint == hashedUintCompare)
-				{
-					numUintCollisions++;
-				}
+				result *= --i;
 			}
 
-			HashedUints.GoToPosition(uintPosition);
+			return result;
+		};
+
+		for (auto key : hashUintMapping)
+		{
+			if (hashUintMapping[key.first].size() > 1)
+			{
+				numUintCollisions += factorial(hashUintMapping[key.first].size() - 1);
+
+				std::cout << "The following words collided: ";
+				for (auto word : hashUintMapping[key.first])
+				{
+					std::cout << word << " - ";
+				}
+				std::cout << std::endl;
+			}
 		}
-		uintAverageTime /= uint(-1);
 
 		// return result (# collisions and average time)
 		std::cout << "Collisions: " << numUintCollisions << ", Average Time: " << uintAverageTime << std::endl;

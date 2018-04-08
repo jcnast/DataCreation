@@ -93,7 +93,7 @@ namespace SceneConversion
 		}
 
 		string meshFileName = "MESH_" + to_string(meshIndex) + ".msh";
-		Core::IO::File meshFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, meshFileName });
+		Core::IO::File meshFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, meshFileName }, ios::out);
 		meshFile.Open();
 
 		if (!meshFile.FileStream.is_open())
@@ -156,7 +156,7 @@ namespace SceneConversion
 
 		// store values in file
 		string materialFileName = "MATERIAL_" + to_string(materialIndex) + ".mat";
-		Core::IO::File materialFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, materialFileName });
+		Core::IO::File materialFile = Core::IO::File(Core::IO::FilePath{ CurrentExportFolder, materialFileName }, ios::out);
 		materialFile.Open();
 
 		if (!materialFile.FileStream.is_open())

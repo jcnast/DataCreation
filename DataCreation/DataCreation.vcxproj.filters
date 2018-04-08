@@ -451,5 +451,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="DataManagement\Headers\EnglishWords.txt" />
+    <Text Include="DataManagement\Headers\HashedEnglishWords.txt" />
   </ItemGroup>
 </Project>

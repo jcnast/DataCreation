@@ -39,6 +39,9 @@ namespace Core
 		using OSStreamChar = OSStream<char>;
 		using IOSStreamChar = SStream<char>;
 
+		// misc
+		using StreamPos = std::streampos;
+
 		using OpenMode = ios::openmode;
 
 		enum class Endian
@@ -57,8 +60,6 @@ namespace Core
 				return (File + Path);
 			}
 		};
-
-		constexpr OpenMode DefaultPermissions = ios::in | ios::out;
 
 		inline constexpr bool HasPermission(OpenMode userPermissions, OpenMode permission)
 		{

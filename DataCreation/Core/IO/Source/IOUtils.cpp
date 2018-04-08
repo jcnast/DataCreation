@@ -10,17 +10,6 @@ namespace Core
 {
 	namespace IO
 	{
-		File OpenFileIO(FilePath file)
-		{
-			File openedFile(file);
-
-			openedFile.Open();
-
-			MESSAGE(openedFile.FileStream.is_open(), "File <<" + file.GetFullPath() + ">> failed to open");
-
-			return openedFile;
-		}
-
 		File OpenFileI(FilePath file)
 		{
 			File openedFile(file, ios::in);

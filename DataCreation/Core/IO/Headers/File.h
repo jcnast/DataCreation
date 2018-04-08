@@ -12,9 +12,6 @@ namespace Core
 
 			OpenMode FilePermissions;
 			Endian FileEndian;
-
-			uint FileLength;
-			uint CursorPosition;
 			/*
 				should also have a BIT cursor position, with the current CursorPosition referring to the byte position, so that we can read out the exact number of
 				bits for whatever data type is required by using sizeof() to get bit count, and handling the EXACT positioning ourselves.
@@ -22,11 +19,11 @@ namespace Core
 
 			IOFStreamChar FileStream;
 
-			File(FilePath path, OpenMode permissions = DefaultPermissions, Endian endian = Endian::Big);
+			File(FilePath path, OpenMode permissions, Endian endian = Endian::Big);
 
 			String GetFullPath();
 
-			void SetPermissions(OpenMode permissions = DefaultPermissions);
+			void SetPermissions(OpenMode permissions);
 
 			void Open();
 			void Close();
@@ -35,8 +32,17 @@ namespace Core
 			bool Delete();
 			void Clear();
 
-			bool GoToPosition(uint position);
-			uint GetPosition();
+			void Reset();
+
+			bool AtEndOfFile();
+
+			bool CanRead();
+			bool CanWrite();
+
+			StreamPos GetLength();
+
+			void GoToPosition(StreamPos position, bool start = true);
+			StreamPos GetPosition();
 
 			bool MoveToNextLine();
 			bool CreateNewLine();
@@ -46,22 +52,17 @@ namespace Core
 			template <typename T>
 			bool Read(T&& target)
 			{
-				if (HasPermission(FilePermissions, ios::in) && (!HasPermission(FilePermissions, ios::binary) || (CursorPosition < FileLength)))
+				if (CanRead())
 				{
-					try
+					if (AtEndOfFile())
 					{
-						ReadToTarget(target);
-					}
-					catch (EOFException& e)
-					{
-						std::cout << e.GetError() << std::endl;
 						return false;
 					}
 
-					return true;
+					return ReadToTarget(target);
 				}
 
-				return false;
+				throw IOException("Can't read from this file - incorrect permissions");
 			}
 
 			template <typename T, typename ...Ts>
@@ -71,21 +72,19 @@ namespace Core
 				{
 					return Read(forward<Ts>(args)...);
 				}
+
 				return false;
 			}
 
 			template <typename T>
 			bool Write(T&& source)
 			{
-				if (HasPermission(FilePermissions, ios::out))
+				if (CanWrite())
 				{
-					FileStream << source;
-					CursorPosition = uint(FileStream.tellp());
-
-					return true;
+					return WriteFromSource(source);
 				}
 
-				return false;
+				throw IOException("Can't write to this file - incorrect permissions");
 			}
 
 			template <typename T, typename ...Ts>
@@ -100,68 +99,25 @@ namespace Core
 
 		private:
 			template <typename T>
-			void ReadToTarget(T&& target)
+			bool ReadToTarget(T&& target)
 			{
-				if (FileStream.eof())
+				if (FileStream >> target)
 				{
-					throw EOFException("End of <" + GetFullPath() + "> reached");
+					return true;
 				}
-				if (HasPermission(FilePermissions, ios::binary))
-				{
-					throw IOException("File <" + GetFullPath() + "> does not have READ permissions");
-					//ReadBinaryToTarget(target);
-				}
-				else
-				{
-					FileStream >> target;
-					CursorPosition = uint(FileStream.tellg());
-				}
-			}
 
-			void ReadBinaryToTarget(char* target, int numBytes)
-			{
-				// need to figure out handling for things like bools which are on bit instead of a byte (maybe doesn't matter if we have the same data structures and just do raw casting?)
-				if (FileEndian == Endian::Big)
-				{
-
-				}
-				else
-				{
-
-				}
+				return false;
 			}
 
 			template <typename T>
-			void WriteFromSource(T&& source)
+			bool WriteFromSource(T&& source)
 			{
-				if (HasPermission(FilePermissions, ios::binary))
+				if(FileStream << source)
 				{
-					throw IOException("File <" + GetFullPath() + "> does not have WRITE permissions");
-					//WriteBinaryFromSource(source);
+					return true;
 				}
-				else
-				{
-					source >> FileStream;
-					CursorPosition = FileStream.tellp();
 
-					FileStream.seekg(0, FileStream.end);
-					FileLength = FileStream.tellp();
-
-					FileStream.seekg(CursorPosition, FileStream.beg);
-				}
-			}
-
-			void WriteBinaryFromSource(char* source, int numBytes)
-			{
-				// need to figure out handling for things like bools which are on bit instead of a byte (maybe doesn't matter if we have the same data structures and just do raw casting?)
-				if (FileEndian == Endian::Big)
-				{
-
-				}
-				else
-				{
-
-				}
+				return false;
 			}
 		};
 	}
