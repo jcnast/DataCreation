@@ -101,7 +101,7 @@ void ParseSQLite(char* argv)
 		{
 			subStringStream >> newAttribute.Title;
 			subStringStream >> newAttribute.Type;
-			
+
 			if (newAttribute.Title.find("List") != std::string::npos)
 			{
 				newAttribute.List = true;
@@ -112,7 +112,7 @@ void ParseSQLite(char* argv)
 			}
 
 			size_t subPosition = 0;
-			
+
 			if ((subPosition = subString.find("PRIMARY KEY")) != std::string::npos)
 			{
 				subString.erase(0, subPosition + std::string("PRIMARY KEY").length());
@@ -206,7 +206,7 @@ int CreateAttributes(void* file, int argc, char** argv, char** azColName)
 
 	for (auto& attribute : Attributes)
 	{
-		*headerFile << "\t" << (attribute.List ? "List<" : "")  << attribute.Type << (attribute.List ? ">" : "") << " " << attribute.Title << ";\n";
+		*headerFile << "\t" << (attribute.List ? "List<" : "") << attribute.Type << (attribute.List ? ">" : "") << " " << attribute.Title << ";\n";
 	}
 
 	return 0;
@@ -249,8 +249,8 @@ int CreateStruct(void* db, int argc, char** argv, char** azColName)
 		headerFile << "{\n";
 
 		{ // create struct attributes
-			// sql from: https://stackoverflow.com/questions/2418527/sql-server-query-to-get-the-list-of-columns-in-a-table-along-with-data-types-no
-			std::string sql = "SELECT sql FROM sqlite_master WHERE name = '" + StructName +"'";
+		  // sql from: https://stackoverflow.com/questions/2418527/sql-server-query-to-get-the-list-of-columns-in-a-table-along-with-data-types-no
+			std::string sql = "SELECT sql FROM sqlite_master WHERE name = '" + StructName + "'";
 
 			char* errorMessage = 0;
 			int rc;
@@ -325,7 +325,7 @@ void DatabaseCreation(std::string dataBaseFile)
 		std::cout << "Unable to read each table from database: %s\n" << errorMessage << std::endl;
 		sqlite3_free(errorMessage);
 	}
-	else 
+	else
 	{
 		std::cout << "Success in reading each table from database\n" << std::endl;
 	}

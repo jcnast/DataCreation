@@ -27,7 +27,7 @@ namespace Core
 
 	void HashValue(String s, Hash& existingHash)
 	{
-		for (int i = 0; i < s.length(); i++)
+		for (uint i = 0; i < s.length(); i++)
 		{
 			HashValue(s.c_str()[i], existingHash);
 		}
@@ -74,6 +74,8 @@ namespace Core
 			 - Shift seems to have the greatest effect on collisions
 			 - Average string speed: 117.388 nano seconds ( 1.17388 * 10^(-5) )
 			 - Average integer speed: 52.8337 nano seconds ( 5.28337 * 10^(-7) )
+
+			 For benchmarks for other algorithms: https://softwareengineering.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed
 		*/
 		int shift = 13; // shift value should be within range [1, 31] (i.e. - do not lose information, and apply some form of shift)
 		int nonShift = (32 - shift); // the rest of the bits are those that are not lost due to shifting

@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataCreation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetManagement\Source\SceneConversion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Functionality\Source\Scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,24 +45,33 @@
     <ClCompile Include="Core\Source\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Source\DataUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\Rendering\Source\MaterialData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Rendering\Source\MeshData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataManagement\Source\HashTesting.cpp">
+    <ClCompile Include="Data\Rendering\Exporting\Source\SceneConversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\UnitTests\HashTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\CustomData\Exporting\Source\DataCreation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\SQL\Source\SQLInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Source\AssetUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\DataStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ListTest.h">
@@ -96,15 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3ext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataManagement\Headers\FileCreation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetManagement\Headers\SceneConversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Includes\ASSIMP\ai_assert.h">
@@ -204,15 +198,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Includes\ASSIMP\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\Data\Headers\DataType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\Data\Headers\DataItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Source\HashTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Debugging\Headers\Declarations.h">
@@ -392,9 +377,6 @@
     <ClInclude Include="Core\IO\Headers\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Headers\DataUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -402,9 +384,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataManagement\Headers\HashTesting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Serialization\Headers\SerializationDefs.h">
@@ -416,11 +395,49 @@
     <ClInclude Include="Core\Serialization\Headers\Serialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Data\Headers\AssetData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Headers\AssetName.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Headers\AssetType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Exporting\Headers\SceneConversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\UnitTests\HashTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\AssetDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Headers\AssetUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\CustomData\Headers\AssetDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\CustomData\Exporting\Headers\DataCreation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\SQL\Headers\SQLDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\SQL\Headers\SQLInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\SQL\Headers\SQLExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Headers\AssetExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />
-    <None Include="Database\Data.db" />
     <None Include="Dependencies\Includes\ASSIMP\color4.inl">
       <Filter>Header Files</Filter>
     </None>
@@ -442,15 +459,14 @@
     <None Include="Dependencies\Includes\ASSIMP\vector3.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Assets\ExportedAssets\MI\MESH_0.msh" />
-    <None Include="Assets\ExportedAssets\MI\MATERIAL_0.mat" />
+    <None Include="Data\Resources\ImportedAssets\CustomData\Data.db" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />
     <Library Include="Dependencies\Libs\ASSIMP\assimp.lib" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="DataManagement\Headers\EnglishWords.txt" />
-    <Text Include="DataManagement\Headers\HashedEnglishWords.txt" />
+    <Text Include="Core\UnitTests\EnglishWords.txt" />
+    <Text Include="Core\UnitTests\HashedEnglishWords.txt" />
   </ItemGroup>
 </Project>

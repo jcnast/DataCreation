@@ -146,7 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AssetManagement\Source\SceneConversion.cpp" />
+    <ClCompile Include="Data\CustomData\Exporting\Source\DataCreation.cpp" />
+    <ClCompile Include="Data\Rendering\Exporting\Source\SceneConversion.cpp" />
     <ClCompile Include="Core\CoreUnitTests.cpp" />
     <ClCompile Include="Core\Functionality\Source\Scheduler.cpp" />
     <ClCompile Include="Core\Functionality\Source\Subscription.cpp" />
@@ -157,15 +158,17 @@
     <ClCompile Include="Core\Math\UnitTests\VectorTests.cpp" />
     <ClCompile Include="Core\Source\Exception.cpp" />
     <ClCompile Include="Core\Source\Hash.cpp" />
-    <ClCompile Include="DataCreation.cpp" />
-    <ClCompile Include="DataManagement\Source\HashTesting.cpp" />
+    <ClCompile Include="DataExport.cpp" />
+    <ClCompile Include="Core\UnitTests\HashTesting.cpp" />
     <ClCompile Include="Data\Rendering\Source\MaterialData.cpp" />
     <ClCompile Include="Data\Rendering\Source\MeshData.cpp" />
-    <ClCompile Include="Data\Source\DataUtils.cpp" />
+    <ClCompile Include="Data\Source\AssetUtils.cpp" />
+    <ClCompile Include="Data\SQL\Source\SQLInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManagement\Headers\AssimpLoading_Sample.h" />
-    <ClInclude Include="AssetManagement\Headers\SceneConversion.h" />
+    <ClInclude Include="Data\CustomData\Headers\AssetDefs.h" />
+    <ClInclude Include="Data\Headers\AssetExceptions.h" />
+    <ClInclude Include="Data\Rendering\Exporting\Headers\SceneConversion.h" />
     <ClInclude Include="Core\Debugging\Headers\Declarations.h" />
     <ClInclude Include="Core\Debugging\Headers\Macros.h" />
     <ClInclude Include="Core\Functionality\Headers\Event.h" />
@@ -228,18 +231,21 @@
     <ClInclude Include="Core\Serialization\Headers\Serialization.h" />
     <ClInclude Include="Core\Serialization\Headers\SerializationDefs.h" />
     <ClInclude Include="Core\Serialization\Headers\SerializationUtils.h" />
-    <ClInclude Include="Core\Source\HashTest.h" />
-    <ClInclude Include="DataManagement\Headers\HashTesting.h" />
+    <ClInclude Include="Core\UnitTests\HashTesting.h" />
+    <ClInclude Include="Data\Headers\AssetData.h" />
+    <ClInclude Include="Data\Headers\AssetName.h" />
     <ClInclude Include="Data\Data.h" />
-    <ClInclude Include="Data\DataStructs.h" />
-    <ClInclude Include="Data\Data\Headers\DataItem.h" />
-    <ClInclude Include="Data\Data\Headers\DataType.h" />
-    <ClInclude Include="Data\Headers\DataUtils.h" />
+    <ClInclude Include="Data\Headers\AssetType.h" />
+    <ClInclude Include="Data\Headers\AssetUtils.h" />
     <ClInclude Include="Data\ListTest.h" />
     <ClInclude Include="Data\PrimaryForeignKeyTest.h" />
+    <ClInclude Include="Data\Rendering\Headers\AssetDefs.h" />
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
     <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h" />
+    <ClInclude Include="Data\SQL\Headers\SQLDefs.h" />
+    <ClInclude Include="Data\SQL\Headers\SQLExceptions.h" />
+    <ClInclude Include="Data\SQL\Headers\SQLInstance.h" />
     <ClInclude Include="Data\Test.h" />
     <ClInclude Include="Data\Test2.h" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\ai_assert.h" />
@@ -280,12 +286,10 @@
     <ClInclude Include="Dependencies\Includes\ASSIMP\version.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3ext.h" />
-    <ClInclude Include="DataManagement\Headers\FileCreation.h" />
+    <ClInclude Include="Data\CustomData\Exporting\Headers\DataCreation.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\ExportedAssets\MI\MATERIAL_0.mat" />
-    <None Include="Assets\ExportedAssets\MI\MESH_0.msh" />
-    <None Include="Database\Data.db" />
+    <None Include="Data\Resources\ImportedAssets\CustomData\Data.db" />
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />
     <None Include="Dependencies\Includes\ASSIMP\color4.inl" />
@@ -301,8 +305,8 @@
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="DataManagement\Headers\EnglishWords.txt" />
-    <Text Include="DataManagement\Headers\HashedEnglishWords.txt" />
+    <Text Include="Core\UnitTests\EnglishWords.txt" />
+    <Text Include="Core\UnitTests\HashedEnglishWords.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
