@@ -9,9 +9,9 @@
 int main()
 {
 	//DatabaseCreation("Data.db");
-	SceneConversion::ConvertFilesForScene("Assets/NonConvertedFiles/MI/MI.obj", "MI");
+	//SceneConversion::ConvertFilesForScene("Assets/NonConvertedFiles/MI/MI.obj", "MI");
 
-	TestHashes();
+	//TestHashes();
 
     return 0;
 }

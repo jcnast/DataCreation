@@ -12,7 +12,7 @@ struct aiMaterial;
 
 namespace SceneConversion
 {
-	static string SceneStoragePath = "C:/Users/Jagger/Desktop/Coding/VisualStudios/DataCreation/DataCreation/Assets/ExportedAssets/";
+	static string SceneStoragePath = "C:/Users/Jagger/Desktop/Coding/VisualStudios/DataCreation/DataCreation/Data/Resources/ExportedAssets/";
 	static string CurrentExportFolder = "";
 
 	void ConvertFilesForScene(string importFileName, string exportFileName);

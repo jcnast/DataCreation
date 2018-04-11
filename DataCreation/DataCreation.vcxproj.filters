@@ -434,6 +434,18 @@
     <ClInclude Include="Data\Headers\AssetExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Data\Resources\ExportedAssets\Assets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Resources\ExportedAssets\CustomAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Resources\ExportedAssets\MaterialAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Resources\ExportedAssets\MeshAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />

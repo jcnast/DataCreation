@@ -56,6 +56,7 @@ namespace Data
 				Ptr<void> ForwardedInfo;
 				Function<bool, Ptr<void>, List<String>, List<String>>& RowOperation;
 
+				// need this constructor as MakeUnique does NOT work on initializer lists
 				WrappedInfo(Ptr<void> forwardedInfo, Function<bool, Ptr<void>, List<String>, List<String>>& rowOperation)
 					: ForwardedInfo(forwardedInfo), RowOperation(rowOperation)
 				{}

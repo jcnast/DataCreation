@@ -11,16 +11,19 @@ namespace Data
 	template <typename T>
 	struct AssetType
 	{
-		Hash TypeName;
+		Hash ClassHash() const
+		{
+			return HashValue("void");
+		}
 
 		String GetPath() const
 		{
-			return T::GetPath();
+			return "";
 		}
 
 		String GetFileType() const
 		{
-			return T::GetPath();
+			return "";
 		}
 	};
 }

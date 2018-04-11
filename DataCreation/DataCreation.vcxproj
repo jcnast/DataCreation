@@ -243,6 +243,10 @@
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
     <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h" />
+    <ClInclude Include="Data\Resources\ExportedAssets\Assets.h" />
+    <ClInclude Include="Data\Resources\ExportedAssets\CustomAssets.h" />
+    <ClInclude Include="Data\Resources\ExportedAssets\MaterialAssets.h" />
+    <ClInclude Include="Data\Resources\ExportedAssets\MeshAssets.h" />
     <ClInclude Include="Data\SQL\Headers\SQLDefs.h" />
     <ClInclude Include="Data\SQL\Headers\SQLExceptions.h" />
     <ClInclude Include="Data\SQL\Headers\SQLInstance.h" />
