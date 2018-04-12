@@ -146,8 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Data\CustomData\Exporting\Source\DataCreation.cpp" />
-    <ClCompile Include="Data\Rendering\Exporting\Source\SceneConversion.cpp" />
+    <ClCompile Include="DataExport\CustomData\Source\DataCreation.cpp" />
+    <ClCompile Include="DataExport\CustomData\Source\DataExportDefs.cpp" />
+    <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp" />
+    <ClCompile Include="DataExport\Rendering\Source\SceneConversion.cpp" />
     <ClCompile Include="Core\CoreUnitTests.cpp" />
     <ClCompile Include="Core\Functionality\Source\Scheduler.cpp" />
     <ClCompile Include="Core\Functionality\Source\Subscription.cpp" />
@@ -166,9 +168,11 @@
     <ClCompile Include="Data\SQL\Source\SQLInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Data\CustomData\Headers\AssetDefs.h" />
+    <ClInclude Include="DataExport\CustomData\Headers\DataExportDefs.h" />
+    <ClInclude Include="DataExport\CustomData\Headers\DataExportUtils.h" />
+    <ClInclude Include="DataExport\Headers\AssetExportDefs.h" />
     <ClInclude Include="Data\Headers\AssetExceptions.h" />
-    <ClInclude Include="Data\Rendering\Exporting\Headers\SceneConversion.h" />
+    <ClInclude Include="DataExport\Rendering\Headers\SceneConversion.h" />
     <ClInclude Include="Core\Debugging\Headers\Declarations.h" />
     <ClInclude Include="Core\Debugging\Headers\Macros.h" />
     <ClInclude Include="Core\Functionality\Headers\Event.h" />
@@ -239,14 +243,13 @@
     <ClInclude Include="Data\Headers\AssetUtils.h" />
     <ClInclude Include="Data\ListTest.h" />
     <ClInclude Include="Data\PrimaryForeignKeyTest.h" />
-    <ClInclude Include="Data\Rendering\Headers\AssetDefs.h" />
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
     <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h" />
-    <ClInclude Include="Data\Resources\ExportedAssets\Assets.h" />
-    <ClInclude Include="Data\Resources\ExportedAssets\CustomAssets.h" />
-    <ClInclude Include="Data\Resources\ExportedAssets\MaterialAssets.h" />
-    <ClInclude Include="Data\Resources\ExportedAssets\MeshAssets.h" />
+    <ClInclude Include="DataExport\Resources\ExportedAssets\Assets.h" />
+    <ClInclude Include="DataExport\Resources\ExportedAssets\CustomAssets.h" />
+    <ClInclude Include="DataExport\Resources\ExportedAssets\MaterialAssets.h" />
+    <ClInclude Include="DataExport\Resources\ExportedAssets\MeshAssets.h" />
     <ClInclude Include="Data\SQL\Headers\SQLDefs.h" />
     <ClInclude Include="Data\SQL\Headers\SQLExceptions.h" />
     <ClInclude Include="Data\SQL\Headers\SQLInstance.h" />
@@ -290,10 +293,10 @@
     <ClInclude Include="Dependencies\Includes\ASSIMP\version.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3.h" />
     <ClInclude Include="Dependencies\Includes\SQLite\sqlite3ext.h" />
-    <ClInclude Include="Data\CustomData\Exporting\Headers\DataCreation.h" />
+    <ClInclude Include="DataExport\CustomData\Headers\DataCreation.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Resources\ImportedAssets\CustomData\Data.db" />
+    <None Include="DataExport\Resources\ImportedAssets\CustomData\Data.db" />
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
     <None Include="Dependencies\Dlls\SQLite\sqlite3.dll" />
     <None Include="Dependencies\Includes\ASSIMP\color4.inl" />

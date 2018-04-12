@@ -51,13 +51,7 @@
     <ClCompile Include="Data\Rendering\Source\MeshData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Rendering\Exporting\Source\SceneConversion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\UnitTests\HashTesting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Data\CustomData\Exporting\Source\DataCreation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\SQL\Source\SQLInstance.cpp">
@@ -67,6 +61,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DataExport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport\CustomData\Source\DataCreation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport\Rendering\Source\SceneConversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport\CustomData\Source\DataExportDefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,22 +410,10 @@
     <ClInclude Include="Data\Headers\AssetType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Rendering\Exporting\Headers\SceneConversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Core\UnitTests\HashTesting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Rendering\Headers\AssetDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\Headers\AssetUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\CustomData\Headers\AssetDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\CustomData\Exporting\Headers\DataCreation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\SQL\Headers\SQLDefs.h">
@@ -434,16 +428,31 @@
     <ClInclude Include="Data\Headers\AssetExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Resources\ExportedAssets\Assets.h">
+    <ClInclude Include="DataExport\CustomData\Headers\DataCreation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Resources\ExportedAssets\CustomAssets.h">
+    <ClInclude Include="DataExport\Rendering\Headers\SceneConversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Resources\ExportedAssets\MaterialAssets.h">
+    <ClInclude Include="DataExport\Resources\ExportedAssets\Assets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Resources\ExportedAssets\MeshAssets.h">
+    <ClInclude Include="DataExport\Resources\ExportedAssets\CustomAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\Resources\ExportedAssets\MaterialAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\Resources\ExportedAssets\MeshAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\CustomData\Headers\DataExportDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\Headers\AssetExportDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\CustomData\Headers\DataExportUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -471,7 +480,7 @@
     <None Include="Dependencies\Includes\ASSIMP\vector3.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Data\Resources\ImportedAssets\CustomData\Data.db" />
+    <None Include="DataExport\Resources\ImportedAssets\CustomData\Data.db" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\Libs\SQLite\sqlite3.lib" />

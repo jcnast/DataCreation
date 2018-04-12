@@ -20,7 +20,7 @@ namespace Data
 			{
 				const AssetName<SampleData> SpecificAsset /*= Specific Asset Hash*/;
 			};
-			const Samples Smp;
+			const Samples Sample;
 		};
 		const CustomAssets Dat;
 
