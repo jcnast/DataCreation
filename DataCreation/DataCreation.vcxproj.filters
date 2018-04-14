@@ -455,6 +455,9 @@
     <ClInclude Include="DataExport\CustomData\Headers\DataExportUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataExport\Headers\ExportException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Dlls\ASSIMP\assimp.dll" />
