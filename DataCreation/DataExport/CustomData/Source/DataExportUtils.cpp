@@ -26,17 +26,19 @@ namespace Data
 					break;
 				}
 			}
+
+			return NewType;
 		}
 
 		UniquePtr<DataProperty> CreateProperty(String sqlColumn)
 		{
+			if (IsExported(sqlColumn))
+			{
+				return nullptr;
+			}
+
 			String type = TypeName(sqlColumn);
 			String name = FieldName(sqlColumn);
-
-			if (IsPrimaryKey(sqlColumn))
-			{
-				// this is the name of the file
-			}
 
 			UniquePtr<DataProperty> newProperty;
 
@@ -51,6 +53,11 @@ namespace Data
 			else
 			{
 				newProperty = MakeUnique<DataProperty>(type, name);
+			}
+
+			if (IsPrimaryKey(sqlColumn))
+			{
+				newProperty->IsPrimaryKey = true;
 			}
 
 			return move(newProperty);
@@ -104,17 +111,29 @@ namespace Data
 			{
 				return "bool";
 			}
-			else if (sqlType == "INT")
+			if (sqlType == "CHAR")
+			{
+				return "char";
+			}
+			else if (sqlType == "DOUBLE")
+			{
+				return "double";
+			}
+			else if (sqlType == "FLOAT" || sqlType == "DECIMAL" || sqlType == "REAL")
+			{
+				return "float";
+			}
+			else if (sqlType == "INT" || sqlType == "INTERGER")
 			{
 				return "int";
 			}
-			else if (sqlType == "STRING")
+			else if (sqlType == "STRING" || sqlType == "BLOB" || sqlType == "TEXT" || sqlType == "VARCHAR")
 			{
 				return "String";
 			}
-			else if (sqlType == "FLOAT")
+			else if (sqlType == "BIGINT" || sqlType == "DATE" || sqlType == "DATETIME")
 			{
-				return "float";
+				return "uint";
 			}
 
 			throw CustomExportException("Uknown sql type field <" + sqlType + ">");

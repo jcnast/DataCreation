@@ -12,6 +12,8 @@ namespace Data
 	{
 		struct DataProperty
 		{
+			bool IsPrimaryKey = false;
+
 			String Type;
 			String Name;
 
@@ -58,6 +60,25 @@ namespace Data
 
 			String GetDefinition();
 			String GetMetaTypeDefinition();
+		};
+
+		struct MetaAssetDataProperty
+		{
+			String variableName;
+			String variableValue;
+			
+			bool IsReference = false;
+		};
+
+		struct MetaAssetData
+		{
+			String typeName;
+			String typeAcronym;
+
+			String assetName;
+			bool directExport;
+
+			List<MetaAssetDataProperty> variables;
 		};
 	}
 }

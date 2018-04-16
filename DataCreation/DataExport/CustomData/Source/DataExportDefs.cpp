@@ -10,7 +10,10 @@ namespace Data
 			definition += "{\n";
 			for (auto& prop : Properties)
 			{
-				definition += "\t" + prop->GetLine() + "\n";
+				if (prop != nullptr)
+				{
+					definition += "\t" + prop->GetLine() + "\n";
+				}
 			}
 			definition += "}\n";
 			definition += "\n";
@@ -37,6 +40,8 @@ namespace Data
 			definition += "\t\treturn \"." + Acronym + "\";\n";
 			definition += "\t}\n";
 			definition += "};\n";
+
+			return definition;
 		}
 	}
 }

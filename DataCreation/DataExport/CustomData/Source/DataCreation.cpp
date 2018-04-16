@@ -1,334 +1,216 @@
-#pragma once
+#include "DataExport/CustomData/Headers/DataCreation.h"
 
-#include "SQLite/sqlite3.h"
+#include "Core/Debugging/Headers/Macros.h"
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include "Core/Headers/Hash.h"
+#include "Core/IO/Headers/IOUtils.h"
 
-struct StructAttribute
+#include "DataExport/Headers/ExportException.h"
+
+#include "DataExport/CustomData/Headers/DataExportUtils.h"
+
+using namespace std::string_literals;
+
+namespace Data
 {
-	std::string Title;
-	std::string Type;
-	bool List;
-	bool PrimaryKey;
-	bool ForeignKey;
-};
-
-std::string StructName;
-std::vector<StructAttribute> Attributes;
-
-bool CharIsNotAllowedInAttribute(char c)
-{
-	std::vector<char> DisallowedChars = { '"', '(', ')', '[', ']', '{', '}' };
-
-	for (auto& disallowedChar : DisallowedChars)
+	namespace DataExport
 	{
-		if (c == disallowedChar)
+		void ExportCustomData(Ptr<SQLInstance> db, Ptr<File> directAssets)
 		{
-			return true;
+			LOG("Starting to export custom data");
+
+			File customAssets(FilePath{ GetCWD() + "Resources/ExportedAssets/", "CustomAssets.h" }, ios::out);
+			InitializeCustomAssetFile(&customAssets);
+
+			Function<bool, Ptr<void>, List<String>, List<String>> forEachType = [db, &customAssets, directAssets](void* forwardedInfo, List<String> columnValues, List<String> columnNames)
+			{
+				// due to query, there will only ever be one column value (the table name)
+				ExportDataTypeInformation(db, columnValues[0], &customAssets, directAssets);
+
+				return false;
+			};
+
+			String allTypeQuery = "SELECT name FROM sqlite_master WHERE type='table'";
+
+			ExportDirectReference_Open("CustomAssets", directAssets);
+			db->Query(allTypeQuery, forEachType, nullptr);
+			ExportDirectReference_Close("CustomAssets", directAssets);
+
+			FinalizeCustomAssetFile(&customAssets);
+
+			LOG("Finished exporting custom data");
 		}
-	}
 
-	return false;
-}
-
-std::string GetCPPEquivalentOfSQLite(std::string type)
-{
-	if (type == "BIGINT" || type == "DATE" || type == "DATETIME")
-	{
-		return "uint32_t";
-	}
-	else if (type == "BLOB" || type == "STRING" || type == "TEXT" || type == "VARCHAR")
-	{
-		return "string";
-	}
-	else if (type == "BOOLEAN")
-	{
-		return "bool";
-	}
-	else if (type == "CHAR")
-	{
-		return "char";
-	}
-	else if (type == "DECIMAL" || type == "REAL")
-	{
-		return "float";
-	}
-	else if (type == "DOUBLE")
-	{
-		return "double";
-	}
-	else if (type == "INTEGER" || type == "INT")
-	{
-		return "int";
-	}
-	else if (type == "NUMERIC")
-	{
-		return "<ERROR: ambiguous>";
-	}
-	else // || type == "NONE"
-	{
-		return "<ERROR: nothing specified>";
-	}
-}
-
-void ParseSQLite(char* argv)
-{
-	size_t position = 0;
-	std::string sql = argv;
-
-	std::string subString;
-	std::stringstream subStringStream;
-
-	{ // first pass to get the SQL past the create table call
-		position = sql.find("(");
-		sql.erase(0, position + 1); // plus length of delimeter
-	}
-
-	while (true)
-	{
-		StructAttribute newAttribute;
-
-		position = sql.find(",");
-
-		subString = sql.substr(0, position);
-		subStringStream.str(subString);
-
+		void ExportDataTypeInformation(Ptr<SQLInstance> db, String type, Ptr<File> customAssets, Ptr<File> directAssets)
 		{
-			subStringStream >> newAttribute.Title;
-			subStringStream >> newAttribute.Type;
+			LOG("Starting to export data type: " + type);
 
-			if (newAttribute.Title.find("List") != std::string::npos)
+			Function<bool, Ptr<void>, List<String>, List<String>> formatConstruction = [db, type, customAssets, directAssets](void* forwardedInfo, List<String> columnValues, List<String> columnNames)
 			{
-				newAttribute.List = true;
-			}
-			else
-			{
-				newAttribute.List = false;
-			}
+				// due to query, there will only even be one column value (the sql statement)
+				auto type = ExportDataType(columnValues[0], customAssets);
+				ExportDataForType(db, move(type), directAssets);
 
-			size_t subPosition = 0;
+				return false;
+			};
 
-			if ((subPosition = subString.find("PRIMARY KEY")) != std::string::npos)
-			{
-				subString.erase(0, subPosition + std::string("PRIMARY KEY").length());
+			String typeFormatQuery = "Select sql from sqlite_master WHERE name = '" + type + "'";
+			db->Query(typeFormatQuery, formatConstruction, nullptr);
 
-				newAttribute.PrimaryKey = true;
-			}
-			else
-			{
-				newAttribute.PrimaryKey = false;
-			}
-			if ((subPosition = subString.find("REFERENCES")) != std::string::npos)
-			{
-				subString.erase(0, subPosition + std::string("REFERENCES").length());
-
-				newAttribute.ForeignKey = true;
-
-				subStringStream.str(subString);
-
-				subStringStream >> newAttribute.Type;
-				// remove unwanted characters
-				newAttribute.Type.erase(std::remove_if(newAttribute.Type.begin(), newAttribute.Type.end(), CharIsNotAllowedInAttribute), newAttribute.Type.end());
-			}
-			else
-			{
-				newAttribute.ForeignKey = false;
-
-				// remove unwanted characters
-				newAttribute.Type.erase(std::remove_if(newAttribute.Type.begin(), newAttribute.Type.end(), CharIsNotAllowedInAttribute), newAttribute.Type.end());
-				newAttribute.Type = GetCPPEquivalentOfSQLite(newAttribute.Type);
-			}
-			// remove unwatned characters
-			newAttribute.Title.erase(std::remove_if(newAttribute.Title.begin(), newAttribute.Title.end(), CharIsNotAllowedInAttribute), newAttribute.Title.end());
-
-			// add in the declaraction of regular data types
-			Attributes.push_back(newAttribute);
+			LOG("Finished exporting data type: " + type);
 		}
 
-		sql.erase(0, position + 1); // plus length of delimeter
-
-		if (position == std::string::npos)
+		UniquePtr<DataType> ExportDataType(String sql, Ptr<File> customAssets)
 		{
-			break;
+			LOG("Starting to export data type: " + sql);
+
+			auto dataType = CreateType(sql);
+
+			customAssets->Write(dataType->GetDefinition());
+			customAssets->Write(dataType->GetMetaTypeDefinition());
+
+			return dataType;
+
+			LOG("Finished exporting data type: " + sql);
 		}
-	}
-}
 
-void CreateConstructor(std::ofstream* headerFile)
-{
-	*headerFile << "\t" << StructName << "(DataManager& dataManager";
-
-	for (auto& attribute : Attributes)
-	{
-		if (attribute.PrimaryKey)
+		void ExportDataForType(Ptr<SQLInstance> db, UniquePtr<DataType> type, Ptr<File> directAssets)
 		{
-			*headerFile << ", " << attribute.Type << " " << attribute.Title;
+			LOG("Starting to export data with type: " + type->Name);
+
+			FilePath exportTo = { GetCWD() + "Resources/ExportedAssets/CustomData/" };
+
+			Function<bool, Ptr<void>, List<String>, List<String>> exportData = [dataType = type.get(), directAssets, exportTo](void* forwardedInfo, List<String> columnValues, List<String> columnNames)
+			{
+				MetaAssetData assetData;
+				assetData.typeName = dataType->Name;
+				assetData.typeAcronym = dataType->Acronym;
+
+				String assetName;
+
+				for (auto& prop : dataType->Properties)
+				{
+					if (prop != nullptr && prop->IsPrimaryKey)
+					{
+						assetName = prop->Name;
+						break;
+					}
+				}
+
+				auto IsReference = [dataType](String variableName)
+				{
+					for (auto& prop : dataType->Properties)
+					{
+						if (prop != nullptr)
+						{
+							if (prop->Name == variableName)
+							{
+								auto line = prop->GetLine();
+								return (line.find("AssetType<") < line.size());
+							}
+						}
+					}
+
+					throw CustomExportException("Could not match variable with exported property");
+					return false;
+				};
+
+				for (int i = 0; i < columnNames.size(); i++)
+				{
+					if (columnNames[i] == "ExportDirectly")
+					{
+						assetData.directExport = true;
+					}
+
+					if (columnNames[i] == assetName)
+					{
+						assetData.assetName = columnValues[i];
+					}
+
+					MetaAssetDataProperty newVariable;
+					newVariable.IsReference = IsReference(columnNames[i]);
+					newVariable.variableName = columnNames[i];
+					newVariable.variableValue = columnValues[i];
+
+					Push(assetData.variables, newVariable);
+				}
+
+				ExportDataItemForType(assetData, exportTo, directAssets);
+
+				return false;
+			};
+
+			String elementQuery = "Select * from " + type->Name;
+
+			ExportDirectReference_Open(type->Name, directAssets);
+			db->Query(elementQuery, exportData, nullptr);
+			ExportDirectReference_Close(type->Name, directAssets);
+
+			LOG("Finished exporting data with type: " + type->Name);
 		}
-	}
 
-	*headerFile << ")\n\t{\n";
-
-	*headerFile << "\t\t";
-	*headerFile << "dataManager.GetData(";
-
-	bool first = true;
-	for (auto& attribute : Attributes)
-	{
-		if (attribute.PrimaryKey)
+		void ExportDirectReference_Open(String name, Ptr<File> directAssets)
 		{
-			*headerFile << (first ? "" : ", ") << attribute.Title;
-		}
-	}
-
-	*headerFile << ");\n\t}";
-}
-
-void CreateDestructor(std::ofstream* headerFile)
-{
-	*headerFile << "\t~" << StructName << "();\n";
-}
-
-int CreateAttributes(void* file, int argc, char** argv, char** azColName)
-{
-	std::ofstream* headerFile = static_cast<std::ofstream*>(file);
-
-	// create attributes
-	for (int i = 0; i < argc; i++)
-	{
-		//*headerFile << (argv[i] ? argv[i] : "NULL") << "\n"; // to see the raw SQL string
-		ParseSQLite(argv[i]);
-	}
-
-	for (auto& attribute : Attributes)
-	{
-		*headerFile << "\t" << (attribute.List ? "List<" : "") << attribute.Type << (attribute.List ? ">" : "") << " " << attribute.Title << ";\n";
-	}
-
-	return 0;
-}
-
-int CreateStruct(void* db, int argc, char** argv, char** azColName)
-{
-	{ // reset globals
-		StructName = "";
-		Attributes.clear();
-	}
-
-	sqlite3* openedDB = static_cast<sqlite3*>(db);
-	if (argv[0])
-	{
-		std::string fileName = "Database/";
-
-		StructName = argv[0];
-
-		fileName += StructName + ".h";
-
-		{ // add in file to the master include
-			std::ofstream includeFile;
-			includeFile.open("Data/DataStructs.h", std::ios::app);
-
-			includeFile << "#include \"" << StructName << ".h\"\n";
-
-			includeFile.close();
+			directAssets->Write("struct " + name);
+			directAssets->CreateNewLine();
+			directAssets->Write("{");
+			directAssets->CreateNewLine();
 		}
 
-		std::ofstream headerFile;
-		headerFile.open(fileName);
+		void ExportDirectReference_Close(String name, Ptr<File> directAssets)
+		{
+			auto acronym = Acronym(name);
 
-		headerFile << "// Automatically created struct from database.\n";
-		headerFile << "/*\n";
-		headerFile << "  DO NOT MODIFY!\n";
-		headerFile << "*/\n";
-		headerFile << "\n";
-		headerFile << "struct " << StructName << "\n";
-		headerFile << "{\n";
+			directAssets->Write("};");
+			directAssets->CreateNewLine();
+			directAssets->Write("const " + name + " " + acronym + ";");
+		}
 
-		{ // create struct attributes
-		  // sql from: https://stackoverflow.com/questions/2418527/sql-server-query-to-get-the-list-of-columns-in-a-table-along-with-data-types-no
-			std::string sql = "SELECT sql FROM sqlite_master WHERE name = '" + StructName + "'";
+		void ExportDataItemForType(MetaAssetData asset, FilePath exportTo, Ptr<File> directAssets)
+		{
+			exportTo.File = ToString(HashValue(asset.assetName).H);
+			File assetFile = File(exportTo, ios::out);
 
-			char* errorMessage = 0;
-			int rc;
-			rc = sqlite3_exec(openedDB, sql.c_str(), CreateAttributes, &headerFile, &errorMessage);
-
-			if (rc != SQLITE_OK)
+			for (auto& variable : asset.variables)
 			{
-				std::cout << "Unable to read in each data type and name from database: %s\n" << errorMessage << std::endl;
-				sqlite3_free(errorMessage);
+				auto value = (variable.IsReference ? ToString(HashValue(variable.variableValue).H) : variable.variableValue);
+				assetFile.Write(variable.variableName + " " + value);
 			}
-			else
+
+			if (asset.directExport)
 			{
-				std::cout << "Success in reading each data type and name from database\n" << std::endl;
+				directAssets->Write("const AssetType<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
+				directAssets->CreateNewLine();
 			}
 		}
 
-		{ // create struct methods
-			headerFile << "\n";
-			CreateConstructor(&headerFile);
-			headerFile << "\n";
-			CreateDestructor(&headerFile);
+		void InitializeCustomAssetFile(Ptr<File> customAssets)
+		{
+			customAssets->Clear();
+
+			auto header = R"(
+				#pragma once
+
+				#include "Data/Headers/AssetType.h"
+
+				/*
+				This file is auto-generated.
+
+				DO NOT MODIFY
+				*/
+
+				namespace Data
+				{
+								)";
+			customAssets->Write(header);
 		}
 
-		headerFile << "};\n";
-
-		headerFile.close();
+		void FinalizeCustomAssetFile(Ptr<File> customAssets)
+		{
+			auto footer = R"(
+								}
+								)";
+			customAssets->Write(footer);
+		}
 	}
-	else
-	{
-		std::cout << "Could not create struct - NULL given as name" << std::endl;
-	}
-
-	return 0;
-}
-
-void DatabaseCreation(std::string dataBaseFile)
-{
-	{ // clear out file and write in default stuff
-		std::ofstream includeFile;
-		includeFile.open("Data/DataStructs.h");
-
-		includeFile << "#pragma once\n\n";
-
-		includeFile.close();
-	}
-
-	sqlite3* db;
-	char* errorMessage = 0;
-	int rc;
-	char* sql;
-
-	std::string dataBasePath = "Data/";
-	dataBasePath += dataBaseFile;
-
-	rc = sqlite3_open(dataBasePath.c_str(), &db);
-
-	if (rc)
-	{
-		std::cout << "failed to open db: " << sqlite3_errmsg(db) << std::endl;
-	}
-	else
-	{
-		std::cout << "opened db" << std::endl;
-	}
-
-	sql = "SELECT name FROM sqlite_master WHERE type='table'";
-
-	rc = sqlite3_exec(db, sql, CreateStruct, db, &errorMessage);
-
-	if (rc != SQLITE_OK)
-	{
-		std::cout << "Unable to read each table from database: %s\n" << errorMessage << std::endl;
-		sqlite3_free(errorMessage);
-	}
-	else
-	{
-		std::cout << "Success in reading each table from database\n" << std::endl;
-	}
-
-	sqlite3_close(db);
 }
