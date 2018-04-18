@@ -75,6 +75,9 @@
     <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataExport\Source\ExportData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h">
@@ -456,6 +459,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataExport\Headers\ExportException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\Headers\ExportData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleExportFormat\ExportedAssets\MeshAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleExportFormat\ExportedAssets\Assets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleExportFormat\ExportedAssets\CustomAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleExportFormat\ExportedAssets\MaterialAssets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

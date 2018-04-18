@@ -16,12 +16,14 @@ namespace Data
 			while (true)
 			{
 				auto nextCommand = sqlCommands.find(",");
+				bool noNextCommand = nextCommand >= sqlCommands.length();
+
 				auto sqlCommand = sqlCommands.substr(0, nextCommand);
 
 				CreateProperty(sqlCommand);
 
 				sqlCommands = ClipLeadingWhitespace(sqlCommands.substr(nextCommand + 1));
-				if (sqlCommands.length() == 0)
+				if (sqlCommands.length() == 0 || noNextCommand)
 				{
 					break;
 				}
@@ -83,7 +85,7 @@ namespace Data
 			String acronym;
 
 			int index = 0;
-			while (acronym.length() < 3)
+			while (acronym.length() < 3 && index < tableName.length())
 			{
 				if (!InList(vowels, tableName[index]))
 				{
@@ -105,7 +107,7 @@ namespace Data
 		{
 			auto firstSpace = sqlColumn.find(" ") + 1;
 			auto secondSpace = sqlColumn.find(" ", firstSpace);
-			auto sqlType = sqlColumn.substr(firstSpace, secondSpace);
+			auto sqlType = sqlColumn.substr(firstSpace, secondSpace - firstSpace);
 
 			if (sqlType == "BOOLEAN")
 			{
@@ -178,10 +180,10 @@ namespace Data
 
 			if (index == 0)
 			{
-				return str;
+				return str.substr(1);
 			}
 
-			return str.substr(1);
+			return str;
 		}
 	}
 }

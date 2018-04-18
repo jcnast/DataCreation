@@ -2,6 +2,8 @@
 
 #include "Data/SQL/Headers/SQLInstance.h"
 
+#include "Core/Debugging/Headers/Macros.h"
+
 namespace Data
 {
 	namespace SQL
@@ -17,15 +19,20 @@ namespace Data
 		void SQLInstance::SetDB(FilePath dbPath)
 		{
 			DBPath = dbPath;
+			PathLength = DBPath.GetFullPath().length();
 		}
 
 		bool SQLInstance::Open()
 		{
-			int rc = sqlite3_open(DBPath.GetFullPath().c_str(), &DB);
+			auto fullPath = DBPath.GetFullPath();
+			Ptr<const char> path = fullPath.c_str();
+			int rc = sqlite3_open(path, &DB);
+			LOG("Opening <" + DBPath.GetFullPath() + ">");
 
-			if (!rc)
+			if (rc != SQLITE_OK)
 			{
-				LatestError = "Unable to open DB <" + DBPath.GetFullPath() + ">";
+				LOG("Failed to open DB <" + DBPath.GetFullPath() + "> - error code: " + ToString(rc));
+				LatestError = "Unable to open DB <" + DBPath.GetFullPath() + "> - error code: " + ToString(rc);
 				State = DBState::Errored;
 				return false;
 			}
@@ -37,12 +44,15 @@ namespace Data
 		void SQLInstance::Close()
 		{
 			sqlite3_close(DB);
+			LOG("Closing <" + DBPath.GetFullPath() + ">");
 
 			State = DBState::Closed;
 		}
 
 		bool SQLInstance::Query(String sqlCall, Function<bool, Ptr<void>, List<String>, List<String>> rowOperation, Ptr<void> forwardedInfo)
 		{
+			LOG("Querying <" + DBPath.GetFullPath() + ">");
+
 			if (State != DBState::Open)
 			{
 				LatestError = "Tried to query when DB was not in open state.";

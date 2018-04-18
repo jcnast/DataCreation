@@ -48,7 +48,7 @@ namespace Core
 				success = true;
 			}
 
-			String cwd = buffer;
+			String cwd = buffer + String("\\");
 
 			if (success)
 			{

@@ -49,11 +49,12 @@ namespace Data
 
 		private:
 			FilePath DBPath;
+			int PathLength = 0;
 			Ptr<SQLDB> DB;
 
 			DBState State = DBState::Closed;
 
-			String LatestError = 0;
+			String LatestError = "";
 
 			void Free(char* errorHolder);
 		};

@@ -1,17 +1,8 @@
-// DataCreation.cpp : Defines the entry point for the console application.
-//
-
-//#include "Data/CustomData/Exporting/Headers/DataCreation.h"
-#include "DataExport/Rendering/Headers/SceneConversion.h"
-
-#include "Core/UnitTests/HashTesting.h"
+#include "DataExport/Headers/ExportData.h"
 
 int main()
 {
-	//DatabaseCreation("Data.db");
-	//SceneConversion::ConvertFilesForScene("Assets/NonConvertedFiles/MI/MI.obj", "MI");
-
-	//TestHashes();
+	Data::DataExport::ExportData();
 
     return 0;
 }

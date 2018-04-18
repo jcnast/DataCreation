@@ -33,7 +33,10 @@ namespace Data
 			String allTypeQuery = "SELECT name FROM sqlite_master WHERE type='table'";
 
 			ExportDirectReference_Open("CustomAssets", directAssets);
-			db->Query(allTypeQuery, forEachType, nullptr);
+			if (!db->Query(allTypeQuery, forEachType, nullptr))
+			{
+				throw CustomExportException("Query to get tables failed");
+			}
 			ExportDirectReference_Close("CustomAssets", directAssets);
 
 			FinalizeCustomAssetFile(&customAssets);
@@ -55,7 +58,10 @@ namespace Data
 			};
 
 			String typeFormatQuery = "Select sql from sqlite_master WHERE name = '" + type + "'";
-			db->Query(typeFormatQuery, formatConstruction, nullptr);
+			if (!db->Query(typeFormatQuery, formatConstruction, nullptr))
+			{
+				throw CustomExportException("Query to get format failed");
+			}
 
 			LOG("Finished exporting data type: " + type);
 		}
@@ -143,7 +149,10 @@ namespace Data
 			String elementQuery = "Select * from " + type->Name;
 
 			ExportDirectReference_Open(type->Name, directAssets);
-			db->Query(elementQuery, exportData, nullptr);
+			if (!db->Query(elementQuery, exportData, nullptr))
+			{
+				throw CustomExportException("Query to get assets failed");
+			}
 			ExportDirectReference_Close(type->Name, directAssets);
 
 			LOG("Finished exporting data with type: " + type->Name);
