@@ -106,6 +106,7 @@ namespace Core
 					return true;
 				}
 
+				throw IOException("Failed to read from source to target");
 				return false;
 			}
 
@@ -117,6 +118,7 @@ namespace Core
 					return true;
 				}
 
+				throw IOException("Failed to write to target from source");
 				return false;
 			}
 		};

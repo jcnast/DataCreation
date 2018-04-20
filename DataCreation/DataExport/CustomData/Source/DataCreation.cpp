@@ -20,6 +20,7 @@ namespace Data
 			LOG("Starting to export custom data");
 
 			File customAssets(FilePath{ GetCWD() + "Resources/ExportedAssets/", "CustomAssets.h" }, ios::out);
+			customAssets.Open();
 			InitializeCustomAssetFile(&customAssets);
 
 			Function<bool, Ptr<void>, List<String>, List<String>> forEachType = [db, &customAssets, directAssets](void* forwardedInfo, List<String> columnValues, List<String> columnNames)
@@ -72,8 +73,13 @@ namespace Data
 
 			auto dataType = CreateType(sql);
 
+			customAssets->CreateNewLine();
+			customAssets->Write("// " + dataType->Name);
+			customAssets->CreateNewLine();
 			customAssets->Write(dataType->GetDefinition());
+			customAssets->CreateNewLine();
 			customAssets->Write(dataType->GetMetaTypeDefinition());
+			customAssets->CreateNewLine();
 
 			return dataType;
 
@@ -84,7 +90,7 @@ namespace Data
 		{
 			LOG("Starting to export data with type: " + type->Name);
 
-			FilePath exportTo = { GetCWD() + "Resources/ExportedAssets/CustomData/" };
+			FilePath exportTo = { GetCWD() + "Resources/ExportedAssets/CustomData/", "" };
 
 			Function<bool, Ptr<void>, List<String>, List<String>> exportData = [dataType = type.get(), directAssets, exportTo](void* forwardedInfo, List<String> columnValues, List<String> columnNames)
 			{
@@ -105,6 +111,12 @@ namespace Data
 
 				auto IsReference = [dataType](String variableName)
 				{
+					if (variableName == "ExportDirectly")
+					{
+						LOG("Variable is 'ExportDirectly' - so is ignored");
+						return false;
+					}
+
 					for (auto& prop : dataType->Properties)
 					{
 						if (prop != nullptr)
@@ -117,11 +129,10 @@ namespace Data
 						}
 					}
 
-					throw CustomExportException("Could not match variable with exported property");
 					return false;
 				};
 
-				for (int i = 0; i < columnNames.size(); i++)
+				for (uint i = 0; i < columnNames.size(); i++)
 				{
 					if (columnNames[i] == "ExportDirectly")
 					{
@@ -160,9 +171,9 @@ namespace Data
 
 		void ExportDirectReference_Open(String name, Ptr<File> directAssets)
 		{
-			directAssets->Write("struct " + name);
+			directAssets->Write("\t\tstruct " + name);
 			directAssets->CreateNewLine();
-			directAssets->Write("{");
+			directAssets->Write("\t\t{");
 			directAssets->CreateNewLine();
 		}
 
@@ -170,55 +181,61 @@ namespace Data
 		{
 			auto acronym = Acronym(name);
 
-			directAssets->Write("};");
+			directAssets->Write("\t\t};");
 			directAssets->CreateNewLine();
-			directAssets->Write("const " + name + " " + acronym + ";");
+			directAssets->Write("\t\tconst " + name + " " + acronym + ";");
 		}
 
 		void ExportDataItemForType(MetaAssetData asset, FilePath exportTo, Ptr<File> directAssets)
 		{
-			exportTo.File = ToString(HashValue(asset.assetName).H);
+			exportTo.File = ToString(HashValue(asset.assetName).H) + "." + asset.typeAcronym;
+			LOG(exportTo.GetFullPath());
 			File assetFile = File(exportTo, ios::out);
+			assetFile.Open();
+			assetFile.Clear();
 
 			for (auto& variable : asset.variables)
 			{
 				auto value = (variable.IsReference ? ToString(HashValue(variable.variableValue).H) : variable.variableValue);
 				assetFile.Write(variable.variableName + " " + value);
+				assetFile.CreateNewLine();
 			}
 
 			if (asset.directExport)
 			{
-				directAssets->Write("const AssetType<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
+				directAssets->Write("\t\t\tconst AssetType<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
 				directAssets->CreateNewLine();
 			}
+
+			assetFile.Close();
 		}
 
 		void InitializeCustomAssetFile(Ptr<File> customAssets)
 		{
 			customAssets->Clear();
 
-			auto header = R"(
-				#pragma once
+			String header = R"(
+#pragma once
 
-				#include "Data/Headers/AssetType.h"
+#include "Data/Headers/AssetType.h"
 
-				/*
-				This file is auto-generated.
+/*
+This file is auto-generated.
 
-				DO NOT MODIFY
-				*/
+DO NOT MODIFY
+*/
 
-				namespace Data
-				{
-								)";
+namespace Data
+{
+)";
 			customAssets->Write(header);
 		}
 
 		void FinalizeCustomAssetFile(Ptr<File> customAssets)
 		{
-			auto footer = R"(
-								}
-								)";
+			String footer = R"(
+}
+)";
 			customAssets->Write(footer);
 		}
 	}

@@ -52,12 +52,12 @@ namespace Core
 
 		struct FilePath
 		{
-			String File;
 			String Path;
+			String File;
 
 			String GetFullPath() const
 			{
-				return (File + Path);
+				return (Path + File);
 			}
 		};
 

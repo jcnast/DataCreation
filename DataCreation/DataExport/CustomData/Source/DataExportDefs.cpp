@@ -6,40 +6,39 @@ namespace Data
 	{
 		String DataType::GetDefinition()
 		{
-			String definition = "struct " + Name + "\n";
-			definition += "{\n";
+			String definition = "\tstruct " + Name + "\n";
+			definition += "\t{\n";
 			for (auto& prop : Properties)
 			{
 				if (prop != nullptr)
 				{
-					definition += "\t" + prop->GetLine() + "\n";
+					definition += "\t\t" + prop->GetLine() + "\n";
 				}
 			}
-			definition += "}\n";
-			definition += "\n";
+			definition += "\t}\n";
 
 			return definition;
 		}
 
 		String DataType::GetMetaTypeDefinition()
 		{
-			String definition = "struct AssetType<" + Name + ">\n";
-			definition += "{\n";
-			definition += "\tHash ClassHash() const\n";
+			String definition = "\tstruct AssetType<" + Name + ">\n";
 			definition += "\t{\n";
-			definition += "\t\treturn Core::HashValue(\"" + Name + "\");\n";
-			definition += "\t}\n";
+			definition += "\t\tHash ClassHash() const\n";
+			definition += "\t\t{\n";
+			definition += "\t\t\treturn Core::HashValue(\"" + Name + "\");\n";
+			definition += "\t\t}\n";
 			definition += "\n";
-			definition += "\tString GetPath() const\n";
-			definition += "\t{\n";
-			definition += "\t\treturn \"CustomAssets/" + Name + "\"/;\n";
-			definition += "\t}\n";
+			definition += "\t\tString GetPath() const\n";
+			definition += "\t\t{\n";
+			definition += "\t\t\treturn \"CustomAssets/" + Name + "/\";\n";
+			definition += "\t\t}\n";
 			definition += "\n";
-			definition += "\tString GetFileType() const\n";
-			definition += "\t{\n";
-			definition += "\t\treturn \"." + Acronym + "\";\n";
-			definition += "\t}\n";
-			definition += "};\n";
+			definition += "\t\tString GetFileType() const\n";
+			definition += "\t\t{\n";
+			definition += "\t\t\treturn \"." + Acronym + "\";\n";
+			definition += "\t\t}\n";
+			definition += "\t};";
 
 			return definition;
 		}

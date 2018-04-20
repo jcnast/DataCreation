@@ -20,7 +20,7 @@ namespace Data
 
 				auto sqlCommand = sqlCommands.substr(0, nextCommand);
 
-				CreateProperty(sqlCommand);
+				Push(NewType->Properties, CreateProperty(sqlCommand));
 
 				sqlCommands = ClipLeadingWhitespace(sqlCommands.substr(nextCommand + 1));
 				if (sqlCommands.length() == 0 || noNextCommand)
@@ -125,7 +125,7 @@ namespace Data
 			{
 				return "float";
 			}
-			else if (sqlType == "INT" || sqlType == "INTERGER")
+			else if (sqlType == "INT" || sqlType == "INTEGER")
 			{
 				return "int";
 			}

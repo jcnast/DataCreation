@@ -14,8 +14,8 @@ namespace Data
 			LOG("Starting to export data");
 			auto directPath = FilePath{ GetCWD() + "Resources/ExportedAssets/", String("Assets.h") };
 			auto directAssets = File(directPath, ios::out);
-			directAssets.Clear();
 			directAssets.Open();
+			directAssets.Clear();
 
 			InitializeAssetsFile(&directAssets);
 
@@ -52,35 +52,37 @@ namespace Data
 
 		void InitializeAssetsFile(Ptr<File> directAssets)
 		{
-			directAssets->Write(R"(
-								#pragma once
+			auto header = R"(
+#pragma once
 
-								#include "Data/Headers/AssetType.h"
-								#include "Data/Headers/AssetName.h"
+#include "Data/Headers/AssetType.h"
+#include "Data/Headers/AssetName.h"
 
-								#include "CustomAssets.h"
-								#include "MaterialAssets.h"
-								#include "MeshAssets.h"
+#include "CustomAssets.h"
+#include "MaterialAssets.h"
+#include "MeshAssets.h"
 
-								namespace Data
-								{
-									/*
-										This file has been auto-generated
+namespace Data
+{
+	/*
+		This file has been auto-generated
 
-										DO NOT CHANGE
-									*/
-									struct Assets
-									{
-								)");
+		DO NOT CHANGE
+	*/
+	struct Assets
+	{
+)";
+			directAssets->Write(header);
 		}
 
 		void FinalizeAssetsFile(Ptr<File> directAssets)
 		{
-			directAssets->Write(R"(
-									};
-									const Assets Ast;
-								}
-								)");
+			auto footer = R"(
+	};
+	const Assets Ast;
+	}
+)";
+			directAssets->Write(footer);
 		}
 	}
 }
