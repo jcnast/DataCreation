@@ -20,5 +20,12 @@ namespace Data
 		{
 			return FilePath{ Type.GetPath(), String(uint(Name)) + Type.GetFileType() };
 		}
+		
+		AssetName<T>& operator=(Hash name)
+		{
+			Name = name;
+
+			return (*this);
+		}
 	};
 }

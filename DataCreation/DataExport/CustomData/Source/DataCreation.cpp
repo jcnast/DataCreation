@@ -137,6 +137,7 @@ namespace Data
 					if (columnNames[i] == "ExportDirectly")
 					{
 						assetData.directExport = true;
+						continue;
 					}
 
 					if (columnNames[i] == assetName)
@@ -184,6 +185,7 @@ namespace Data
 			directAssets->Write("\t\t};");
 			directAssets->CreateNewLine();
 			directAssets->Write("\t\tconst " + name + " " + acronym + ";");
+			directAssets->CreateNewLine();
 		}
 
 		void ExportDataItemForType(MetaAssetData asset, FilePath exportTo, Ptr<File> directAssets)
@@ -203,7 +205,7 @@ namespace Data
 
 			if (asset.directExport)
 			{
-				directAssets->Write("\t\t\tconst AssetType<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
+				directAssets->Write("\t\t\tconst AssetName<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
 				directAssets->CreateNewLine();
 			}
 

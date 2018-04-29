@@ -21,17 +21,29 @@ namespace Data
 		{
 		struct Test
 		{
-			const AssetType<Test>  = 1431655765;
+			const AssetName<Test>  = 1431655765;
 		};
-		const Test Tst;		struct ListTest
+		const Test Tst;
+		struct ListTest
 		{
 		};
-		const ListTest Lst;		struct Test2
+		const ListTest Lst;
+		struct Test2
 		{
-			const AssetType<Test2> Test 2 = 3616917144;
+			const AssetName<Test2> Test 2 = 3616917144;
 		};
-		const Test2 Tst;		};
+		const Test2 Tst;
+		};
 		const CustomAssets Cst;
+		struct Meshes
+		{
+			const AssetName<Rendering::MeshData> MI = 1238742485;
+		};
+		const Meshes Msh;		struct Materials
+		{
+			const AssetName<Rendering::MaterialData> MI = 1238742485;
+		};
+		const Materials Mat;
 	};
 	const Assets Ast;
 	}
