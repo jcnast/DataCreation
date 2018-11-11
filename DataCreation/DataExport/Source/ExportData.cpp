@@ -137,6 +137,7 @@ namespace Data
 			directAssets->Write("\t\t};");
 			directAssets->CreateNewLine();
 			directAssets->Write("\t\tconst " + name + " " + acronym + ";");
+			directAssets->CreateNewLine();
 		}
 	}
 }
