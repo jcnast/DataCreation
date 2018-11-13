@@ -1,8 +1,8 @@
 #pragma once
 
 #include "DataExport/Rendering/Headers/SkeletonExport.h"
+#include "DataExport/Rendering/Headers/Utils.h"
 
-#include "Core/Headers/ListDefs.h"
 #include "Core/Headers/Hash.h"
 
 #include "Core/Debugging/Headers/Macros.h"
@@ -27,9 +27,62 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, String name)
+		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, uint meshIndex, String name)
 		{
+			if (!mesh->HasBones)
+			{
+				LOG("Given skeleton <<" + name + ">> does not exist");
+				return;
+			}
 
+			Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode, meshIndex);
+			List<Ptr<const aiNode>> skeletonNodes = AllNodesForMesh(rootNode, mesh, meshIndex);
+
+			// store values in file
+			FilePath skeletonFilePath = FilePath{ GetCWD() + "/Resources/ExportedAssets/Skeletons/", ToString(HashValue(name)) + ".skl" };
+			File skeletonFile = File(skeletonFilePath, ios::out);
+			skeletonFile.Open();
+
+			if (!skeletonFile.FileStream.is_open())
+			{
+				LOG("Could not open file <<" + skeletonFilePath.GetFullPath() + ">>");
+				return;
+			}
+
+			AddNodeToFile(&skeletonFile, rootNodeForMesh, 0, skeletonNodes);
+
+			skeletonFile.Close();
+		}
+
+		void AddNodeToFile(Ptr<File> skeletonFile, Ptr<const aiNode> rootNode, uint depth, List<Ptr<const aiNode>>& skeletonNodes)
+		{
+			if (!InList(skeletonNodes, rootNode))
+			{
+				return;
+			}
+
+			aiVector3D scaling;
+			aiQuaterniont<float> rotation;
+			aiVector3D position;
+			rootNode->mTransformation.Decompose(scaling, rotation, position);
+
+			skeletonFile->Write(String(rootNode->mName.C_Str), depth);
+
+			skeletonFile->Write("scaling");
+			skeletonFile->Write(scaling.x, scaling.y, scaling.z);
+
+			skeletonFile->Write("rotation");
+			skeletonFile->Write(rotation.x, rotation.y, rotation.z, rotation.w);
+
+			skeletonFile->Write("position");
+			skeletonFile->Write(position.x, position.y, position.z);
+
+			skeletonFile->CreateNewLine();
+
+			for (int i = 0; i < rootNode->mNumChildren; i++)
+			{
+				AddNodeToFile(skeletonFile, rootNode->mChildren[i], depth++, skeletonNodes);
+			}
 		}
 	}
 }

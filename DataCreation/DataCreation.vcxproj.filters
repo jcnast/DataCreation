@@ -102,6 +102,9 @@
     <ClCompile Include="DataExport\Rendering\Source\TextureExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataExport\Rendering\Source\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h">
@@ -522,6 +525,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataExport\Rendering\Headers\TextureExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\Rendering\Headers\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

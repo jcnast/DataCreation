@@ -66,7 +66,7 @@ namespace Data
 			}
 
 			// maximum of 4 bones per vertex
-			List<Vector4<Pair<int, float>>> boneWeights = List<Vector4<Pair<int, float>>>(mesh->mNumVertices);
+			List<Vector4<Pair<String, float>>> boneWeights = List<Vector4<Pair<String, float>>>(mesh->mNumVertices);
 
 			if (mesh->HasBones)
 			{
@@ -86,7 +86,7 @@ namespace Data
 									boneWeights[boneWeight.mVertexId][l] = boneWeights[boneWeight.mVertexId][l - 1];
 								}
 
-								boneWeights[boneWeight.mVertexId][k].first = i;
+								boneWeights[boneWeight.mVertexId][k].first = String(bone->mName.C_Str);
 								boneWeights[boneWeight.mVertexId][k].second = boneWeight.mWeight;
 							}
 						}

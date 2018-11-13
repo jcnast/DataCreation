@@ -3,6 +3,7 @@
 #include "DataExport/Rendering/Headers/MeshExport.h"
 #include "DataExport/Rendering/Headers/MaterialExport.h"
 #include "DataExport/Rendering/Headers/SkeletonExport.h"
+#include "DataExport/Rendering/Headers/SkeletonAnimationExport.h"
 
 #include "Core/Headers/ListDefs.h"
 #include "Core/Headers/Hash.h"
@@ -57,7 +58,12 @@ namespace Data
 				if (loadedScene->mMeshes[meshIndex]->HasBones)
 				{
 					LOG("Creating file to hold skeleton information for <<" + sceneName + ">>");
-					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], sceneName);
+					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, sceneName);
+
+					for (uint animationIndex = 0; animationIndex < loadedScene->mNumAnimations; animationIndex++)
+					{
+						CreateFileForSkeletonAnimation(directAssets, loadedScene->mAnimations[animationIndex], loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, sceneName);
+					}
 				}
 				else
 				{

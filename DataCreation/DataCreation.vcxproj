@@ -167,6 +167,7 @@
     <ClCompile Include="DataExport\Rendering\Source\SkeletonAnimationExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\SkeletonExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\TextureExport.cpp" />
+    <ClCompile Include="DataExport\Rendering\Source\Utils.cpp" />
     <ClCompile Include="DataExport\Source\ExportData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonAnimationData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonData.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="DataExport\Rendering\Headers\SkeletonAnimationExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\SkeletonExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\TextureExport.h" />
+    <ClInclude Include="DataExport\Rendering\Headers\Utils.h" />
     <ClInclude Include="Data\Headers\AssetExceptions.h" />
     <ClInclude Include="DataExport\Rendering\Headers\SceneConversion.h" />
     <ClInclude Include="Core\Debugging\Headers\Declarations.h" />
