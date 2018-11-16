@@ -29,7 +29,7 @@ namespace Data
 	{
 		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, uint meshIndex, String name)
 		{
-			if (!mesh->HasBones)
+			if (!mesh->HasBones())
 			{
 				LOG("Given skeleton <<" + name + ">> does not exist");
 				return;
@@ -66,7 +66,7 @@ namespace Data
 			aiVector3D position;
 			rootNode->mTransformation.Decompose(scaling, rotation, position);
 
-			skeletonFile->Write(String(rootNode->mName.C_Str), depth);
+			skeletonFile->Write(String(rootNode->mName.C_Str()), depth);
 
 			skeletonFile->Write("scaling");
 			skeletonFile->Write(scaling.x, scaling.y, scaling.z);

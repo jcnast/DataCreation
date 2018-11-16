@@ -4,11 +4,10 @@
 #include "Core/Headers/PtrDefs.h"
 #include "Core/Headers/TimeDefs.h"
 
+#include "Core/IO/Headers/File.h"
+
 #include "Core/Math/Headers/Vector3.h"
 #include "Core/Math/Headers/Quaternion.h"
-
-using namespace Core;
-using namespace Core::Math;
 
 namespace Data
 {
@@ -16,60 +15,60 @@ namespace Data
 	{
 		struct PositionFrameData
 		{
-			Float3 Position;
-			Second Time;
+			Core::Math::Float3 Position;
+			Core::Second Time;
 
 			PositionFrameData() = delete;
-			PositionFrameData(Float3 position, Second time);
+			PositionFrameData(Core::Math::Float3 position, Core::Second time);
 		};
 
 		struct RotationFrameData
 		{
-			FQuaternion Rotation;
-			Second Time;
+			Core::Math::FQuaternion Rotation;
+			Core::Second Time;
 
 			RotationFrameData() = delete;
-			RotationFrameData(FQuaternion rotation, Second time);
+			RotationFrameData(Core::Math::FQuaternion rotation, Core::Second time);
 		};
 
 		struct ScaleFrameData
 		{
-			Float3 Scale;
-			Second Time;
+			Core::Math::Float3 Scale;
+			Core::Second Time;
 
 			ScaleFrameData() = delete;
-			ScaleFrameData(Float3 scale, Second time);
+			ScaleFrameData(Core::Math::Float3 scale, Core::Second time);
 		};
 
 		struct BoneAnimationData
 		{
-			String Name;
+			Core::String Name;
 
-			List<PositionFrameData> PositionChannel;
-			List<RotationFrameData> RotationChannel;
-			List<ScaleFrameData> ScaleChannel;
+			Core::List<PositionFrameData> PositionChannel;
+			Core::List<RotationFrameData> RotationChannel;
+			Core::List<ScaleFrameData> ScaleChannel;
 
 			BoneAnimationData() = delete;
-			BoneAnimationData(String name);
+			BoneAnimationData(Core::String name);
 
-			void ReadAnimationData(String name, File& animationFile);
+			void ReadAnimationData(Core::String name, Core::IO::File& animationFile);
 
 		private:
-			void AddPositionFrame(Float3 position, Second time);
-			void AddRotationFrame(FQuaternion rotation, Second time);
-			void AddScaleFrame(Float3 scale, Second time);
+			void AddPositionFrame(Core::Math::Float3 position, Core::Second time);
+			void AddRotationFrame(Core::Math::FQuaternion rotation, Core::Second time);
+			void AddScaleFrame(Core::Math::Float3 scale, Core::Second time);
 		};
 
 		struct SkeletonAnimationData
 		{
-			String Name;
+			Core::String Name;
 
-			List<BoneAnimationData> BoneAnimations;
+			Core::List<BoneAnimationData> BoneAnimations;
 
-			Second Duration;
+			Core::Second Duration;
 
 			SkeletonAnimationData() = default;
-			SkeletonAnimationData(String fileName);
+			SkeletonAnimationData(Core::String fileName);
 		};
 	}
 }

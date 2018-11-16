@@ -13,8 +13,8 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, uint meshIndex, String name);
+		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<const aiNode> rootNode, Core::Ptr<const aiMesh> mesh, Core::uint meshIndex, Core::String name);
 
-		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const aiNode> rootNode, uint depth, Core::List<Core::Ptr<const aiNode>>& skeletonNodes);
+		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const aiNode> rootNode, Core::uint depth, Core::List<Core::Ptr<const aiNode>>& skeletonNodes);
 	}
 }

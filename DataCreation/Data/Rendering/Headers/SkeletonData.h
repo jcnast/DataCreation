@@ -9,40 +9,37 @@
 #include "Core/IO/Headers/File.h"
 #include "Core/IO/Headers/IODefs.h"
 
-using namespace Core;
-using namespace Core::Math;
-
 namespace Data
 {
 	namespace Rendering
 	{
 		struct SkeletonBoneData
 		{
-			String Name;
-			Float3 Position;
-			FQuaternion Rotation;
+			Core::String Name;
+			Core::Math::Float3 Position;
+			Core::Math::FQuaternion Rotation;
 
-			List<UniquePtr<SkeletonBoneData>> ChildBones;
+			Core::List<Core::UniquePtr<SkeletonBoneData>> ChildBones;
 
 			SkeletonBoneData() = delete;
-			SkeletonBoneData(String name, Float3 position, FQuaternion rotation = FQuaternion());
+			SkeletonBoneData(Core::String name, Core::Math::Float3 position, Core::Math::FQuaternion rotation = Core::Math::FQuaternion());
 
-			void AddBone(UniquePtr<SkeletonBoneData> bone);
+			void AddBone(Core::UniquePtr<SkeletonBoneData> bone);
 		};
 
 		struct SkeletonData
 		{
-			UniquePtr<SkeletonBoneData> Root;
+			Core::UniquePtr<SkeletonBoneData> Root;
 
 			SkeletonData() = default;
-			SkeletonData(String fileName);
+			SkeletonData(Core::String fileName);
 
 		private:
-			void ReadBoneChildren(Ptr<SkeletonBoneData> parent, File& skeletonFile);
+			void ReadBoneChildren(Core::Ptr<SkeletonBoneData> parent, Core::IO::File& skeletonFile);
 
-			void ReadName(IOSStreamChar& lineStream, String& name);
-			void ReadPosition(IOSStreamChar& lineStream, Float3& position);
-			void ReadRotation(IOSStreamChar& lineStream, FQuaternion& rotation);
+			void ReadName(Core::IO::IOSStreamChar& lineStream, Core::String& name);
+			void ReadPosition(Core::IO::IOSStreamChar& lineStream, Core::Math::Float3& position);
+			void ReadRotation(Core::IO::IOSStreamChar& lineStream, Core::Math::FQuaternion& rotation);
 		};
 	}
 }

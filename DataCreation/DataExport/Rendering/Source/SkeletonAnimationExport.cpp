@@ -18,7 +18,6 @@
 #include "ASSIMP/scene.h"
 #include "ASSIMP/postprocess.h"
 
-using namespace std;
 using namespace Core;
 using namespace Core::IO;
 using namespace Core::Math;
@@ -49,11 +48,11 @@ namespace Data
 				return;
 			}
 
-			skeletonAnimationFile.Write(String(animation->mName.C_Str));
+			skeletonAnimationFile.Write(String(animation->mName.C_Str()));
 
 			for (uint i = 0; i < animation->mNumChannels; i++)
 			{
-				if (InList(skeletonNodes, FindNodeWithName(rootNode, String(animation->mChannels[i]->mNodeName.C_Str))))
+				if (InList(skeletonNodes, FindNodeWithName(rootNode, String(animation->mChannels[i]->mNodeName.C_Str()))))
 				{
 					AddChannelToFile(&skeletonAnimationFile, animation->mChannels[i]);
 				}
@@ -64,7 +63,7 @@ namespace Data
 
 		void AddChannelToFile(Core::Ptr<Core::IO::File> skeletonAnimationFile, Core::Ptr<const aiNodeAnim> channel)
 		{
-			skeletonAnimationFile->Write("bone", String(channel->mNodeName.C_Str));
+			skeletonAnimationFile->Write("bone", String(channel->mNodeName.C_Str()));
 
 			skeletonAnimationFile->Write("preState", BehaviourToString(channel->mPreState));
 			skeletonAnimationFile->Write("postState", BehaviourToString(channel->mPostState));

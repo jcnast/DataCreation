@@ -4,8 +4,11 @@
 
 #include "Core/Debugging/Headers/Macros.h"
 
+using namespace std;
+
 using namespace Core;
 using namespace Core::IO;
+using namespace Core::Math;
 
 namespace Data
 {
@@ -64,7 +67,9 @@ namespace Data
 						lineStream >> position.Y;
 						lineStream >> position.Z;
 
-						lineStream >> time.count;
+						float dataTime;
+						lineStream >> dataTime;
+						time = Second(dataTime);
 
 						AddPositionFrame(position, time);
 					}
@@ -82,7 +87,9 @@ namespace Data
 						lineStream >> rotation.Z;
 						lineStream >> rotation.W;
 
-						lineStream >> time.count;
+						float dataTime;
+						lineStream >> dataTime;
+						time = Second(dataTime);
 
 						AddRotationFrame(rotation, time);
 					}
@@ -99,7 +106,9 @@ namespace Data
 						lineStream >> scale.Y;
 						lineStream >> scale.Z;
 
-						lineStream >> time.count;
+						float dataTime;
+						lineStream >> dataTime;
+						time = Second(dataTime);
 
 						AddScaleFrame(scale, time);
 					}

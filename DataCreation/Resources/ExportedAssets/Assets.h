@@ -39,11 +39,13 @@ namespace Data
 		{
 			const AssetName<Rendering::MeshData> MI = 1238742485;
 		};
-		const Meshes Msh;		struct Materials
+		const Meshes Msh;
+		struct Materials
 		{
 			const AssetName<Rendering::MaterialData> MI = 1238742485;
 		};
 		const Materials Mat;
+
 	};
 	const Assets Ast;
 	}

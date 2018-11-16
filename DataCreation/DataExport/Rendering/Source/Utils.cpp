@@ -74,9 +74,11 @@ namespace Data
 
 			for (uint i = 0; i < mesh->mNumBones; i++)
 			{
-				Ptr<const aiNode> nodeForBone = FindNodeWithName(rootNodeForMesh, String(mesh->mBones[i]->mName.C_Str));
+				Ptr<const aiNode> nodeForBone = FindNodeWithName(rootNodeForMesh, String(mesh->mBones[i]->mName.C_Str()));
 				AddMissingNodesToList(skeletonNodes, nodeForBone, rootNodeForMesh);
 			}
+
+			return skeletonNodes;
 		}
 
 		void AddMissingNodesToList(Core::List<Core::Ptr<const aiNode>>& list, Core::Ptr<const aiNode> start, Core::Ptr<const aiNode> end)

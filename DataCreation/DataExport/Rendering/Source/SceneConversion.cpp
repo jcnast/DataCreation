@@ -55,7 +55,7 @@ namespace Data
 				LOG("Creating file to hold material information for <<" + sceneName + ">>");
 				CreateFileForMaterial(directAssets, loadedScene->mMaterials[loadedScene->mMeshes[meshIndex]->mMaterialIndex], sceneName);
 
-				if (loadedScene->mMeshes[meshIndex]->HasBones)
+				if (loadedScene->mMeshes[meshIndex]->HasBones())
 				{
 					LOG("Creating file to hold skeleton information for <<" + sceneName + ">>");
 					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, sceneName);

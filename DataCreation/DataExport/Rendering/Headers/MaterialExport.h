@@ -11,6 +11,6 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForMaterial(Core::Ptr<Core::IO::File> directAssets, const aiMaterial* material, String name);
+		void CreateFileForMaterial(Core::Ptr<Core::IO::File> directAssets, const aiMaterial* material, Core::String name);
 	}
 }

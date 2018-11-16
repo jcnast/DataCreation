@@ -6,12 +6,13 @@
 
 using namespace Core;
 using namespace Core::IO;
+using namespace Core::Math;
 
 namespace Data
 {
 	namespace Rendering
 	{
-		SkeletonBoneData::SkeletonBoneData(String name, Float3 position, FQuaternion rotation = FQuaternion())
+		SkeletonBoneData::SkeletonBoneData(String name, Float3 position, FQuaternion rotation)
 			: Name(name)
 			, Position(position)
 			, Rotation(rotation)

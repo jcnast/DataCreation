@@ -20,6 +20,7 @@
 #include "ASSIMP/postprocess.h"
 
 using namespace std;
+
 using namespace Core;
 using namespace Core::IO;
 using namespace Core::Math;
@@ -66,9 +67,9 @@ namespace Data
 			}
 
 			// maximum of 4 bones per vertex
-			List<Vector4<Pair<String, float>>> boneWeights = List<Vector4<Pair<String, float>>>(mesh->mNumVertices);
+			List<List<Pair<String, float>>> boneWeights = List<List<Pair<String, float>>>(mesh->mNumVertices);
 
-			if (mesh->HasBones)
+			if (mesh->HasBones())
 			{
 				for (uint i = 0; i < mesh->mNumBones; i++)
 				{
@@ -77,19 +78,7 @@ namespace Data
 					{
 						aiVertexWeight& boneWeight = bone->mWeights[j];
 						
-						for (int k = 0; k < 4; k++)
-						{
-							if (boneWeights[boneWeight.mVertexId][k].second < boneWeight.mWeight)
-							{
-								for (int l = 3; l > k; l--)
-								{
-									boneWeights[boneWeight.mVertexId][l] = boneWeights[boneWeight.mVertexId][l - 1];
-								}
-
-								boneWeights[boneWeight.mVertexId][k].first = String(bone->mName.C_Str);
-								boneWeights[boneWeight.mVertexId][k].second = boneWeight.mWeight;
-							}
-						}
+						Push(boneWeights[boneWeight.mVertexId], Pair<String, float>(String(bone->mName.C_Str()), boneWeight.mWeight));
 					}
 				}
 			}
@@ -143,14 +132,16 @@ namespace Data
 				meshFile.CreateNewLine();
 			}
 
-			if (mesh->HasBones)
+			if (mesh->HasBones())
 			{
 				meshFile.Write("bones", mesh->mNumVertices);
 				meshFile.CreateNewLine();
 				for (uint boneIndex = 0u; boneIndex < boneWeights.size(); boneIndex++)
 				{
-					meshFile.Write(boneWeights[boneIndex].X.first, boneWeights[boneIndex].X.second, boneWeights[boneIndex].Y.first, boneWeights[boneIndex].Y.second
-						, boneWeights[boneIndex].Z.first, boneWeights[boneIndex].Z.second, boneWeights[boneIndex].W.first, boneWeights[boneIndex].W.second);
+					for (uint referenceIndex = 0; referenceIndex < boneWeights[boneIndex].size(); referenceIndex++)
+					{
+						meshFile.Write(boneWeights[boneIndex][referenceIndex].first, boneWeights[boneIndex][referenceIndex].second);
+					}
 					meshFile.CreateNewLine();
 				}
 			}
