@@ -28,6 +28,23 @@ namespace Data
 	{
 		Ptr<const aiNode> FindRootNodeForMesh(Ptr<const aiNode> rootNode, uint meshIndex)
 		{
+			Ptr<const aiNode> meshNode = FindNodeForMesh(rootNode, meshIndex);
+
+			if (meshNode == nullptr)
+			{
+				return rootNode;
+			}
+
+			if (meshNode->mParent != nullptr)
+			{
+				return meshNode->mParent;
+			}
+
+			return meshNode;
+		}
+
+		Ptr<const aiNode> FindNodeForMesh(Ptr<const aiNode> rootNode, uint meshIndex)
+		{
 			for (uint i = 0; i < rootNode->mNumMeshes; i++)
 			{
 				if (rootNode->mMeshes[i] == meshIndex)
@@ -38,7 +55,7 @@ namespace Data
 
 			for (uint i = 0; i < rootNode->mNumChildren; i++)
 			{
-				Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode->mChildren[i], meshIndex);
+				Ptr<const aiNode> rootNodeForMesh = FindNodeForMesh(rootNode->mChildren[i], meshIndex);
 				if (rootNodeForMesh != nullptr)
 				{
 					return rootNodeForMesh;

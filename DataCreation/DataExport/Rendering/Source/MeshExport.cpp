@@ -37,8 +37,12 @@ namespace Data
 			List<Float3> normals;
 			normals.reserve(mesh->mNumVertices);
 
+			// this should be changed to handle multiple textures, and the saving of each one's data
 			List<Float2> uvs;
-			uvs.reserve(mesh->mNumVertices);
+			if (mesh->HasTextureCoords(0))
+			{
+				uvs.reserve(mesh->mNumVertices);
+			}
 
 			LOG("Reading positions and normals from ASSIMP mesh data...");
 			Float3 currentPosition;
@@ -58,12 +62,15 @@ namespace Data
 				currentNormal.Y = meshNormal.y;
 				currentNormal.Z = meshNormal.z;
 				Push(normals, currentNormal);
-
-				// we are assuming that each mesh only has ONE texture, and that we are NOT using any CubeMaps currently
-				aiVector3D meshUV = mesh->mTextureCoords[0][vertexIndex];
-				currentUV.X = meshUV.x;
-				currentUV.Y = meshUV.y;
-				Push(uvs, currentUV);
+				
+				// this should be changed to handle multiple textures, and the saving of each one's data
+				if (mesh->HasTextureCoords(0))
+				{
+					aiVector3D meshUV = mesh->mTextureCoords[0][vertexIndex];
+					currentUV.X = meshUV.x;
+					currentUV.Y = meshUV.y;
+					Push(uvs, currentUV);
+				}
 			}
 
 			// maximum of 4 bones per vertex
@@ -124,12 +131,16 @@ namespace Data
 				meshFile.CreateNewLine();
 			}
 
-			meshFile.Write("uvs", mesh->mNumVertices);
-			meshFile.CreateNewLine();
-			for (uint uvIndex = 0u; uvIndex < uvs.size(); uvIndex++)
+			// this should be changed to handle multiple textures, and the saving of each one's data
+			if (mesh->HasTextureCoords(0))
 			{
-				meshFile.Write(uvs[uvIndex].X, uvs[uvIndex].Y);
+				meshFile.Write("uvs", mesh->mNumVertices);
 				meshFile.CreateNewLine();
+				for (uint uvIndex = 0u; uvIndex < uvs.size(); uvIndex++)
+				{
+					meshFile.Write(uvs[uvIndex].X, uvs[uvIndex].Y);
+					meshFile.CreateNewLine();
+				}
 			}
 
 			if (mesh->HasBones())
@@ -141,6 +152,10 @@ namespace Data
 					for (uint referenceIndex = 0; referenceIndex < boneWeights[boneIndex].size(); referenceIndex++)
 					{
 						meshFile.Write(boneWeights[boneIndex][referenceIndex].first, boneWeights[boneIndex][referenceIndex].second);
+						if (referenceIndex < boneWeights[boneIndex].size() - 1)
+						{
+							meshFile.Write(", ");
+						}
 					}
 					meshFile.CreateNewLine();
 				}

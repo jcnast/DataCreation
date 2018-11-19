@@ -37,12 +37,12 @@ namespace Data
 		const CustomAssets Cst;
 		struct Meshes
 		{
-			const AssetName<Rendering::MeshData> MI = 1238742485;
+			const AssetName<Rendering::MeshData> Woman = 3273357991;
 		};
 		const Meshes Msh;
 		struct Materials
 		{
-			const AssetName<Rendering::MaterialData> MI = 1238742485;
+			const AssetName<Rendering::MaterialData> Woman = 3273357991;
 		};
 		const Materials Mat;
 

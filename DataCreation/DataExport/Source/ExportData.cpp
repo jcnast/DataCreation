@@ -50,13 +50,11 @@ namespace Data
 
 			// in the future, this should likely also reference a database that is used to get specific file locations
 
-			FilePath MrIncrecidlePath = FilePath{ GetCWD() + "Resources/ImportedAssets/Models/MI/", "MI.obj" };
-
-			File MrIncrecidleFile = File(MrIncrecidlePath, ios::in);
-			ConvertModelsInFolder(directAssets, &MrIncrecidleFile, "MI");
-
-			DirectMeshes(directAssets, { "MI" });
-			DirectMaterials(directAssets, { "MI" });
+			FilePath WomanPath = FilePath{ GetCWD() + "Resources/ImportedAssets/Models/Woman/", "Woman.fbx" };
+			File WomanFile = File(WomanPath, ios::in);
+			ConvertModelsInFolder(directAssets, &WomanFile, "Woman");
+			DirectMeshes(directAssets, { "Woman" });
+			DirectMaterials(directAssets, { "Woman" });
 
 			LOG("Finished exporting rendering data");
 		}

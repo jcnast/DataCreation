@@ -48,21 +48,26 @@ namespace Data
 
 			uint32_t numberOfMeshes = loadedScene->mNumMeshes;
 
+			// Create model scene that holds references to all other data types (mesh, mat, skl, sanim, texture - eventually)
+			// Create a file for each mesh in the parent mesh
 			for (uint32_t meshIndex = 0u; meshIndex < numberOfMeshes; meshIndex++)
 			{
-				LOG("Creating file to hold mesh information for <<" + sceneName + ">>");
-				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], sceneName);
-				LOG("Creating file to hold material information for <<" + sceneName + ">>");
-				CreateFileForMaterial(directAssets, loadedScene->mMaterials[loadedScene->mMeshes[meshIndex]->mMaterialIndex], sceneName);
+				String fileName = sceneName + "_" + ToString(meshIndex);
+
+				LOG("Creating file to hold mesh information for <<" + fileName + ">>");
+				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], fileName);
+				LOG("Creating file to hold material information for <<" + fileName + ">>");
+				CreateFileForMaterial(directAssets, loadedScene->mMaterials[loadedScene->mMeshes[meshIndex]->mMaterialIndex], fileName);
 
 				if (loadedScene->mMeshes[meshIndex]->HasBones())
 				{
-					LOG("Creating file to hold skeleton information for <<" + sceneName + ">>");
-					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, sceneName);
+					LOG("Creating file to hold skeleton information for <<" + fileName + ">>");
+					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, fileName);
 
 					for (uint animationIndex = 0; animationIndex < loadedScene->mNumAnimations; animationIndex++)
 					{
-						CreateFileForSkeletonAnimation(directAssets, loadedScene->mAnimations[animationIndex], loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, sceneName);
+						LOG("Creating file to hold skeleton animation information for <<" + fileName + ">>");
+						CreateFileForSkeletonAnimation(directAssets, loadedScene->mAnimations[animationIndex], loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, fileName);
 					}
 				}
 				else

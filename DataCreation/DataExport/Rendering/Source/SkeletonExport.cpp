@@ -68,20 +68,17 @@ namespace Data
 
 			skeletonFile->Write(String(rootNode->mName.C_Str()), depth);
 
-			skeletonFile->Write("scaling");
-			skeletonFile->Write(scaling.x, scaling.y, scaling.z);
+			skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
 
-			skeletonFile->Write("rotation");
-			skeletonFile->Write(rotation.x, rotation.y, rotation.z, rotation.w);
+			skeletonFile->Write(", rotation", rotation.x, rotation.y, rotation.z, rotation.w);
 
-			skeletonFile->Write("position");
-			skeletonFile->Write(position.x, position.y, position.z);
+			skeletonFile->Write(", position", position.x, position.y, position.z);
 
 			skeletonFile->CreateNewLine();
 
 			for (int i = 0; i < rootNode->mNumChildren; i++)
 			{
-				AddNodeToFile(skeletonFile, rootNode->mChildren[i], depth++, skeletonNodes);
+				AddNodeToFile(skeletonFile, rootNode->mChildren[i], depth + 1, skeletonNodes);
 			}
 		}
 	}
