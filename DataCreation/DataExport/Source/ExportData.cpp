@@ -53,6 +53,7 @@ namespace Data
 			FilePath WomanPath = FilePath{ GetCWD() + "Resources/ImportedAssets/Models/Woman/", "Woman.fbx" };
 			File WomanFile = File(WomanPath, ios::in);
 			ConvertModelsInFolder(directAssets, &WomanFile, "Woman");
+			// this needs to be done by the exporters and done for skeletons and animations
 			DirectMeshes(directAssets, { "Woman" });
 			DirectMaterials(directAssets, { "Woman" });
 
@@ -95,33 +96,7 @@ namespace Data
 		}
 
 		// none of the below should be here, but for the sake of getting this running without re-configuring
-		// the whole mesh/mat export data sequence
-		void DirectMeshes(Ptr<File> directAssets, List<String> meshes)
-		{
-			ExportDirectReference_Open("Meshes", "Msh", directAssets);
-
-			for (auto& mesh : meshes)
-			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::MeshData> " + mesh + " = " + ToString(HashValue(mesh).H) + ";");
-				directAssets->CreateNewLine();
-			}
-
-			ExportDirectReference_Close("Meshes", "Msh", directAssets);
-		}
-
-		void DirectMaterials(Ptr<File> directAssets, List<String> materials)
-		{
-			ExportDirectReference_Open("Materials", "Mat", directAssets);
-
-			for (auto& material : materials)
-			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::MaterialData> " + material + " = " + ToString(HashValue(material).H) + ";");
-				directAssets->CreateNewLine();
-			}
-
-			ExportDirectReference_Close("Materials", "Mat", directAssets);
-		}
-		
+		// the whole mesh/mat export data sequence		
 		void ExportDirectReference_Open(String name, String acronym, Ptr<File> directAssets)
 		{
 			directAssets->Write("\t\tstruct " + name);

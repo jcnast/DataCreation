@@ -170,6 +170,7 @@
     <ClCompile Include="DataExport\Rendering\Source\TextureExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\Utils.cpp" />
     <ClCompile Include="DataExport\Source\ExportData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\ModelData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonAnimationData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonData.cpp" />
     <ClCompile Include="Data\Rendering\Source\MaterialData.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="Data\PrimaryForeignKeyTest.h" />
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
     <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
+    <ClInclude Include="Data\Rendering\Headers\ModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\SkeletonAnimationData.h" />
     <ClInclude Include="Data\Rendering\Headers\SkeletonData.h" />
     <ClInclude Include="Data\Rendering\Headers\TextureData.h" />

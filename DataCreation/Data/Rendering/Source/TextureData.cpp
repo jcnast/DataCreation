@@ -13,13 +13,13 @@ namespace Data
 	{
 		TextureData::TextureData(String fileName)
 		{
-			File meshFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File textureFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
 
-			MESSAGE(meshFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
+			MESSAGE(meshFile.textureFile.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 
 			try
 			{
-				String line = meshFile.GetLine();
+				String line = textureFile.GetLine();
 
 				IOSStreamChar lineStream(line);
 
@@ -33,6 +33,8 @@ namespace Data
 				// this is how this should end (for now at least)
 				std::cout << e.GetError() << std::endl;
 			}
+
+			textureFile.Close();
 		}
 	}
 }

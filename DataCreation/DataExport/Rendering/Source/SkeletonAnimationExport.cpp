@@ -121,6 +121,10 @@ namespace Data
 				{
 					return "repeat";
 				}
+				default:
+				{
+					return "unknown";
+				}
 			}
 		}
 	}

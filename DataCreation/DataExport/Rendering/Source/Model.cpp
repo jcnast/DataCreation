@@ -29,7 +29,7 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForModel(Ptr<File> directAssets, Ptr<const aiScene> mesh, String name)
+		void CreateFileForModel(Ptr<File> directAssets, Ptr<const aiScene> scene, String name)
 		{
 			
 

@@ -21,9 +21,6 @@ namespace Data
 
 		// none of the below should be here, but for the sake of getting this running without re-configuring
 		// the whole mesh/mat export data sequence
-		void DirectMeshes(Ptr<File> directAssets, List<String> meshes);
-		void DirectMaterials(Ptr<File> directAssets, List<String> materials);
-
 		void ExportDirectReference_Open(String name, String acronym, Ptr<File> directAssets);
 		void ExportDirectReference_Close(String name, String acronym, Ptr<File> directAssets);
 	}

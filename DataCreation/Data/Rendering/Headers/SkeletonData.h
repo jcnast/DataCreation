@@ -9,6 +9,9 @@
 #include "Core/IO/Headers/File.h"
 #include "Core/IO/Headers/IODefs.h"
 
+#include "Data/Headers/AssetName.h"
+#include "Data/Rendering/Headers/SkeletonAnimationData.h"
+
 namespace Data
 {
 	namespace Rendering
@@ -30,6 +33,8 @@ namespace Data
 		struct SkeletonData
 		{
 			Core::UniquePtr<SkeletonBoneData> Root;
+
+			Core::List<AssetName<SkeletonAnimationData>> Animations;
 
 			SkeletonData() = default;
 			SkeletonData(Core::String fileName);

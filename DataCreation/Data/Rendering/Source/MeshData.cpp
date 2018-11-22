@@ -119,6 +119,8 @@ namespace Data
 				std::cout << e.GetError() << std::endl;
 			}
 
+			meshFile.Close();
+
 			for (auto& index : indices)
 			{
 				for (auto& v : index.Axes)

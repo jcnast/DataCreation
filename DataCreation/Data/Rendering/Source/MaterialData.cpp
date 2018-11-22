@@ -75,8 +75,9 @@ namespace Data
 			catch (EOFException& e)
 			{
 				std::cout << e.GetError() << std::endl;
-				return;
 			}
+
+			materialFile.Close();
 		}
 	}
 }

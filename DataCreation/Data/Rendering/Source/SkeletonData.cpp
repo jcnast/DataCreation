@@ -55,8 +55,9 @@ namespace Data
 			catch (EOFException& e)
 			{
 				std::cout << e.GetError() << std::endl;
-				return;
 			}
+			
+			skeletonFile.Close();
 		}
 
 		void SkeletonData::ReadBoneChildren(Ptr<SkeletonBoneData> parent, File& skeletonFile)
