@@ -27,8 +27,11 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, uint meshIndex, String name)
+		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiScene> scene, uint meshIndex, String name)
 		{
+			Ptr<const aiNode> rootNode = scene->mRootNode;
+			Ptr<const aiMesh> mesh = scene->mMeshes[meshIndex];
+
 			if (!mesh->HasBones())
 			{
 				LOG("Given skeleton <<" + name + ">> does not exist");
@@ -47,6 +50,14 @@ namespace Data
 			{
 				LOG("Could not open file <<" + skeletonFilePath.GetFullPath() + ">>");
 				return;
+			}
+
+			skeletonFile.Write("animations", scene->mNumAnimations);
+			skeletonFile.CreateNewLine();
+			for (uint animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++)
+			{
+				skeletonFile.Write(ToString(HashValue(String(scene->mAnimations[animationIndex]->mName.C_Str())).H));
+				skeletonFile.CreateNewLine();
 			}
 
 			AddNodeToFile(&skeletonFile, rootNodeForMesh, 0, skeletonNodes);

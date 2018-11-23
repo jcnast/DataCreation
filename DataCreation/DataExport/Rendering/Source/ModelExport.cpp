@@ -29,15 +29,22 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void CreateFileForModel(Ptr<File> directAssets, Ptr<const aiScene> scene, String name)
+		void CreateFileForModel(Ptr<File> directAssets, Ptr<const aiScene> scene, uint meshIndex, String name)
 		{
-			
-
 			FilePath meshFilePath = FilePath{ GetCWD() + "/Resources/ExportedAssets/Models/", ToString(HashValue(name)) + ".mdl" };
 			File meshFile = File(meshFilePath, ios::out);
 			meshFile.Open();
 
-			
+			meshFile.Write("mesh", ToString(HashValue(name).H));
+			meshFile.CreateNewLine();
+
+			meshFile.Write("material", ToString(HashValue(name).H));
+
+			if (scene->mMeshes[meshIndex]->HasBones())
+			{
+				meshFile.CreateNewLine();
+				meshFile.Write("skeleton", ToString(HashValue(name).H));
+			}
 
 			meshFile.Close();
 		}

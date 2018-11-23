@@ -51,5 +51,37 @@ namespace Core
 			}
 			return false;
 		}
+
+		List<String> AllFilesInFolder(String path, bool recursive)
+		{
+			List<String> files;
+
+			// This is where I will hold file details temporarily
+			WIN32_FIND_DATA file;
+
+			// This will store return value of the FindFirstFile()
+			HANDLE fileHandle;
+
+			// Call a C++ function to get files in the directory
+			fileHandle = FindFirstFile(std::wstring(path), &file);
+
+			do
+			{
+				// If this which we found now, is a directory, recursively 
+				// call the function again
+				if (recursive && (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0 && file.cFileName != "." && file.cFileName != "..")
+				{
+					// Call our function again to search in this sub-directory
+					Push(files, AllFilesInFolder(String(file)));
+				}
+				else
+				{
+					Push(files, String(file));
+				}
+
+			} while (FindNextFile(fileHandle, &file));
+
+			return files;
+		}
 	}
 }

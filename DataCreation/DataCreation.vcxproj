@@ -151,7 +151,7 @@
     <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\MaterialExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\MeshExport.cpp" />
-    <ClCompile Include="DataExport\Rendering\Source\Model.cpp" />
+    <ClCompile Include="DataExport\Rendering\Source\ModelExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\SceneConversion.cpp" />
     <ClCompile Include="Core\CoreUnitTests.cpp" />
     <ClCompile Include="Core\Functionality\Source\Scheduler.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="DataExport\Headers\ExportException.h" />
     <ClInclude Include="DataExport\Rendering\Headers\MeshExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\MaterialExport.h" />
-    <ClInclude Include="DataExport\Rendering\Headers\Model.h" />
+    <ClInclude Include="DataExport\Rendering\Headers\ModelExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\SkeletonAnimationExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\SkeletonExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\TextureExport.h" />

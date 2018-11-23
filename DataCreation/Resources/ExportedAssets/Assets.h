@@ -35,16 +35,26 @@ namespace Data
 		const Test2 Tst;
 		};
 		const CustomAssets Cst;
+		struct Models
+		{
+		};
+		const Models Mdl;
 		struct Meshes
 		{
-			const AssetName<Rendering::MeshData> Woman = 3273357991;
 		};
 		const Meshes Msh;
 		struct Materials
 		{
-			const AssetName<Rendering::MaterialData> Woman = 3273357991;
 		};
 		const Materials Mat;
+		struct Skeletons
+		{
+		};
+		const Skeletons Skl;
+		struct SkeletonAnimations
+		{
+		};
+		const SkeletonAnimations SAnim;
 
 	};
 	const Assets Ast;

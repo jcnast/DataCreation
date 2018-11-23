@@ -24,10 +24,10 @@ namespace Data
 
 				IOSStreamChar lineStream(line);
 				
-				lineStream >> Material;
-				lineStream >> Mesh;
-				lineStream >> Skeleton;
-				lineStream >> Texture;
+				lineStream >> Material.Name.H;
+				lineStream >> Mesh.Name.H;
+				lineStream >> Skeleton.Name.H;
+				lineStream >> Texture.Name.H;
 			}
 			catch (EOFException& e)
 			{

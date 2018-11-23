@@ -15,7 +15,7 @@ namespace Data
 		{
 			File textureFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
 
-			MESSAGE(meshFile.textureFile.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
+			MESSAGE(textureFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 
 			try
 			{

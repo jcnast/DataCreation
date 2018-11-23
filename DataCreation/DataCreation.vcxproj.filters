@@ -105,10 +105,10 @@
     <ClCompile Include="DataExport\Rendering\Source\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataExport\Rendering\Source\Model.cpp">
+    <ClCompile Include="Data\Rendering\Source\ModelData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Rendering\Source\ModelData.cpp">
+    <ClCompile Include="DataExport\Rendering\Source\ModelExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -536,10 +536,10 @@
     <ClInclude Include="DataExport\Rendering\Headers\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataExport\Rendering\Headers\Model.h">
+    <ClInclude Include="Data\Rendering\Headers\ModelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Rendering\Headers\ModelData.h">
+    <ClInclude Include="DataExport\Rendering\Headers\ModelExport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

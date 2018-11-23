@@ -2,6 +2,7 @@
 
 #include "DataExport/Headers/ExportData.h"
 
+#include "DataExport/Rendering/Headers/ModelExport.h"
 #include "DataExport/Rendering/Headers/MeshExport.h"
 #include "DataExport/Rendering/Headers/MaterialExport.h"
 #include "DataExport/Rendering/Headers/SkeletonExport.h"
@@ -51,7 +52,7 @@ namespace Data
 			// this process preset also INCLUDES the flag to make all faces based on triangles
 			String fullPathCopy = sceneFile->GetFullPath();
 			Ptr<const char> c_Path = fullPathCopy.c_str();
-			const aiScene* loadedScene = aiImportFile(c_Path, aiProcessPreset_TargetRealtime_MaxQuality);
+			Ptr<const aiScene> loadedScene = aiImportFile(c_Path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 			if (!loadedScene)
 			{
@@ -68,6 +69,10 @@ namespace Data
 			{
 				String fileName = sceneName + "_" + ToString(meshIndex);
 
+				LOG("Creating file to hold model information for <<" + fileName + ">>");
+				CreateFileForModel(directAssets, loadedScene, meshIndex, fileName);
+				Push(models, fileName);
+
 				LOG("Creating file to hold mesh information for <<" + fileName + ">>");
 				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], fileName);
 				Push(meshes, fileName);
@@ -79,7 +84,7 @@ namespace Data
 				if (loadedScene->mMeshes[meshIndex]->HasBones())
 				{
 					LOG("Creating file to hold skeleton information for <<" + fileName + ">>");
-					CreateFileForSkeleton(directAssets, loadedScene->mRootNode, loadedScene->mMeshes[meshIndex], meshIndex, fileName);
+					CreateFileForSkeleton(directAssets, loadedScene, meshIndex, fileName);
 					Push(skeletons, fileName);
 
 					for (uint animationIndex = 0; animationIndex < loadedScene->mNumAnimations; animationIndex++)
