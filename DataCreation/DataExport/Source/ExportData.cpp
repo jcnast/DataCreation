@@ -36,7 +36,7 @@ namespace Data
 
 		void ExportCustomData(Ptr<File> directAssets)
 		{
-			CreateFolder(GetCWD() + "Resources/CustomData");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/CustomData");
 
 			LOG("Starting to export custom data");
 			auto dbPath = FilePath{ GetCWD() + "Resources/ImportedAssets/CustomData/", String("Data.db") };
@@ -53,17 +53,18 @@ namespace Data
 		{
 			LOG("Starting to export rendering data");
 
-			CreateFolder(GetCWD() + "Resources/Models");
-			CreateFolder(GetCWD() + "Resources/Materials");
-			CreateFolder(GetCWD() + "Resources/Meshes");
-			CreateFolder(GetCWD() + "Resources/Skeletons");
-			CreateFolder(GetCWD() + "Resources/SkeletonAnimations");
-			CreateFolder(GetCWD() + "Resources/Textures");
+			// maybe this should be it's own function?
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/Models");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/Materials");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/Meshes");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/Skeletons");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/SkeletonAnimations");
+			CreateFolder(GetCWD() + "Resources/ExportedAssets/Textures");
 
 			// in the future, this should likely also reference a database that is used to get specific file locations
 			FilePath WomanPath = FilePath{ GetCWD() + "Resources/ImportedAssets/Models/Woman/", "Woman.fbx" };
 			File WomanFile = File(WomanPath, ios::in);
-			ConvertModelsInFolder(directAssets, &WomanFile, "Woman");
+			ConvertModelsInFolder(directAssets, "Resources/ImportedAssets/Models/");
 
 			LOG("Finished exporting rendering data");
 		}

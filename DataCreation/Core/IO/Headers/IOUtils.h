@@ -11,5 +11,8 @@ namespace Core
 		File OpenFileO(FilePath file);
 
 		String GetCWD();
+
+		std::wstring StringToWString(const String& str);
+		String WStringToString(const wchar_t* wstr);
 	}
 }

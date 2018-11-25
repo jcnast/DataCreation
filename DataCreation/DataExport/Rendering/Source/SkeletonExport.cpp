@@ -87,7 +87,7 @@ namespace Data
 
 			skeletonFile->CreateNewLine();
 
-			for (int i = 0; i < rootNode->mNumChildren; i++)
+			for (uint i = 0; i < rootNode->mNumChildren; i++)
 			{
 				AddNodeToFile(skeletonFile, rootNode->mChildren[i], depth + 1, skeletonNodes);
 			}

@@ -1,5 +1,7 @@
 #include "Core/IO/Headers/Folder.h"
 
+#include "Core/IO/Headers/IOUtils.h"
+
 /*
 Need to figure out how we want to split this for different operating systems. Maybe the standard
 has a better way to do this.
@@ -63,20 +65,22 @@ namespace Core
 			HANDLE fileHandle;
 
 			// Call a C++ function to get files in the directory
-			fileHandle = FindFirstFile(std::wstring(path), &file);
+			std::wstring wstr = StringToWString(path);
+			LPCWSTR lpcwStr = wstr.c_str();
+			fileHandle = FindFirstFile(lpcwStr, &file);
 
 			do
 			{
 				// If this which we found now, is a directory, recursively 
 				// call the function again
-				if (recursive && (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0 && file.cFileName != "." && file.cFileName != "..")
+				if (recursive && (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0 && file.cFileName != StringToWString(".") && file.cFileName != StringToWString("."))
 				{
 					// Call our function again to search in this sub-directory
-					Push(files, AllFilesInFolder(String(file)));
+					Push(files, AllFilesInFolder(WStringToString(file.cFileName)));
 				}
 				else
 				{
-					Push(files, String(file));
+					Push(files, WStringToString(file.cFileName));
 				}
 
 			} while (FindNextFile(fileHandle, &file));

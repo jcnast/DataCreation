@@ -43,7 +43,7 @@ namespace Core
 	template <typename T>
 	void Push(List<T>& list, List<T> subList)
 	{
-		for (int i = 0; i < subList.size() i++)
+		for (size i = 0; i < subList.size(); i++)
 		{
 			Push(list, subList[i]);
 		}

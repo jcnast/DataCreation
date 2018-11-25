@@ -28,7 +28,7 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void ConvertModelsInFolder(Ptr<File> directAssets, Ptr<File> sceneFile, String sceneName)
+		void ConvertModelsInFolder(Ptr<File> directAssets, String folder)
 		{
 			List<String> models;
 			List<String> meshes;
@@ -36,8 +36,29 @@ namespace Data
 			List<String> skeletons;
 			List<String> skeletonAnimations;
 
+			List<String> importedAssets = AllFilesInFolder(folder, true);
+
 			// in the future, this should likely also reference a database that is used to get specific file locations
-			ConvertFilesForScene(directAssets, sceneFile, sceneName, models, meshes, materials, skeletons, skeletonAnimations);
+			for (String asset : importedAssets)
+			{
+				Core::size dotIndex = asset.find_last_of('.');
+				if (dotIndex == -1)
+				{
+					return;
+				}
+
+				String assetType = asset.substr(dotIndex, asset.length() - dotIndex);
+				String assetName = asset.substr(0, dotIndex);
+
+				if (assetType != ".fbx")
+				{
+					return;
+				}
+
+				FilePath assetPath = FilePath{ GetCWD() + folder, asset };
+				File assetFile = File(assetPath, ios::in);
+				ConvertFilesForScene(directAssets, &assetFile, assetName, models, meshes, materials, skeletons, skeletonAnimations);
+			}
 
 			DirectModels(directAssets, models);
 			DirectMeshes(directAssets, meshes);

@@ -81,7 +81,7 @@ namespace Data
 				for (uint i = 0; i < mesh->mNumBones; i++)
 				{
 					Ptr<aiBone> bone = mesh->mBones[i];
-					for (int j = 0; j < bone->mNumWeights; j++)
+					for (uint j = 0; j < bone->mNumWeights; j++)
 					{
 						aiVertexWeight& boneWeight = bone->mWeights[j];
 						

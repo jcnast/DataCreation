@@ -84,7 +84,7 @@ namespace Data
 
 			String acronym;
 
-			int index = 0;
+			size index = 0;
 			while (acronym.length() < 3 && index < tableName.length())
 			{
 				if (!InList(vowels, tableName[index]))

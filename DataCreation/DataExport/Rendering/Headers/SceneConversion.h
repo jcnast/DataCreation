@@ -14,7 +14,7 @@ namespace Data
 {
 	namespace DataExport
 	{
-		void ConvertModelsInFolder(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<Core::IO::File> sceneFile, Core::String sceneName);
+		void ConvertModelsInFolder(Core::Ptr<Core::IO::File> directAssets, Core::String folder);
 
 		void ConvertFilesForScene(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<Core::IO::File> sceneFile, Core::String sceneName, Core::List<Core::String> models, Core::List<Core::String> meshes, Core::List<Core::String> materials, Core::List<Core::String> skeletons, Core::List<Core::String> skeletonAnimations);
 

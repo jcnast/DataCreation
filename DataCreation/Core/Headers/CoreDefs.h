@@ -44,4 +44,5 @@ namespace Core
 	bool Within(T&& d, T&& v, T&& var) { return ((Forward<T>(d) >= Forward<T>(v) - Forward<T>(var)) && (Forward<T>(d) <= Forward<T>(v) + Forward<T>(var))); }
 	
 	using uint = unsigned int;
+	using size = size_t;
 }
