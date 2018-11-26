@@ -36,29 +36,48 @@ namespace Data
 			List<String> skeletons;
 			List<String> skeletonAnimations;
 
-			List<String> importedAssets = AllFilesInFolder(folder, true);
-
 			// in the future, this should likely also reference a database that is used to get specific file locations
-			for (String asset : importedAssets)
+			FilePath listPath = FilePath{ folder, "UsedModels.txt" };
+			File listFile = File(listPath, ios::in);
+			listFile.Open();
+
+			try
 			{
-				Core::size dotIndex = asset.find_last_of('.');
-				if (dotIndex == -1)
+				String line = listFile.GetLine();
+
+				IOSStreamChar lineStream(line);
+
+				int numAssets;
+				lineStream >> numAssets;
+
+				int assetsExported = 0;
+				while (assetsExported < numAssets)
 				{
-					return;
+					String line = listFile.GetLine();
+
+					IOSStreamChar lineStream(line);
+
+					String name;
+					String path;
+					String file;
+
+					lineStream >> name;
+					lineStream >> path;
+					lineStream >> file;
+
+					FilePath assetPath = FilePath{ folder + path, file };
+					File assetFile = File(assetPath, ios::in);
+					ConvertFilesForScene(directAssets, &assetFile, name, models, meshes, materials, skeletons, skeletonAnimations);
+
+					assetsExported++;
 				}
-
-				String assetType = asset.substr(dotIndex, asset.length() - dotIndex);
-				String assetName = asset.substr(0, dotIndex);
-
-				if (assetType != ".fbx")
-				{
-					return;
-				}
-
-				FilePath assetPath = FilePath{ GetCWD() + folder, asset };
-				File assetFile = File(assetPath, ios::in);
-				ConvertFilesForScene(directAssets, &assetFile, assetName, models, meshes, materials, skeletons, skeletonAnimations);
 			}
+			catch (Exception& e)
+			{
+				std::cout << e.GetError() << std::endl;
+			}
+
+			listFile.Close();
 
 			DirectModels(directAssets, models);
 			DirectMeshes(directAssets, meshes);

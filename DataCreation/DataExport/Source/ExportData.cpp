@@ -64,7 +64,7 @@ namespace Data
 			// in the future, this should likely also reference a database that is used to get specific file locations
 			FilePath WomanPath = FilePath{ GetCWD() + "Resources/ImportedAssets/Models/Woman/", "Woman.fbx" };
 			File WomanFile = File(WomanPath, ios::in);
-			ConvertModelsInFolder(directAssets, "Resources/ImportedAssets/Models/");
+			ConvertModelsInFolder(directAssets, GetCWD() + "Resources/ImportedAssets/Models/");
 
 			LOG("Finished exporting rendering data");
 		}

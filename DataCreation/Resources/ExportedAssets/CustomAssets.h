@@ -86,4 +86,29 @@ namespace Data
 		}
 	};
 
+// Models
+	struct Models
+	{
+		String Name;
+		String File;
+	}
+
+	struct AssetType<Models>
+	{
+		Hash ClassHash() const
+		{
+			return Core::HashValue("Models");
+		}
+
+		String GetPath() const
+		{
+			return "CustomAssets/Models/";
+		}
+
+		String GetFileType() const
+		{
+			return ".Mdl";
+		}
+	};
+
 }

@@ -53,39 +53,5 @@ namespace Core
 			}
 			return false;
 		}
-
-		List<String> AllFilesInFolder(String path, bool recursive)
-		{
-			List<String> files;
-
-			// This is where I will hold file details temporarily
-			WIN32_FIND_DATA file;
-
-			// This will store return value of the FindFirstFile()
-			HANDLE fileHandle;
-
-			// Call a C++ function to get files in the directory
-			std::wstring wstr = StringToWString(path);
-			LPCWSTR lpcwStr = wstr.c_str();
-			fileHandle = FindFirstFile(lpcwStr, &file);
-
-			do
-			{
-				// If this which we found now, is a directory, recursively 
-				// call the function again
-				if (recursive && (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0 && file.cFileName != StringToWString(".") && file.cFileName != StringToWString("."))
-				{
-					// Call our function again to search in this sub-directory
-					Push(files, AllFilesInFolder(WStringToString(file.cFileName)));
-				}
-				else
-				{
-					Push(files, WStringToString(file.cFileName));
-				}
-
-			} while (FindNextFile(fileHandle, &file));
-
-			return files;
-		}
 	}
 }

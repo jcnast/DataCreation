@@ -19,8 +19,6 @@ namespace Core
 		CreateFolderResult CreateFolder(String path);
 		bool FolderExists(String path);
 
-		List<String> AllFilesInFolder(String path, bool recursive = false);
-
 		// Functions to be done later:
 
 		/*
