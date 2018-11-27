@@ -1,4 +1,4 @@
-#include "Data/Rendering/Headers/MeshData.h"
+#include "Data/Rendering/Headers/AnimatedMeshData.h"
 
 #include "Core/IO/Headers/IOUtils.h"
 
@@ -11,7 +11,7 @@ namespace Data
 {
 	namespace Rendering
 	{
-		MeshData::MeshData(String fileName)
+		AnimatedMeshData::AnimatedMeshData(String fileName)
 		{
 			File meshFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
 
@@ -20,6 +20,7 @@ namespace Data
 			List<Float3> positions;
 			List<Float3> normals;
 			List<Float2> uvs;
+			List<Uint4> boneIndices;
 			List<Uint3> indices;
 
 			enum class ReadState
@@ -29,6 +30,7 @@ namespace Data
 				Positions,
 				Normals,
 				UVs,
+				BoneIndices,
 				Indices
 			};
 			ReadState readState = ReadState::Started;
@@ -58,6 +60,10 @@ namespace Data
 						else if (word == "uvs")
 						{
 							readState = ReadState::UVs;
+						}
+						else if (word == "bones")
+						{
+							readState == ReadState::BoneIndices;
 						}
 						else if (word == "indices")
 						{
@@ -98,6 +104,18 @@ namespace Data
 							lineStream >> newUVs.Y;
 
 							Push(uvs, newUVs);
+
+							break;
+						}
+						case ReadState::BoneIndices:
+						{
+							Uint4 newBoneIndex;
+							lineStream >> newBoneIndex.X;
+							lineStream >> newBoneIndex.Y;
+							lineStream >> newBoneIndex.Z;
+							lineStream >> newBoneIndex.W;
+
+							Push(boneIndices, newBoneIndex);
 
 							break;
 						}
@@ -143,7 +161,7 @@ namespace Data
 				{
 					VertexCount++;
 
-					Push(Vertices, VertexDataBase(positions[v], normals[v], uvs[v]));
+					Push(Vertices, AnimatedVertexDataBase(positions[v], normals[v], uvs[v], boneIndices[v]));
 				}
 			}
 		}

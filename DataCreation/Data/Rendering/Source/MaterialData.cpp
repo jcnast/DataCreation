@@ -28,39 +28,26 @@ namespace Data
 					String word;
 					lineStream >> word;
 
-					String comma;
-					lineStream >> comma;
 					if (word == "spec")
 					{
 						lineStream >> Specular.R;
-						lineStream >> comma;
 						lineStream >> Specular.G;
-						lineStream >> comma;
 						lineStream >> Specular.B;
-						lineStream >> comma;
 						lineStream >> Specular.A;
 					}
 					else if (word == "diff")
 					{
 						lineStream >> Diffuse.R;
-						lineStream >> comma;
 						lineStream >> Diffuse.G;
-						lineStream >> comma;
 						lineStream >> Diffuse.B;
-						lineStream >> comma;
 						lineStream >> Diffuse.A;
-						lineStream >> comma;
 					}
 					else if (word == "amb")
 					{
 						lineStream >> Ambient.R;
-						lineStream >> comma;
 						lineStream >> Ambient.G;
-						lineStream >> comma;
 						lineStream >> Ambient.B;
-						lineStream >> comma;
 						lineStream >> Ambient.A;
-						lineStream >> comma;
 					}
 					else if (word == "shin")
 					{

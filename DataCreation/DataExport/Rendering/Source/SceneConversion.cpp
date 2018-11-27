@@ -30,7 +30,7 @@ namespace Data
 	{
 		void ConvertModelsInFolder(Ptr<File> directAssets, String folder)
 		{
-			List<String> models;
+			List<Pair<bool, String>> models;
 			List<String> meshes;
 			List<String> materials;
 			List<String> skeletons;
@@ -86,7 +86,7 @@ namespace Data
 			DirectSkeletonAnimations(directAssets, skeletonAnimations);
 		}
 
-		void ConvertFilesForScene(Ptr<File> directAssets, Ptr<File> sceneFile, String sceneName, List<String> models, List<String> meshes, List<String> materials, List<String> skeletons, List<String> skeletonAnimations)
+		void ConvertFilesForScene(Ptr<File> directAssets, Ptr<File> sceneFile, String sceneName, List<Pair<bool, String>> models, List<String> meshes, List<String> materials, List<String> skeletons, List<String> skeletonAnimations)
 		{
 			LOG("Converting files for <<" + sceneFile->GetFullPath() + ">>");
 			// this process preset also INCLUDES the flag to make all faces based on triangles
@@ -111,7 +111,7 @@ namespace Data
 
 				LOG("Creating file to hold model information for <<" + fileName + ">>");
 				CreateFileForModel(directAssets, loadedScene, meshIndex, fileName);
-				Push(models, fileName);
+				Push(models, Pair<bool, String>(loadedScene->mMeshes[meshIndex]->HasBones(), fileName));
 
 				LOG("Creating file to hold mesh information for <<" + fileName + ">>");
 				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], fileName);
@@ -146,17 +146,35 @@ namespace Data
 			aiReleaseImport(loadedScene);
 		}
 
-		void DirectModels(Ptr<File> directAssets, List<String> models)
+		void DirectModels(Ptr<File> directAssets, List<Pair<bool, String>> models)
 		{
 			ExportDirectReference_Open("Models", "Mdl", directAssets);
 
 			for (auto& model : models)
 			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::ModelData> " + model + " = " + ToString(HashValue(model).H) + ";");
-				directAssets->CreateNewLine();
+				if (!model.first)
+				{
+					directAssets->Write("\t\t\tconst AssetName<Rendering::ModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
+					directAssets->CreateNewLine();
+				}
 			}
 
 			ExportDirectReference_Close("Models", "Mdl", directAssets);
+
+
+
+			ExportDirectReference_Open("AnimatedModels", "AMdl", directAssets);
+
+			for (auto& model : models)
+			{
+				if (model.first)
+				{
+					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
+					directAssets->CreateNewLine();
+				}
+			}
+
+			ExportDirectReference_Close("AnimatedModels", "AMdl", directAssets);
 		}
 
 		void DirectMeshes(Ptr<File> directAssets, List<String> meshes)
