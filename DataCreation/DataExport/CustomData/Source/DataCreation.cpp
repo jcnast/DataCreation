@@ -172,6 +172,7 @@ namespace Data
 
 		void ExportDirectReference_Open(String name, Ptr<File> directAssets)
 		{
+			directAssets->Write("\t\ttempalte <>");
 			directAssets->Write("\t\tstruct " + name);
 			directAssets->CreateNewLine();
 			directAssets->Write("\t\t{");

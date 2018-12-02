@@ -49,7 +49,6 @@ namespace Data
 			}
 
 			skeletonAnimationFile.Write(String(animation->mName.C_Str()), animation->mNumChannels, animation->mDuration / animation->mTicksPerSecond);
-			skeletonAnimationFile.CreateNewLine();
 
 			for (uint i = 0; i < animation->mNumChannels; i++)
 			{

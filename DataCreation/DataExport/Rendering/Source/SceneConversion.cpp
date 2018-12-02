@@ -148,85 +148,91 @@ namespace Data
 
 		void DirectModels(Ptr<File> directAssets, List<Pair<bool, String>> models)
 		{
-			ExportDirectReference_Open("StaticModels", "SMdl", directAssets);
+			ExportDirectReference_Open("StaticModels", "smdl", directAssets);
 
 			for (auto& model : models)
 			{
 				if (!model.first)
 				{
+					directAssets->Write("\t\ttemplate <>");
 					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
 					directAssets->CreateNewLine();
 				}
 			}
 
-			ExportDirectReference_Close("StaticModels", "SMdl", directAssets);
+			ExportDirectReference_Close("StaticModels", "smdl", directAssets);
 
 
 
-			ExportDirectReference_Open("AnimatedModels", "AMdl", directAssets);
+			ExportDirectReference_Open("AnimatedModels", "amdl", directAssets);
 
 			for (auto& model : models)
 			{
 				if (model.first)
 				{
+					directAssets->Write("\t\ttemplate <>");
 					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
 					directAssets->CreateNewLine();
 				}
 			}
 
-			ExportDirectReference_Close("AnimatedModels", "AMdl", directAssets);
+			ExportDirectReference_Close("AnimatedModels", "amdl", directAssets);
 		}
 
 		void DirectMeshes(Ptr<File> directAssets, List<String> meshes)
 		{
-			ExportDirectReference_Open("Meshes", "Msh", directAssets);
+			ExportDirectReference_Open("Meshes", "msh", directAssets);
 
 			for (auto& mesh : meshes)
 			{
+				directAssets->Write("\t\ttemplate <>");
 				directAssets->Write("\t\t\tconst AssetName<Rendering::MeshData> " + mesh + " = " + ToString(HashValue(mesh).H) + ";");
 				directAssets->CreateNewLine();
 			}
 
-			ExportDirectReference_Close("Meshes", "Msh", directAssets);
+			ExportDirectReference_Close("Meshes", "msh", directAssets);
 		}
 
 		void DirectMaterials(Ptr<File> directAssets, List<String> materials)
 		{
-			ExportDirectReference_Open("Materials", "Mat", directAssets);
+			ExportDirectReference_Open("Materials", "mat", directAssets);
 
 			for (auto& material : materials)
 			{
+				directAssets->Write("\t\ttemplate <>");
 				directAssets->Write("\t\t\tconst AssetName<Rendering::MaterialData> " + material + " = " + ToString(HashValue(material).H) + ";");
 				directAssets->CreateNewLine();
 			}
 
-			ExportDirectReference_Close("Materials", "Mat", directAssets);
+			ExportDirectReference_Close("Materials", "mat", directAssets);
 		}
 
 		void DirectSkeletons(Ptr<File> directAssets, List<String> skeletons)
 		{
-			ExportDirectReference_Open("Skeletons", "Skl", directAssets);
+			ExportDirectReference_Open("Skeletons", "skl", directAssets);
 
 			for (auto& skeleton : skeletons)
 			{
+				directAssets->Write("\t\ttemplate <>");
 				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonData> " + skeleton + " = " + ToString(HashValue(skeleton).H) + ";");
 				directAssets->CreateNewLine();
 			}
 
-			ExportDirectReference_Close("Skeletons", "Skl", directAssets);
+			ExportDirectReference_Close("Skeletons", "skl", directAssets);
 		}
 
 		void DirectSkeletonAnimations(Ptr<File> directAssets, List<String> skeletonAnimations)
 		{
-			ExportDirectReference_Open("SkeletonAnimations", "SAnim", directAssets);
+			ExportDirectReference_Open("SkeletonAnimations", "sanim", directAssets);
 
 			for (auto& skeletonAnimation : skeletonAnimations)
 			{
+				directAssets->Write("\t\ttemplate <>");
 				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonAnimationData> " + skeletonAnimation + " = " + ToString(HashValue(skeletonAnimation).H) + ";");
 				directAssets->CreateNewLine();
 			}
 
-			ExportDirectReference_Close("SkeletonAnimations", "SAnim", directAssets);
+			ExportDirectReference_Close("SkeletonAnimations", "sanim", directAssets);
 		}
 	}
 }

@@ -17,23 +17,23 @@ namespace Data
 	*/
 	struct Assets
 	{
-		struct CustomAssets
+		tempalte <>		struct CustomAssets
 		{
-		struct Test
+		tempalte <>		struct Test
 		{
 			const AssetName<Test>  = 1431655765;
 		};
 		const Test Tst;
-		struct ListTest
+		tempalte <>		struct ListTest
 		{
 		};
 		const ListTest Lst;
-		struct Test2
+		tempalte <>		struct Test2
 		{
 			const AssetName<Test2> Test 2 = 3616917144;
 		};
 		const Test2 Tst;
-		struct Models
+		tempalte <>		struct Models
 		{
 			const AssetName<Models> MI = 1238742485;
 			const AssetName<Models> Wolf = 1631375646;
@@ -45,27 +45,27 @@ namespace Data
 		struct StaticModels
 		{
 		};
-		const StaticModels SMdl;
+		const StaticModels smdl;
 		struct AnimatedModels
 		{
 		};
-		const AnimatedModels AMdl;
+		const AnimatedModels amdl;
 		struct Meshes
 		{
 		};
-		const Meshes Msh;
+		const Meshes msh;
 		struct Materials
 		{
 		};
-		const Materials Mat;
+		const Materials mat;
 		struct Skeletons
 		{
 		};
-		const Skeletons Skl;
+		const Skeletons skl;
 		struct SkeletonAnimations
 		{
 		};
-		const SkeletonAnimations SAnim;
+		const SkeletonAnimations sanim;
 
 	};
 	const Assets Ast;

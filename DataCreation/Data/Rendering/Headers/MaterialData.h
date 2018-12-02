@@ -23,6 +23,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::MaterialData>
 	{
 		Hash ClassHash() const
@@ -40,4 +42,5 @@ namespace Data
 			return ".Mat";
 		}
 	};
+	*/
 }

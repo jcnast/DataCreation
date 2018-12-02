@@ -29,6 +29,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::StaticModelData>
 	{
 		Hash ClassHash() const
@@ -46,4 +48,5 @@ namespace Data
 			return ".Mdl";
 		}
 	};
+	*/
 }

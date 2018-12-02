@@ -51,6 +51,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::SkeletonData>
 	{
 		Hash ClassHash() const
@@ -68,4 +70,5 @@ namespace Data
 			return ".Skl";
 		}
 	};
+	*/
 }

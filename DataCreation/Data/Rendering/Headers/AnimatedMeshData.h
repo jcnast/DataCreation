@@ -24,6 +24,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::AnimatedMeshData>
 	{
 		Hash ClassHash() const
@@ -41,4 +43,5 @@ namespace Data
 			return ".AMsh";
 		}
 	};
+	*/
 }

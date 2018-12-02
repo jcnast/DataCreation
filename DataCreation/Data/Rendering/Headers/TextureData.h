@@ -23,6 +23,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::TextureData>
 	{
 		Hash ClassHash() const
@@ -40,4 +42,5 @@ namespace Data
 			return ".Txt";
 		}
 	};
+	*/
 }

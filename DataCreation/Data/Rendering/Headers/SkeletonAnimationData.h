@@ -87,6 +87,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::SkeletonAnimationData>
 	{
 		Hash ClassHash() const
@@ -104,4 +106,5 @@ namespace Data
 			return ".SAnim";
 		}
 	};
+	*/
 }

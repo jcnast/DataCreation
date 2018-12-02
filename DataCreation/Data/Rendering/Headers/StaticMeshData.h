@@ -24,6 +24,8 @@ namespace Data
 		};
 	}
 
+	/*
+	template <>
 	struct AssetType<Rendering::StaticMeshData>
 	{
 		Hash ClassHash() const
@@ -41,4 +43,5 @@ namespace Data
 			return ".Msh";
 		}
 	};
+	*/
 }

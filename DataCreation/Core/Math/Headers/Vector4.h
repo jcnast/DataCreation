@@ -35,7 +35,7 @@ namespace Core
 				T Axes[4];
 			};
 
-			VectorA(T d = T(0))
+			VectorA(T d = 0)
 				: X(d), Y(d), Z(d), W(d)
 			{}
 
@@ -43,11 +43,11 @@ namespace Core
 				: X(x), Y(y), Z(z), W(w)
 			{}
 
-			VectorA(VectorA<T, 2> const& v, T d1 = T(0), T d2 = T(0))
+			VectorA(VectorA<T, 2> const& v, T d1 = 0, T d2 = 0)
 				: XY(v), Z(d1), W(d2)
 			{}
 
-			VectorA(VectorA<T, 3> const& v, T d = T(0))
+			VectorA(VectorA<T, 3> const& v, T d = 0)
 				: XYZ(v), W(d)
 			{}
 
@@ -208,6 +208,11 @@ namespace Core
 			bool operator==(VectorA<T, 4> const& v)
 			{
 				return (X == v.X && Y == v.Y && Z == v.Z && W == v.W);
+			}
+
+			bool operator!=(VectorA<T, 4> const& v)
+			{
+				return (X != v.X || Y != v.Y || Z != v.Z || W != v.W);
 			}
 
 			// add in other comparison operators

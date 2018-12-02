@@ -16,7 +16,7 @@ namespace Data
 	struct Test
 	{
 		String Name;
-	}
+	};
 
 	struct AssetType<Test>
 	{
@@ -41,7 +41,7 @@ namespace Data
 	{
 		String Name;
 		AssetName<int> TestList;
-	}
+	};
 
 	struct AssetType<ListTest>
 	{
@@ -66,7 +66,7 @@ namespace Data
 	{
 		String Name;
 		AssetName<int> TestReference;
-	}
+	};
 
 	struct AssetType<Test2>
 	{
@@ -91,7 +91,7 @@ namespace Data
 	{
 		String Name;
 		String File;
-	}
+	};
 
 	struct AssetType<Models>
 	{
