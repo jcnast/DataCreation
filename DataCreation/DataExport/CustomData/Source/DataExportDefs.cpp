@@ -15,7 +15,7 @@ namespace Data
 					definition += "\t\t" + prop->GetLine() + "\n";
 				}
 			}
-			definition += "\t}\n";
+			definition += "\t};\n";
 
 			return definition;
 		}

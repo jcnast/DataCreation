@@ -13,7 +13,7 @@ namespace Data
 	{
 		AnimatedMeshData::AnimatedMeshData(String fileName)
 		{
-			File meshFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File meshFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Meshes/"), fileName });
 
 			MESSAGE(meshFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

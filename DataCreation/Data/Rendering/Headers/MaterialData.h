@@ -2,6 +2,8 @@
 
 #include "Core/Math/Headers/Color.h"
 
+#include "Data/Headers/AssetType.h"
+
 using namespace Core;
 using namespace Core::Math;
 
@@ -20,4 +22,22 @@ namespace Data
 			MaterialData(String fileName);
 		};
 	}
+
+	struct AssetType<Rendering::MaterialData>
+	{
+		Hash ClassHash() const
+		{
+			return HashValue("MaterialData");
+		}
+
+		String GetPath() const
+		{
+			return "Resources/ExportedAssets/Materials/";
+		}
+
+		String GetFileType() const
+		{
+			return ".Mat";
+		}
+	};
 }

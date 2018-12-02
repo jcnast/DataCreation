@@ -3,7 +3,7 @@
 #include "Core/Headers/CoreDefs.h"
 #include "Core/Headers/ListDefs.h"
 
-#include "Data/Headers/AssetType.h"
+#include "Data\Headers\AssetType.h"
 
 #include "Data/Rendering/Headers/VertexBaseData.h"
 
@@ -14,21 +14,21 @@ namespace Data
 	namespace Rendering
 	{
 		// holds the information about the mesh of a 3D object
-		struct AnimatedMeshData
+		struct StaticMeshData
 		{
-			List<AnimatedVertexDataBase> Vertices;
+			List<VertexDataBase> Vertices;
 			uint VertexCount = 0;
 
-			AnimatedMeshData() = default;
-			AnimatedMeshData(String fileName);
+			StaticMeshData() = default;
+			StaticMeshData(String fileName);
 		};
 	}
 
-	struct AssetType<Rendering::AnimatedMeshData>
+	struct AssetType<Rendering::StaticMeshData>
 	{
 		Hash ClassHash() const
 		{
-			return HashValue("AnimatedMeshData");
+			return HashValue("StaticMeshData");
 		}
 
 		String GetPath() const
@@ -38,7 +38,7 @@ namespace Data
 
 		String GetFileType() const
 		{
-			return ".AMsh";
+			return ".Msh";
 		}
 	};
 }

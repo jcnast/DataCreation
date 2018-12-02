@@ -48,9 +48,8 @@ namespace Data
 				return;
 			}
 
-			skeletonAnimationFile.Write(String(animation->mName.C_Str()));
+			skeletonAnimationFile.Write(String(animation->mName.C_Str()), animation->mNumChannels, animation->mDuration / animation->mTicksPerSecond);
 			skeletonAnimationFile.CreateNewLine();
-			skeletonAnimationFile.Write("duration", animation->mDuration / animation->mTicksPerSecond);
 
 			for (uint i = 0; i < animation->mNumChannels; i++)
 			{
@@ -66,7 +65,7 @@ namespace Data
 		void AddChannelToFile(Core::Ptr<Core::IO::File> skeletonAnimationFile, Core::Ptr<const aiNodeAnim> channel, double ticksPerSecond)
 		{
 			skeletonAnimationFile->CreateNewLine();
-			skeletonAnimationFile->Write("bone", String(channel->mNodeName.C_Str()));
+			skeletonAnimationFile->Write(String(channel->mNodeName.C_Str()));
 
 			skeletonAnimationFile->CreateNewLine();
 			skeletonAnimationFile->Write("preState", BehaviourToString(channel->mPreState));

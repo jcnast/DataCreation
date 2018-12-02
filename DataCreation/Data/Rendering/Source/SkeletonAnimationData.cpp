@@ -43,23 +43,38 @@ namespace Data
 
 		void BoneAnimationData::ReadAnimationData(String name, File& animationFile)
 		{
-			String line = animationFile.GetLine();
-
-			IOSStreamChar lineStream(line);
-
 			bool doneReading = false;
 
 			String word;
 			int frames;
 			while (!doneReading)
 			{
-				lineStream >> word;
-				lineStream >> frames;
+				String line = animationFile.GetLine();
 
-				if (word == "position")
+				IOSStreamChar lineStream(line);
+
+				lineStream >> word;
+
+				if (word == "preState")
 				{
+					lineStream >> word;
+					PreBehaviour = GetBehaviourFromString(word);
+				}
+				else if (word == "postState")
+				{
+					lineStream >> word;
+					PostBehaviour = GetBehaviourFromString(word);
+				}
+				else if (word == "position")
+				{
+					lineStream >> frames;
+
 					for (int i = 0; i < frames; i++)
 					{
+						String line = animationFile.GetLine();
+
+						IOSStreamChar lineStream(line);
+
 						Float3 position;
 						Second time;
 
@@ -79,6 +94,10 @@ namespace Data
 				{
 					for (int i = 0; i < frames; i++)
 					{
+						String line = animationFile.GetLine();
+
+						IOSStreamChar lineStream(line);
+
 						FQuaternion rotation;
 						Second time;
 
@@ -99,6 +118,10 @@ namespace Data
 				{
 					for (int i = 0; i < frames; i++)
 					{
+						String line = animationFile.GetLine();
+
+						IOSStreamChar lineStream(line);
+
 						Float3 scale;
 						Second time;
 
@@ -119,6 +142,30 @@ namespace Data
 			}
 		}
 
+		BoneAnimationData::AnimationBehaviour BoneAnimationData::GetBehaviourFromString(String string)
+		{
+			if (string == "default")
+			{
+				return AnimationBehaviour::Default;
+			}
+			else if (string == "constant")
+			{
+				return AnimationBehaviour::Constant;
+			}
+			else if (string == "linear")
+			{
+				return AnimationBehaviour::Linear;
+			}
+			else if (string == "repeat")
+			{
+				return AnimationBehaviour::Repeat;
+			}
+			else
+			{
+				return AnimationBehaviour::Unknown;
+			}
+		}
+
 		void BoneAnimationData::AddPositionFrame(Float3 position, Second time)
 		{
 			Push(PositionChannel, PositionFrameData(position, time));
@@ -136,7 +183,7 @@ namespace Data
 
 		SkeletonAnimationData::SkeletonAnimationData(String fileName)
 		{
-			File animationFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File animationFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/SkeletonAnimations/"), fileName });
 
 			MESSAGE(animationFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 
@@ -146,12 +193,17 @@ namespace Data
 
 				IOSStreamChar lineStream(line);
 
-				int animationCount;
+				int boneCount;
 
-				lineStream >> animationCount;
+				lineStream >> Name;
+				lineStream >> boneCount;
+
+				float time;
+				lineStream >> time;
+				Duration = Second(time);
 
 				String animationName;
-				for (int i = 0; i < animationCount; i++)
+				for (int i = 0; i < boneCount; i++)
 				{
 					lineStream >> animationName;
 

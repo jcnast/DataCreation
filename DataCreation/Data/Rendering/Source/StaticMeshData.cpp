@@ -1,4 +1,4 @@
-#include "Data/Rendering/Headers/MeshData.h"
+#include "Data/Rendering/Headers/StaticMeshData.h"
 
 #include "Core/IO/Headers/IOUtils.h"
 
@@ -11,9 +11,9 @@ namespace Data
 {
 	namespace Rendering
 	{
-		MeshData::MeshData(String fileName)
+		StaticMeshData::StaticMeshData(String fileName)
 		{
-			File meshFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File meshFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Meshes/"), fileName });
 
 			MESSAGE(meshFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

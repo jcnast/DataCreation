@@ -148,18 +148,18 @@ namespace Data
 
 		void DirectModels(Ptr<File> directAssets, List<Pair<bool, String>> models)
 		{
-			ExportDirectReference_Open("Models", "Mdl", directAssets);
+			ExportDirectReference_Open("StaticModels", "SMdl", directAssets);
 
 			for (auto& model : models)
 			{
 				if (!model.first)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::ModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = " + ToString(HashValue(model).H) + ";");
 					directAssets->CreateNewLine();
 				}
 			}
 
-			ExportDirectReference_Close("Models", "Mdl", directAssets);
+			ExportDirectReference_Close("StaticModels", "SMdl", directAssets);
 
 
 

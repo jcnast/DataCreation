@@ -9,6 +9,8 @@
 #include "Core/Math/Headers/Vector3.h"
 #include "Core/Math/Headers/Quaternion.h"
 
+#include "Data/Headers/AssetType.h"
+
 namespace Data
 {
 	namespace Rendering
@@ -42,7 +44,19 @@ namespace Data
 
 		struct BoneAnimationData
 		{
+			enum class AnimationBehaviour
+			{
+				Default,
+				Constant,
+				Linear,
+				Repeat,
+				Unknown
+			};
+
 			Core::String Name;
+
+			AnimationBehaviour PreBehaviour;
+			AnimationBehaviour PostBehaviour;
 
 			Core::List<PositionFrameData> PositionChannel;
 			Core::List<RotationFrameData> RotationChannel;
@@ -54,6 +68,7 @@ namespace Data
 			void ReadAnimationData(Core::String name, Core::IO::File& animationFile);
 
 		private:
+			AnimationBehaviour GetBehaviourFromString(String string);
 			void AddPositionFrame(Core::Math::Float3 position, Core::Second time);
 			void AddRotationFrame(Core::Math::FQuaternion rotation, Core::Second time);
 			void AddScaleFrame(Core::Math::Float3 scale, Core::Second time);
@@ -71,4 +86,22 @@ namespace Data
 			SkeletonAnimationData(Core::String fileName);
 		};
 	}
+
+	struct AssetType<Rendering::SkeletonAnimationData>
+	{
+		Hash ClassHash() const
+		{
+			return HashValue("SkeletonAnimationData");
+		}
+
+		String GetPath() const
+		{
+			return "Resources/ExportedAssets/SkeletonAnimations/";
+		}
+
+		String GetFileType() const
+		{
+			return ".SAnim";
+		}
+	};
 }

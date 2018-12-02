@@ -42,10 +42,14 @@ namespace Data
 		const Models Mdl;
 		};
 		const CustomAssets Cst;
-		struct Models
+		struct StaticModels
 		{
 		};
-		const Models Mdl;
+		const StaticModels SMdl;
+		struct AnimatedModels
+		{
+		};
+		const AnimatedModels AMdl;
 		struct Meshes
 		{
 		};

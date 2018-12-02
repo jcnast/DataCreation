@@ -15,6 +15,6 @@ namespace Data
 	{
 		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<const aiScene> scene, Core::uint meshIndex, Core::String name);
 
-		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const aiNode> rootNode, Core::uint depth, Core::List<Core::Ptr<const aiNode>>& skeletonNodes);
+		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const aiNode> rootNode, Core::List<Core::Ptr<const aiNode>>& skeletonNodes);
 	}
 }

@@ -14,7 +14,7 @@ namespace Data
 	{
 		AnimatedModelData::AnimatedModelData(String fileName)
 		{
-			File modelFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File modelFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Models/"), fileName });
 
 			MESSAGE(modelFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

@@ -13,7 +13,7 @@ namespace Data
 	{
 		TextureData::TextureData(String fileName)
 		{
-			File textureFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File textureFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Textures/"), fileName });
 
 			MESSAGE(textureFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

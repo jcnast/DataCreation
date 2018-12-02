@@ -60,12 +60,12 @@ namespace Data
 				skeletonFile.CreateNewLine();
 			}
 
-			AddNodeToFile(&skeletonFile, rootNodeForMesh, 0, skeletonNodes);
+			AddNodeToFile(&skeletonFile, rootNodeForMesh, skeletonNodes);
 
 			skeletonFile.Close();
 		}
 
-		void AddNodeToFile(Ptr<File> skeletonFile, Ptr<const aiNode> rootNode, uint depth, List<Ptr<const aiNode>>& skeletonNodes)
+		void AddNodeToFile(Ptr<File> skeletonFile, Ptr<const aiNode> rootNode, List<Ptr<const aiNode>>& skeletonNodes)
 		{
 			if (!InList(skeletonNodes, rootNode))
 			{
@@ -77,7 +77,7 @@ namespace Data
 			aiVector3D position;
 			rootNode->mTransformation.Decompose(scaling, rotation, position);
 
-			skeletonFile->Write(String(rootNode->mName.C_Str()), depth);
+			skeletonFile->Write(String(rootNode->mName.C_Str()), rootNode->mNumChildren);
 
 			skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
 
@@ -89,7 +89,7 @@ namespace Data
 
 			for (uint i = 0; i < rootNode->mNumChildren; i++)
 			{
-				AddNodeToFile(skeletonFile, rootNode->mChildren[i], depth + 1, skeletonNodes);
+				AddNodeToFile(skeletonFile, rootNode->mChildren[i], skeletonNodes);
 			}
 		}
 	}

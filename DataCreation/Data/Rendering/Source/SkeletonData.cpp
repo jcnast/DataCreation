@@ -12,10 +12,11 @@ namespace Data
 {
 	namespace Rendering
 	{
-		SkeletonBoneData::SkeletonBoneData(String name, Float3 position, FQuaternion rotation)
+		SkeletonBoneData::SkeletonBoneData(String name, Float3 position, FQuaternion rotation, Float3 scale)
 			: Name(name)
 			, Position(position)
 			, Rotation(rotation)
+			, Scale(scale)
 		{
 		}
 
@@ -26,26 +27,32 @@ namespace Data
 
 		SkeletonData::SkeletonData(String fileName)
 		{
-			File skeletonFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File skeletonFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Skeletons/"), fileName });
 
 			MESSAGE(skeletonFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 
 			try
 			{
+				ReadAnimations(skeletonFile);
+
 				String line = skeletonFile.GetLine();
 
 				IOSStreamChar lineStream(line);
+
+				String name;
 				Float3 position;
 				FQuaternion rotation;
+				Float3 scale;
 
 				int children;
 
-				ReadPosition(lineStream, position);
-				ReadRotation(lineStream, rotation);
-
+				ReadName(lineStream, name);
 				lineStream >> children;
+				ReadScale(lineStream, scale);
+				ReadRotation(lineStream, rotation);
+				ReadPosition(lineStream, position);
 
-				Root = MakeUnique<SkeletonBoneData>("Root", position, rotation);
+				Root = MakeUnique<SkeletonBoneData>(name, position, rotation, scale);
 
 				for (int i = 0; i < children; i++)
 				{
@@ -60,6 +67,26 @@ namespace Data
 			skeletonFile.Close();
 		}
 
+		void SkeletonData::ReadAnimations(File& skeletonFile)
+		{
+			String line = skeletonFile.GetLine();
+
+			IOSStreamChar lineStream(line);
+
+			String animations;
+			int numAnimations;
+
+			lineStream >> animations;
+			lineStream >> numAnimations;
+
+			for (int i = 0; i < numAnimations; i++)
+			{
+				AssetName<SkeletonAnimationData> animationName;
+				lineStream >> animationName.Name.H;
+				Push(Animations, animationName);
+			}
+		}
+
 		void SkeletonData::ReadBoneChildren(Ptr<SkeletonBoneData> parent, File& skeletonFile)
 		{
 			String line = skeletonFile.GetLine();
@@ -69,16 +96,18 @@ namespace Data
 			String name;
 			Float3 position;
 			FQuaternion rotation;
+			Float3 scale;
 
 			int children;
 
 			ReadName(lineStream, name);
-			ReadPosition(lineStream, position);
-			ReadRotation(lineStream, rotation);
-
 			lineStream >> children;
 
-			UniquePtr<SkeletonBoneData> newParent = MakeUnique<SkeletonBoneData>(name, position, rotation);
+			ReadScale(lineStream, scale);
+			ReadRotation(lineStream, rotation);
+			ReadPosition(lineStream, position);
+
+			UniquePtr<SkeletonBoneData> newParent = MakeUnique<SkeletonBoneData>(name, position, rotation, scale);
 
 			for (int i = 0; i < children; i++)
 			{
@@ -106,6 +135,13 @@ namespace Data
 			lineStream >> rotation.Y;
 			lineStream >> rotation.Z;
 			lineStream >> rotation.W;
+		}
+
+		void SkeletonData::ReadScale(IOSStreamChar& lineStream, Float3& scale)
+		{
+			lineStream >> scale.X;
+			lineStream >> scale.Y;
+			lineStream >> scale.Z;
 		}
 	}
 }

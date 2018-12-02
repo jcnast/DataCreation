@@ -172,11 +172,11 @@
     <ClCompile Include="DataExport\Source\ExportData.cpp" />
     <ClCompile Include="Data\Rendering\Source\AnimatedMeshData.cpp" />
     <ClCompile Include="Data\Rendering\Source\AnimatedModelData.cpp" />
-    <ClCompile Include="Data\Rendering\Source\ModelData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\StaticModelData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonAnimationData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonData.cpp" />
     <ClCompile Include="Data\Rendering\Source\MaterialData.cpp" />
-    <ClCompile Include="Data\Rendering\Source\MeshData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\StaticMeshData.cpp" />
     <ClCompile Include="Data\Rendering\Source\TextureData.cpp" />
     <ClCompile Include="Data\Source\AssetUtils.cpp" />
     <ClCompile Include="Data\SQL\Source\SQLInstance.cpp" />
@@ -269,8 +269,8 @@
     <ClInclude Include="Data\Rendering\Headers\AnimatedMeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\AnimatedModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
-    <ClInclude Include="Data\Rendering\Headers\MeshData.h" />
-    <ClInclude Include="Data\Rendering\Headers\ModelData.h" />
+    <ClInclude Include="Data\Rendering\Headers\StaticMeshData.h" />
+    <ClInclude Include="Data\Rendering\Headers\StaticModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\SkeletonAnimationData.h" />
     <ClInclude Include="Data\Rendering\Headers\SkeletonData.h" />
     <ClInclude Include="Data\Rendering\Headers\TextureData.h" />

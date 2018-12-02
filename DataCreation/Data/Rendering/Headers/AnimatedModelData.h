@@ -28,4 +28,22 @@ namespace Data
 			AnimatedModelData(String fileName);
 		};
 	}
+
+	struct AssetType<Rendering::AnimatedModelData>
+	{
+		Hash ClassHash() const
+		{
+			return HashValue("AnimatedModelData");
+		}
+
+		String GetPath() const
+		{
+			return "Resources/ExportedAssets/Models/";
+		}
+
+		String GetFileType() const
+		{
+			return ".AMdl";
+		}
+	};
 }

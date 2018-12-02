@@ -13,7 +13,7 @@ namespace Data
 	{
 		MaterialData::MaterialData(String fileName)
 		{
-			File materialFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File materialFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Materials/"), fileName });
 
 			MESSAGE(materialFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

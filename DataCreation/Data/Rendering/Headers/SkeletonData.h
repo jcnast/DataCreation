@@ -21,11 +21,12 @@ namespace Data
 			Core::String Name;
 			Core::Math::Float3 Position;
 			Core::Math::FQuaternion Rotation;
+			Core::Math::Float3 Scale;
 
 			Core::List<Core::UniquePtr<SkeletonBoneData>> ChildBones;
 
 			SkeletonBoneData() = delete;
-			SkeletonBoneData(Core::String name, Core::Math::Float3 position, Core::Math::FQuaternion rotation = Core::Math::FQuaternion());
+			SkeletonBoneData(Core::String name, Core::Math::Float3 position, Core::Math::FQuaternion rotation = Core::Math::FQuaternion(), Core::Math::Float3 scale = Core::Math::Float3(Core::Math::II()));
 
 			void AddBone(Core::UniquePtr<SkeletonBoneData> bone);
 		};
@@ -40,11 +41,31 @@ namespace Data
 			SkeletonData(Core::String fileName);
 
 		private:
+			void ReadAnimations(Core::IO::File& skeletonFile);
 			void ReadBoneChildren(Core::Ptr<SkeletonBoneData> parent, Core::IO::File& skeletonFile);
 
 			void ReadName(Core::IO::IOSStreamChar& lineStream, Core::String& name);
 			void ReadPosition(Core::IO::IOSStreamChar& lineStream, Core::Math::Float3& position);
 			void ReadRotation(Core::IO::IOSStreamChar& lineStream, Core::Math::FQuaternion& rotation);
+			void ReadScale(Core::IO::IOSStreamChar& lineStream, Core::Math::Float3& scale);
 		};
 	}
+
+	struct AssetType<Rendering::SkeletonData>
+	{
+		Hash ClassHash() const
+		{
+			return HashValue("SkeletonData");
+		}
+
+		String GetPath() const
+		{
+			return "Resources/ExportedAssets/Skeletons/";
+		}
+
+		String GetFileType() const
+		{
+			return ".Skl";
+		}
+	};
 }

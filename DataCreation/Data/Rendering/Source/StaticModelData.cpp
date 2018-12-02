@@ -1,4 +1,4 @@
-#include "Data/Rendering/Headers/ModelData.h"
+#include "Data/Rendering/Headers/StaticModelData.h"
 
 #include "Core/IO/Headers/IOUtils.h"
 
@@ -12,9 +12,9 @@ namespace Data
 {
 	namespace Rendering
 	{
-		ModelData::ModelData(String fileName)
+		StaticModelData::StaticModelData(String fileName)
 		{
-			File modelFile = OpenFileI(FilePath{ String("PATH TO FILE"), fileName });
+			File modelFile = OpenFileI(FilePath{ String("Resources/ExportedAssets/Models/"), fileName });
 
 			MESSAGE(modelFile.FileStream.is_open(), "FAILED TO READ FILE <<" + fileName + ">>");
 

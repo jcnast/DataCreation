@@ -48,9 +48,6 @@
     <ClCompile Include="Data\Rendering\Source\MaterialData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Rendering\Source\MeshData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\UnitTests\HashTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
     <ClCompile Include="DataExport\Rendering\Source\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Rendering\Source\ModelData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DataExport\Rendering\Source\ModelExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,6 +109,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Rendering\Source\AnimatedModelData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Rendering\Source\StaticModelData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Rendering\Source\StaticMeshData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -428,9 +428,6 @@
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Rendering\Headers\MeshData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\Rendering\Headers\VertexBaseData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -542,9 +539,6 @@
     <ClInclude Include="DataExport\Rendering\Headers\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Rendering\Headers\ModelData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DataExport\Rendering\Headers\ModelExport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -552,6 +546,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Rendering\Headers\AnimatedModelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\StaticModelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Rendering\Headers\StaticMeshData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
