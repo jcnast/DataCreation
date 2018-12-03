@@ -51,9 +51,6 @@
     <ClCompile Include="Core\UnitTests\HashTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\SQL\Source\SQLInstance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\Source\AssetUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,6 +112,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Rendering\Source\StaticMeshData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataExport\SQL\Source\SQLInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -455,15 +455,6 @@
     <ClInclude Include="Data\Headers\AssetUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\SQL\Headers\SQLDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\SQL\Headers\SQLInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\SQL\Headers\SQLExceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\Headers\AssetExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -552,6 +543,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Rendering\Headers\StaticMeshData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\SQL\Headers\SQLDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\SQL\Headers\SQLExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataExport\SQL\Headers\SQLInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

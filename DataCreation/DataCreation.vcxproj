@@ -98,15 +98,18 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,18 +134,21 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -179,7 +185,7 @@
     <ClCompile Include="Data\Rendering\Source\StaticMeshData.cpp" />
     <ClCompile Include="Data\Rendering\Source\TextureData.cpp" />
     <ClCompile Include="Data\Source\AssetUtils.cpp" />
-    <ClCompile Include="Data\SQL\Source\SQLInstance.cpp" />
+    <ClCompile Include="DataExport\SQL\Source\SQLInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataExport\CustomData\Headers\DataExportDefs.h" />
@@ -279,9 +285,9 @@
     <ClInclude Include="DataExport\Resources\ExportedAssets\CustomAssets.h" />
     <ClInclude Include="DataExport\Resources\ExportedAssets\MaterialAssets.h" />
     <ClInclude Include="DataExport\Resources\ExportedAssets\MeshAssets.h" />
-    <ClInclude Include="Data\SQL\Headers\SQLDefs.h" />
-    <ClInclude Include="Data\SQL\Headers\SQLExceptions.h" />
-    <ClInclude Include="Data\SQL\Headers\SQLInstance.h" />
+    <ClInclude Include="DataExport\SQL\Headers\SQLDefs.h" />
+    <ClInclude Include="DataExport\SQL\Headers\SQLExceptions.h" />
+    <ClInclude Include="DataExport\SQL\Headers\SQLInstance.h" />
     <ClInclude Include="Data\Test.h" />
     <ClInclude Include="Data\Test2.h" />
     <ClInclude Include="Dependencies\Includes\ASSIMP\ai_assert.h" />

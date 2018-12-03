@@ -2,7 +2,7 @@
 
 #include "Core/IO/Headers/File.h"
 
-#include "Data/SQL/Headers/SQLInstance.h"
+#include "DataExport/SQL/Headers/SQLInstance.h"
 
 #include "DataExport/CustomData/Headers/DataExportDefs.h"
 
