@@ -22,7 +22,8 @@ namespace Data
 
 		String DataType::GetMetaTypeDefinition()
 		{
-			String definition = "\tstruct AssetType<" + Name + ">\n";
+			String definition = "\ttemplate<>\n";
+			definition += "\tstruct AssetType<" + Name + ">\n";
 			definition += "\t{\n";
 			definition += "\t\tHash ClassHash() const\n";
 			definition += "\t\t{\n";

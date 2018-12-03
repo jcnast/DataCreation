@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Data/Headers/AssetType.h"
@@ -18,6 +17,7 @@ namespace Data
 		String Name;
 	};
 
+	template<>
 	struct AssetType<Test>
 	{
 		Hash ClassHash() const
@@ -43,6 +43,7 @@ namespace Data
 		AssetName<int> TestList;
 	};
 
+	template<>
 	struct AssetType<ListTest>
 	{
 		Hash ClassHash() const
@@ -68,6 +69,7 @@ namespace Data
 		AssetName<int> TestReference;
 	};
 
+	template<>
 	struct AssetType<Test2>
 	{
 		Hash ClassHash() const
@@ -83,31 +85,6 @@ namespace Data
 		String GetFileType() const
 		{
 			return ".Tst";
-		}
-	};
-
-// Models
-	struct Models
-	{
-		String Name;
-		String File;
-	};
-
-	struct AssetType<Models>
-	{
-		Hash ClassHash() const
-		{
-			return Core::HashValue("Models");
-		}
-
-		String GetPath() const
-		{
-			return "CustomAssets/Models/";
-		}
-
-		String GetFileType() const
-		{
-			return ".Mdl";
 		}
 	};
 

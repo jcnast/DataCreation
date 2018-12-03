@@ -172,7 +172,6 @@ namespace Data
 
 		void ExportDirectReference_Open(String name, Ptr<File> directAssets)
 		{
-			directAssets->Write("\t\ttempalte <>");
 			directAssets->Write("\t\tstruct " + name);
 			directAssets->CreateNewLine();
 			directAssets->Write("\t\t{");
@@ -206,7 +205,8 @@ namespace Data
 
 			if (asset.directExport)
 			{
-				directAssets->Write("\t\t\tconst AssetName<" + asset.typeName + "> " + asset.assetName + " = " + ToString(HashValue(asset.assetName).H) + ";");
+				String assetName = "AssetName<" + asset.typeName + ">";
+				directAssets->Write("\t\t\tconst " + assetName + " " + asset.assetName + " = " + assetName + "(" + ToString(HashValue(asset.assetName).H) + ");");
 				directAssets->CreateNewLine();
 			}
 
@@ -217,8 +217,7 @@ namespace Data
 		{
 			customAssets->Clear();
 
-			String header = R"(
-#pragma once
+			String header = R"(#pragma once
 
 #include "Data/Headers/AssetType.h"
 

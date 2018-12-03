@@ -25,7 +25,8 @@ namespace Data
 
 			InitializeAssetsFile(&directAssets);
 
-			ExportCustomData(&directAssets);
+			// Not exporting custom data since it is not needed atm
+			//ExportCustomData(&directAssets);
 			ExportRenderingData(&directAssets);
 
 			FinalizeAssetsFile(&directAssets);
@@ -78,8 +79,15 @@ namespace Data
 #include "Data/Headers/AssetName.h"
 
 #include "CustomAssets.h"
-#include "MaterialAssets.h"
-#include "MeshAssets.h"
+
+#include "Data/Rendering/Headers/AnimatedMeshData.h"
+#include "Data/Rendering/Headers/AnimatedModelData.h"
+#include "Data/Rendering/Headers/MaterialData.h"
+#include "Data/Rendering/Headers/SkeletonAnimationData.h"
+#include "Data/Rendering/Headers/SkeletonData.h"
+#include "Data/Rendering/Headers/StaticMeshData.h"
+#include "Data/Rendering/Headers/StaticModelData.h"
+#include "Data/Rendering/Headers/TextureData.h"
 
 namespace Data
 {
