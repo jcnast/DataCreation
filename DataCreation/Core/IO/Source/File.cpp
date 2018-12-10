@@ -34,16 +34,7 @@ namespace Core
 
 			if (!FileStream.is_open())
 			{
-				cout << "File could not open, attempting to create and then reopening" << endl;
-
-				if (Create())
-				{
-					Open();
-				}
-				else
-				{
-					throw IOException("File <" + GetFullPath() + "> was unable to be opened");
-				}
+				throw IOException("File <" + GetFullPath() + "> was unable to be opened");
 			}
 		}
 
@@ -168,7 +159,7 @@ namespace Core
 				String Line;
 				if (!std::getline(FileStream, Line))
 				{
-					return "";
+					throw EOFException("can't get line for this file - likely EOF");
 				}
 
 				return Line;

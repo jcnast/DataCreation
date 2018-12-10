@@ -14,22 +14,22 @@ namespace Data
 	namespace Rendering
 	{
 		// holds the information about the mesh of a 3D object
-		struct AnimatedMeshData
+		struct SimpleMeshData
 		{
-			List<AnimatedVertexDataBase> Vertices;
+			List<SimpleVertexDataBase> Vertices;
 			uint VertexCount = 0;
 
-			AnimatedMeshData() = default;
-			AnimatedMeshData(AssetName<AnimatedMeshData> asset);
+			SimpleMeshData() = default;
+			SimpleMeshData(AssetName<SimpleMeshData> asset);
 		};
 	}
 
 	template <>
-	struct AssetType<Rendering::AnimatedMeshData>
+	struct AssetType<Rendering::SimpleMeshData>
 	{
 		static Hash ClassHash()
 		{
-			return HashValue("AnimatedMeshData");
+			return HashValue("SimpleMeshData");
 		}
 
 		static String GetPath()
@@ -39,7 +39,7 @@ namespace Data
 
 		static String GetFileType()
 		{
-			return ".amsh";
+			return ".msh";
 		}
 	};
 }

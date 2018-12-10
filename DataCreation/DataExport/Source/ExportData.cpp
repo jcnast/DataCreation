@@ -85,6 +85,7 @@ namespace Data
 #include "Data/Rendering/Headers/MaterialData.h"
 #include "Data/Rendering/Headers/SkeletonAnimationData.h"
 #include "Data/Rendering/Headers/SkeletonData.h"
+#include "Data/Rendering/Headers/SimpleMeshData.h"
 #include "Data/Rendering/Headers/StaticMeshData.h"
 #include "Data/Rendering/Headers/StaticModelData.h"
 #include "Data/Rendering/Headers/TextureData.h"
