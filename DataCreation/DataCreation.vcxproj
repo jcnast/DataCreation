@@ -178,6 +178,8 @@
     <ClCompile Include="DataExport\Source\ExportData.cpp" />
     <ClCompile Include="Data\Rendering\Source\AnimatedMeshData.cpp" />
     <ClCompile Include="Data\Rendering\Source\AnimatedModelData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\SimpleMeshData.cpp" />
+    <ClCompile Include="Data\Rendering\Source\SimpleModelData.cpp" />
     <ClCompile Include="Data\Rendering\Source\StaticModelData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonAnimationData.cpp" />
     <ClCompile Include="Data\Rendering\Source\SkeletonData.cpp" />
@@ -275,6 +277,8 @@
     <ClInclude Include="Data\Rendering\Headers\AnimatedMeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\AnimatedModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\MaterialData.h" />
+    <ClInclude Include="Data\Rendering\Headers\SimpleMeshData.h" />
+    <ClInclude Include="Data\Rendering\Headers\SimpleModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\StaticMeshData.h" />
     <ClInclude Include="Data\Rendering\Headers\StaticModelData.h" />
     <ClInclude Include="Data\Rendering\Headers\SkeletonAnimationData.h" />

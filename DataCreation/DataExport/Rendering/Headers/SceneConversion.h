@@ -14,12 +14,20 @@ namespace Data
 {
 	namespace DataExport
 	{
+		enum class ModelType
+		{
+			Simple,
+			Static,
+			Animated,
+			Unknown
+		};
+
 		void ConvertModelsInFolder(Core::Ptr<Core::IO::File> directAssets, Core::String folder);
 
-		void ConvertFilesForScene(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<Core::IO::File> sceneFile, Core::String sceneName, Core::List<Core::Pair<bool, Core::String>>& models, Core::List<Core::Pair<bool, Core::String>>& meshes, Core::List<Core::String>& materials, Core::List<Core::String>& skeletons, Core::List<Core::String>& skeletonAnimations);
+		void ConvertFilesForScene(Core::Ptr<Core::IO::File> directAssets, Core::Ptr<Core::IO::File> sceneFile, Core::String sceneName, Core::List<Core::Pair<ModelType, Core::String>>& models, Core::List<Core::Pair<ModelType, Core::String>>& meshes, Core::List<Core::String>& materials, Core::List<Core::String>& skeletons, Core::List<Core::String>& skeletonAnimations);
 
-		void DirectModels(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::Pair<bool, Core::String>>& models);
-		void DirectMeshes(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::Pair<bool, Core::String>>& meshes);
+		void DirectModels(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::Pair<ModelType, Core::String>>& models);
+		void DirectMeshes(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::Pair<ModelType, Core::String>>& meshes);
 		void DirectMaterials(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::String>& materials);
 		void DirectSkeletons(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::String>& skeletons);
 		void DirectSkeletonAnimations(Core::Ptr<Core::IO::File> directAssets, Core::List<Core::String>& skeletonAnimations);

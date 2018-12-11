@@ -30,8 +30,8 @@ namespace Data
 	{
 		void ConvertModelsInFolder(Ptr<File> directAssets, String folder)
 		{
-			List<Pair<bool, String>> models;
-			List<Pair<bool, String>> meshes;
+			List<Pair<ModelType, String>> models;
+			List<Pair<ModelType, String>> meshes;
 			List<String> materials;
 			List<String> skeletons;
 			List<String> skeletonAnimations;
@@ -86,7 +86,7 @@ namespace Data
 			DirectSkeletonAnimations(directAssets, skeletonAnimations);
 		}
 
-		void ConvertFilesForScene(Ptr<File> directAssets, Ptr<File> sceneFile, String sceneName, List<Pair<bool, String>>& models, List<Pair<bool, String>>& meshes, List<String>& materials, List<String>& skeletons, List<String>& skeletonAnimations)
+		void ConvertFilesForScene(Ptr<File> directAssets, Ptr<File> sceneFile, String sceneName, List<Pair<ModelType, String>>& models, List<Pair<ModelType, String>>& meshes, List<String>& materials, List<String>& skeletons, List<String>& skeletonAnimations)
 		{
 			LOG("Converting files for <<" + sceneFile->GetFullPath() + ">>");
 			// this process preset also INCLUDES the flag to make all faces based on triangles
@@ -111,11 +111,23 @@ namespace Data
 
 				LOG("Creating file to hold model information for <<" + fileName + ">>");
 				CreateFileForModel(directAssets, loadedScene, meshIndex, fileName);
-				Push(models, Pair<bool, String>(loadedScene->mMeshes[meshIndex]->HasBones(), fileName));
 
 				LOG("Creating file to hold mesh information for <<" + fileName + ">>");
 				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], fileName);
-				Push(meshes, Pair<bool, String>(loadedScene->mMeshes[meshIndex]->HasBones(), fileName));
+
+				if (loadedScene->mMeshes[meshIndex]->HasBones())
+				{
+					Push(models, Pair<ModelType, String>(ModelType::Simple, fileName));
+					Push(meshes, Pair<ModelType, String>(ModelType::Simple, fileName));
+
+					Push(models, Pair<ModelType, String>(ModelType::Static, fileName));
+					Push(meshes, Pair<ModelType, String>(ModelType::Static, fileName));
+				}
+				else
+				{
+					Push(models, Pair<ModelType, String>(ModelType::Animated, fileName));
+					Push(meshes, Pair<ModelType, String>(ModelType::Animated, fileName));
+				}
 
 				LOG("Creating file to hold material information for <<" + fileName + ">>");
 				CreateFileForMaterial(directAssets, loadedScene->mMaterials[loadedScene->mMeshes[meshIndex]->mMaterialIndex], fileName);
@@ -146,15 +158,31 @@ namespace Data
 			aiReleaseImport(loadedScene);
 		}
 
-		void DirectModels(Ptr<File> directAssets, List<Pair<bool, String>>& models)
+		void DirectModels(Ptr<File> directAssets, List<Pair<ModelType, String>>& models)
 		{
+			// simple
+			ExportDirectReference_Open("SimpleModels", "spmdl", directAssets);
+
+			for (auto& model : models)
+			{
+				if (model.first == ModelType::Simple)
+				{
+					directAssets->Write("\t\t\tconst AssetName<Rendering::SimpleModelData> " + model.second + " = AssetName<Rendering::SimpleModelData>(Hash(" + ToString(HashValue(model)) + "));");
+					directAssets->CreateNewLine();
+				}
+			}
+
+			ExportDirectReference_Close("SimpleModels", "spmdl", directAssets);
+
+
+			// static
 			ExportDirectReference_Open("StaticModels", "smdl", directAssets);
 
 			for (auto& model : models)
 			{
-				if (!model.first)
+				if (model.first == ModelType::Static)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = AssetName<Rendering::StaticModelData>(" + ToString(HashValue(model).H) + ");");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = AssetName<Rendering::StaticModelData>(Hash(" + ToString(HashValue(model)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
@@ -162,14 +190,14 @@ namespace Data
 			ExportDirectReference_Close("StaticModels", "smdl", directAssets);
 
 
-
+			// animated
 			ExportDirectReference_Open("AnimatedModels", "amdl", directAssets);
 
 			for (auto& model : models)
 			{
-				if (model.first)
+				if (model.first == ModelType::Animated)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = AssetName<Rendering::AnimatedModelData>(" + ToString(HashValue(model).H) + ");");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = AssetName<Rendering::AnimatedModelData>(Hash(" + ToString(HashValue(model)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
@@ -177,34 +205,51 @@ namespace Data
 			ExportDirectReference_Close("AnimatedModels", "amdl", directAssets);
 		}
 
-		void DirectMeshes(Ptr<File> directAssets, List<Pair<bool, String>>& meshes)
+		void DirectMeshes(Ptr<File> directAssets, List<Pair<ModelType, String>>& meshes)
 		{
-			ExportDirectReference_Open("StaticMeshes", "msh", directAssets);
+			// simple
+			ExportDirectReference_Open("SimpleMeshes", "spmsh", directAssets);
 
 			for (auto& mesh : meshes)
 			{
-				if (!mesh.first)
+				if (mesh.first == ModelType::Simple)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticMeshData> " + mesh.second + " = AssetName<Rendering::StaticMeshData>(" + ToString(HashValue(mesh.second).H) + ");");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::SimpleMeshData> " + mesh.second + " = AssetName<Rendering::SimpleMeshData>(Hash(" + ToString(HashValue(mesh.second)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
 
-			ExportDirectReference_Close("StaticMeshes", "msh", directAssets);
+			ExportDirectReference_Close("SimpleMeshes", "spmsh", directAssets);
 
 
-			ExportDirectReference_Open("AnimatedMeshes", "msh", directAssets);
+			// static
+			ExportDirectReference_Open("StaticMeshes", "smsh", directAssets);
 
 			for (auto& mesh : meshes)
 			{
-				if (mesh.first)
+				if (mesh.first == ModelType::Static)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedMeshData> " + mesh.second + " = AssetName<Rendering::AnimatedMeshData>(" + ToString(HashValue(mesh.second).H) + ");");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticMeshData> " + mesh.second + " = AssetName<Rendering::StaticMeshData>(Hash(" + ToString(HashValue(mesh.second)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
 
-			ExportDirectReference_Close("AnimatedMeshes", "msh", directAssets);
+			ExportDirectReference_Close("StaticMeshes", "smsh", directAssets);
+
+
+			// animated
+			ExportDirectReference_Open("AnimatedMeshes", "amsh", directAssets);
+
+			for (auto& mesh : meshes)
+			{
+				if (mesh.first == ModelType::Animated)
+				{
+					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedMeshData> " + mesh.second + " = AssetName<Rendering::AnimatedMeshData>(Hash(" + ToString(HashValue(mesh.second)) + "));");
+					directAssets->CreateNewLine();
+				}
+			}
+			
+			ExportDirectReference_Close("AnimatedMeshes", "amsh", directAssets);
 		}
 
 		void DirectMaterials(Ptr<File> directAssets, List<String>& materials)
@@ -213,7 +258,7 @@ namespace Data
 
 			for (auto& material : materials)
 			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::MaterialData> " + material + " = AssetName<Rendering::MaterialData>(" + ToString(HashValue(material).H) + ");");
+				directAssets->Write("\t\t\tconst AssetName<Rendering::MaterialData> " + material + " = AssetName<Rendering::MaterialData>(Hash(" + ToString(HashValue(material)) + "));");
 				directAssets->CreateNewLine();
 			}
 
@@ -226,7 +271,7 @@ namespace Data
 
 			for (auto& skeleton : skeletons)
 			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonData> " + skeleton + " = AssetName<Rendering::SkeletonData>(" + ToString(HashValue(skeleton).H) + ");");
+				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonData> " + skeleton + " = AssetName<Rendering::SkeletonData>(Hash(" + ToString(HashValue(skeleton)) + "));");
 				directAssets->CreateNewLine();
 			}
 
@@ -239,7 +284,7 @@ namespace Data
 
 			for (auto& skeletonAnimation : skeletonAnimations)
 			{
-				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonAnimationData> " + skeletonAnimation + " = AssetName<Rendering::SkeletonAnimationData>(" + ToString(HashValue(skeletonAnimation).H) + ");");
+				directAssets->Write("\t\t\tconst AssetName<Rendering::SkeletonAnimationData> " + skeletonAnimation + " = AssetName<Rendering::SkeletonAnimationData>(Hash(" + ToString(HashValue(skeletonAnimation)) + "));");
 				directAssets->CreateNewLine();
 			}
 
