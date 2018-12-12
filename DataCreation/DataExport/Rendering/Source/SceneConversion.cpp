@@ -115,7 +115,7 @@ namespace Data
 				LOG("Creating file to hold mesh information for <<" + fileName + ">>");
 				CreateFileForMesh(directAssets, loadedScene->mMeshes[meshIndex], fileName);
 
-				if (loadedScene->mMeshes[meshIndex]->HasBones())
+				if (!loadedScene->mMeshes[meshIndex]->HasBones())
 				{
 					Push(models, Pair<ModelType, String>(ModelType::Simple, fileName));
 					Push(meshes, Pair<ModelType, String>(ModelType::Simple, fileName));
@@ -167,7 +167,7 @@ namespace Data
 			{
 				if (model.first == ModelType::Simple)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::SimpleModelData> " + model.second + " = AssetName<Rendering::SimpleModelData>(Hash(" + ToString(HashValue(model)) + "));");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::SimpleModelData> " + model.second + " = AssetName<Rendering::SimpleModelData>(Hash(" + ToString(HashValue(model.second)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
@@ -182,7 +182,7 @@ namespace Data
 			{
 				if (model.first == ModelType::Static)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = AssetName<Rendering::StaticModelData>(Hash(" + ToString(HashValue(model)) + "));");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::StaticModelData> " + model.second + " = AssetName<Rendering::StaticModelData>(Hash(" + ToString(HashValue(model.second)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}
@@ -197,7 +197,7 @@ namespace Data
 			{
 				if (model.first == ModelType::Animated)
 				{
-					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = AssetName<Rendering::AnimatedModelData>(Hash(" + ToString(HashValue(model)) + "));");
+					directAssets->Write("\t\t\tconst AssetName<Rendering::AnimatedModelData> " + model.second + " = AssetName<Rendering::AnimatedModelData>(Hash(" + ToString(HashValue(model.second)) + "));");
 					directAssets->CreateNewLine();
 				}
 			}

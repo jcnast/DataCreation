@@ -27,32 +27,32 @@ namespace Data
 	{
 		struct SimpleModels
 		{
-			const AssetName<Rendering::SimpleModelData> Woman_0 = AssetName<Rendering::SimpleModelData>(Hash(2834998858));
+			const AssetName<Rendering::SimpleModelData> MI_0 = AssetName<Rendering::SimpleModelData>(Hash(1740916818));
 		};
 		const SimpleModels spmdl;
 		struct StaticModels
 		{
-			const AssetName<Rendering::StaticModelData> Woman_0 = AssetName<Rendering::StaticModelData>(Hash(3309349323));
+			const AssetName<Rendering::StaticModelData> MI_0 = AssetName<Rendering::StaticModelData>(Hash(1740916818));
 		};
 		const StaticModels smdl;
 		struct AnimatedModels
 		{
-			const AssetName<Rendering::AnimatedModelData> MI_0 = AssetName<Rendering::AnimatedModelData>(Hash(1422295488));
+			const AssetName<Rendering::AnimatedModelData> Woman_0 = AssetName<Rendering::AnimatedModelData>(Hash(3593970672));
 		};
 		const AnimatedModels amdl;
 		struct SimpleMeshes
 		{
-			const AssetName<Rendering::SimpleMeshData> Woman_0 = AssetName<Rendering::SimpleMeshData>(Hash(3593970672));
+			const AssetName<Rendering::SimpleMeshData> MI_0 = AssetName<Rendering::SimpleMeshData>(Hash(1740916818));
 		};
 		const SimpleMeshes spmsh;
 		struct StaticMeshes
 		{
-			const AssetName<Rendering::StaticMeshData> Woman_0 = AssetName<Rendering::StaticMeshData>(Hash(3593970672));
+			const AssetName<Rendering::StaticMeshData> MI_0 = AssetName<Rendering::StaticMeshData>(Hash(1740916818));
 		};
 		const StaticMeshes smsh;
 		struct AnimatedMeshes
 		{
-			const AssetName<Rendering::AnimatedMeshData> MI_0 = AssetName<Rendering::AnimatedMeshData>(Hash(1740916818));
+			const AssetName<Rendering::AnimatedMeshData> Woman_0 = AssetName<Rendering::AnimatedMeshData>(Hash(3593970672));
 		};
 		const AnimatedMeshes amsh;
 		struct Materials
