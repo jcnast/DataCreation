@@ -18,8 +18,16 @@ namespace Core
 	template <typename Key, typename T>
 	void Insert(Map<Key, T>& map, Pair<Key, T> pair)
 	{
-		map.insert(pair);
+		map.insert(move(pair));
 	}
+
+	/*
+	template <typename Key, typename ...Ts>
+	void Emplace(Map<Key, T>& map, Key&& key, Ts ...args)
+	{
+		map.emplace
+	}
+	*/
 
 	template <typename Key, typename T>
 	void Erase(Map<Key, T>& map, Key&& key)
@@ -28,7 +36,7 @@ namespace Core
 	}
 
 	template <typename Key, typename T>
-	void Clear(Map<Key, T>& maap)
+	void Clear(Map<Key, T>& map)
 	{
 		map.clear();
 	}
