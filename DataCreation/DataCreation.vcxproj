@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -22,32 +22,32 @@
     <ProjectGuid>{04E3084E-6270-4AEA-B4A0-C368951AD348}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DataCreation</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -74,6 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -87,12 +88,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Coding\VisualStudios\DataCreation\DataCreation;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\SQLite;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sqlite3.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -102,13 +104,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;assimp_BUILD_BOOST_WORKAROUND;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\ASSIMP;D:\Coding\VisualStudios\DataCreation\DataCreation;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Includes\SQLite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;C:\Users\Jagger\Desktop\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\ASSIMP;D:\Coding\VisualStudios\DataCreation\DataCreation\Dependencies\Libs\SQLite;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sqlite3.lib;assimp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -155,6 +158,7 @@
     <ClCompile Include="DataExport\CustomData\Source\DataCreation.cpp" />
     <ClCompile Include="DataExport\CustomData\Source\DataExportDefs.cpp" />
     <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp" />
+    <ClCompile Include="DataExport\Rendering\Source\AssimpExtensions.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\MaterialExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\MeshExport.cpp" />
     <ClCompile Include="DataExport\Rendering\Source\ModelExport.cpp" />
@@ -195,6 +199,7 @@
     <ClInclude Include="DataExport\Headers\AssetExportDefs.h" />
     <ClInclude Include="DataExport\Headers\ExportData.h" />
     <ClInclude Include="DataExport\Headers\ExportException.h" />
+    <ClInclude Include="DataExport\Rendering\Headers\AssimpExtensions.h" />
     <ClInclude Include="DataExport\Rendering\Headers\MeshExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\MaterialExport.h" />
     <ClInclude Include="DataExport\Rendering\Headers\ModelExport.h" />

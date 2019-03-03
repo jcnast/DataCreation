@@ -2,6 +2,7 @@
 
 #include "DataExport/Rendering/Headers/SkeletonAnimationExport.h"
 #include "DataExport/Rendering/Headers/Utils.h"
+#include "DataExport/Rendering/Headers/AssimpExtensions.h"
 
 #include "Core/Headers/Hash.h"
 
@@ -35,7 +36,7 @@ namespace Data
 			}
 
 			Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode, meshIndex);
-			List<Ptr<const aiNode>> skeletonNodes = AllNodesForMesh(rootNode, mesh, meshIndex);
+			Core::UniquePtr<ExportNode> exportSkeleton = AllNodesForMesh(rootNode, mesh, meshIndex);
 
 			// store values in file
 			FilePath skeletonAnimationFilePath = FilePath{ GetCWD() + "/Resources/ExportedAssets/SkeletonAnimations/", ToString(HashValue(name + String(animation->mName.C_Str()))) + ".sanim" };
@@ -52,7 +53,7 @@ namespace Data
 
 			for (uint i = 0; i < animation->mNumChannels; i++)
 			{
-				if (InList(skeletonNodes, FindNodeWithName(rootNode, String(animation->mChannels[i]->mNodeName.C_Str()))))
+				if (exportSkeleton->FindNode(animation->mChannels[i]->mNodeName.C_Str()) != nullptr)
 				{
 					AddChannelToFile(&skeletonAnimationFile, animation->mChannels[i], animation->mTicksPerSecond);
 				}

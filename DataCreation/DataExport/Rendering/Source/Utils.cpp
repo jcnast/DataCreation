@@ -84,39 +84,27 @@ namespace Data
 			return nullptr;
 		}
 
-		Core::List<Core::Ptr<const aiNode>> AllNodesForMesh(Core::Ptr<const aiNode> rootNode, Ptr<const aiMesh> mesh, Core::uint meshIndex)
+		Core::UniquePtr<ExportNode> AllNodesForMesh(Core::Ptr<const aiNode> rootNode, Core::Ptr<const aiMesh> mesh, Core::uint meshIndex)
 		{
-			Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode, meshIndex);
-			List<Ptr<const aiNode>> skeletonNodes;
+			Core::UniquePtr<ExportNode> meshSkeleton = CreateExportSkeletonForMesh(rootNode, meshIndex);
 
-			for (uint i = 0; i < mesh->mNumBones; i++)
+			for (Core::uint i = 0; i < mesh->mNumBones; i++)
 			{
-				Ptr<const aiNode> nodeForBone = FindNodeWithName(rootNodeForMesh, String(mesh->mBones[i]->mName.C_Str()));
-				AddMissingNodesToList(skeletonNodes, nodeForBone, rootNodeForMesh);
+				meshSkeleton->IncludeNode(String(mesh->mBones[i]->mName.C_Str()));
 			}
 
-			return skeletonNodes;
+			meshSkeleton->CleanStructure();
+
+			return meshSkeleton;
 		}
 
-		void AddMissingNodesToList(Core::List<Core::Ptr<const aiNode>>& list, Core::Ptr<const aiNode> start, Core::Ptr<const aiNode> end)
+		Core::UniquePtr<ExportNode> CreateExportSkeletonForMesh(Core::Ptr<const aiNode> rootNode, Core::uint meshIndex)
 		{
-			if (start == nullptr || end == nullptr)
-			{
-				LOG("node pointers to add to list of nodes in skeleton are nullptrs!");
-				return;
-			}
+			Core::Ptr<const aiNode> meshRoot = FindRootNodeForMesh(rootNode, meshIndex);
 
-			if (InList(list, start))
-			{
-				return;
-			}
+			Core::UniquePtr<ExportNode> exportSkeleton = Core::MakeUnique<ExportNode>(meshRoot);
 
-			Push(list, start);
-
-			if (start != end)
-			{
-				AddMissingNodesToList(list, start->mParent, end);
-			}
+			return exportSkeleton;
 		}
 	}
 }

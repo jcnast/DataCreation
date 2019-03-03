@@ -15,7 +15,7 @@ namespace Core
 		{
 			struct FunctionImplBase
 			{
-				virtual rT operator()(Ts&&... args) = 0;
+				virtual rT operator()(Ts... args) = 0;
 			};
 
 			template <typename O>
@@ -27,36 +27,45 @@ namespace Core
 					: Object(move(object))
 				{}
 
-				rT operator()(Ts&&... args)
+				rT operator()(Ts... args)
 				{
-					return Object(Forward<Ts>(args)...);
+					return Object(args...);
 				}
 			};
 
-			Ptr<FunctionImplBase> FunctionObject = nullptr;
+			SharedPtr<FunctionImplBase> FunctionObject = nullptr;
 
 			Function() = default;
 
 			template <typename O>
 			Function(O object)
 			{
-				FunctionObject = new FunctionImpl<O>(object);
+				FunctionObject = MakeShared<FunctionImpl<O>>(object);
 			}
 
 			Function(Function&& function)
 			{
 				FunctionObject = move(function.FunctionObject);
+				function.FunctionObject = nullptr;
 			}
 
-			Function(Function& function)
+			// NOTE: We currently need this to allow use with the std::vector since it requires copy-construction
+			// https://en.cppreference.com/w/cpp/container/vector
+			// Once we implement our own list we can get rid of this (and not have the FunctionObject be a SharedPtr - since that is terrible)
+			Function(const Function& function)
 			{
-				FunctionObject = move(function.FunctionObject);
-				function.FunctionObject = nullptr;
+				// do we want it to be set up like this? I don't think so
+				FunctionObject = function.FunctionObject;
+			}
+
+			~Function()
+			{
+
 			}
 
 			rT Call(Ts... args)
 			{
-				return (*this)(Forward<Ts>(args)...);
+				return (*this)(args...);
 			}
 
 			operator bool()
@@ -64,10 +73,12 @@ namespace Core
 				return (FunctionObject != nullptr);
 			}
 
-			Function& operator= (Function& function)
+			// NOTE: We currently need this to allow use with the std::vector since it requires copy-construction
+			// https://en.cppreference.com/w/cpp/container/vector
+			// Once we implement our own list we can get rid of this (and not have the FunctionObject be a SharedPtr - since that is terrible)
+			Function& operator= (const Function& function)
 			{
-				FunctionObject = move(function.FunctionObject);
-				function.FunctionObject = nullptr;
+				FunctionObject = function.FunctionObject;
 
 				return (*this);
 			}
@@ -81,16 +92,16 @@ namespace Core
 
 			rT operator()(Ts... args)
 			{
-				return (*FunctionObject)(Forward<Ts>(args)...);
+				return (*FunctionObject)(args...);
 			}
 		};
 		
 		/*	TYPE DEFS	*/
 		template <typename ...Ts>
-		using BoolFunction = Function<bool, Ts&&...>;
+		using BoolFunction = Function<bool, Ts...>;
 
 		template <typename ...Ts>
-		using VoidFunction = Function<void, Ts&&...>;
+		using VoidFunction = Function<void, Ts...>;
 
 		/*
 		Not using the below because there is likely no need, and the method in which I was using this (having a base class with overloaded () operator) does not work

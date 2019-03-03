@@ -2,6 +2,7 @@
 
 #include "DataExport/Rendering/Headers/SkeletonExport.h"
 #include "DataExport/Rendering/Headers/Utils.h"
+#include "DataExport/Rendering/Headers/AssimpExtensions.h"
 
 #include "Core/Headers/Hash.h"
 
@@ -29,8 +30,8 @@ namespace Data
 	{
 		void CreateFileForSkeleton(Core::Ptr<Core::IO::File> directAssets, Ptr<const aiScene> scene, uint meshIndex, String name)
 		{
-			Ptr<const aiNode> rootNode = scene->mRootNode;
-			Ptr<const aiMesh> mesh = scene->mMeshes[meshIndex];
+			Core::Ptr<const aiNode> rootNode = scene->mRootNode;
+			Core::Ptr<const aiMesh> mesh = scene->mMeshes[meshIndex];
 
 			if (!mesh->HasBones())
 			{
@@ -38,12 +39,12 @@ namespace Data
 				return;
 			}
 
-			Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode, meshIndex);
-			List<Ptr<const aiNode>> skeletonNodes = AllNodesForMesh(rootNode, mesh, meshIndex);
+			Core::Ptr<const aiNode> rootNodeForMesh = FindRootNodeForMesh(rootNode, meshIndex);
+			Core::UniquePtr<ExportNode> exportSkeleton = AllNodesForMesh(rootNode, mesh, meshIndex);
 
 			// store values in file
-			FilePath skeletonFilePath = FilePath{ GetCWD() + "/Resources/ExportedAssets/Skeletons/", ToString(HashValue(name)) + ".skl" };
-			File skeletonFile = File(skeletonFilePath, ios::out);
+			Core::IO::FilePath skeletonFilePath = Core::IO::FilePath{ GetCWD() + "/Resources/ExportedAssets/Skeletons/", ToString(HashValue(name)) + ".skl" };
+			Core::IO::File skeletonFile = File(skeletonFilePath, ios::out);
 			skeletonFile.Open();
 
 			if (!skeletonFile.FileStream.is_open())
@@ -60,24 +61,25 @@ namespace Data
 				skeletonFile.CreateNewLine();
 			}
 
-			AddNodeToFile(&skeletonFile, rootNodeForMesh, skeletonNodes);
+			AddSkeletonToFile(&skeletonFile, move(exportSkeleton));
 
 			skeletonFile.Close();
 		}
 
-		void AddNodeToFile(Ptr<File> skeletonFile, Ptr<const aiNode> rootNode, List<Ptr<const aiNode>>& skeletonNodes)
+		void AddSkeletonToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::UniquePtr<ExportNode> exportSkeleton)
 		{
-			if (!InList(skeletonNodes, rootNode))
-			{
-				return;
-			}
+			exportSkeleton->CleanStructure();
+			AddNodeToFile(skeletonFile, exportSkeleton.get());
+		}
 
+		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> skeletonNode)
+		{
 			aiVector3D scaling;
 			aiQuaterniont<float> rotation;
 			aiVector3D position;
-			rootNode->mTransformation.Decompose(scaling, rotation, position);
+			skeletonNode->mTransformation.Decompose(scaling, rotation, position);
 
-			skeletonFile->Write(String(rootNode->mName.C_Str()), rootNode->mNumChildren);
+			skeletonFile->Write(String(skeletonNode->mName.C_Str()), skeletonNode->mNumChildren);
 
 			skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
 
@@ -87,9 +89,9 @@ namespace Data
 
 			skeletonFile->CreateNewLine();
 
-			for (uint i = 0; i < rootNode->mNumChildren; i++)
+			for (uint i = 0; i < skeletonNode->mNumChildren; i++)
 			{
-				AddNodeToFile(skeletonFile, rootNode->mChildren[i], skeletonNodes);
+				AddNodeToFile(skeletonFile, static_cast<Core::Ptr<ExportNode>>(skeletonNode->mChildren[i]));
 			}
 		}
 	}
