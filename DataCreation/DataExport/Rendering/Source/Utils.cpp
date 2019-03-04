@@ -95,7 +95,7 @@ namespace Data
 
 			meshSkeleton->CleanStructure();
 
-			return meshSkeleton;
+			return move(meshSkeleton);
 		}
 
 		Core::UniquePtr<ExportNode> CreateExportSkeletonForMesh(Core::Ptr<const aiNode> rootNode, Core::uint meshIndex)

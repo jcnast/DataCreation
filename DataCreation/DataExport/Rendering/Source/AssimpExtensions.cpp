@@ -16,7 +16,8 @@ namespace Data
 			mName = initialNode->mName;
 			mTransformation = initialNode->mTransformation;
 
-			mNumChildren = initialNode->mNumChildren;
+			initialChildCount = initialNode->mNumChildren;
+			mNumChildren = initialChildCount;
 			mChildren = new Core::Ptr<aiNode>[mNumChildren];
 			for (Core::uint i = 0; i < mNumChildren; i++)
 			{
@@ -40,7 +41,7 @@ namespace Data
 				include = true;
 			}
 
-			for (Core::uint i = 0; i < mNumChildren; i++)
+			for (Core::uint i = 0; i < mNumChildren && !include; i++)
 			{
 				if (static_cast<Core::Ptr<ExportNode>>(mChildren[i])->IncludeIfContainsName(name))
 				{
@@ -63,6 +64,7 @@ namespace Data
 
 			ExportIfChildren();
 			RemoveNonExportChildren();
+			CleanUpChildren();
 		}
 
 		void ExportNode::ExportIfChildren()
@@ -86,10 +88,30 @@ namespace Data
 		{
 			for (int i = mNumChildren - 1; i >= 0; i--)
 			{
-				if (static_cast<Core::Ptr<ExportNode>>(mChildren[i])->exportNode)
+				if (!static_cast<Core::Ptr<ExportNode>>(mChildren[i])->exportNode)
 				{
 					delete mChildren[i];
+					mChildren[i] = nullptr;
 					mNumChildren--;
+				}
+			}
+		}
+
+		void ExportNode::CleanUpChildren()
+		{
+			for (int i = 0; i < mNumChildren; i++)
+			{
+				if (mChildren[i] == nullptr)
+				{
+					for (int j = i + 1; j < initialChildCount; j++)
+					{
+						if (mChildren[j] != nullptr)
+						{
+							mChildren[i] = mChildren[j];
+							mChildren[j] = nullptr;
+							break;
+						}
+					}
 				}
 			}
 		}

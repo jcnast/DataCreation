@@ -68,16 +68,17 @@ namespace Data
 
 		void AddSkeletonToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::UniquePtr<ExportNode> exportSkeleton)
 		{
-			exportSkeleton->CleanStructure();
-			AddNodeToFile(skeletonFile, exportSkeleton.get());
+			AddNodeToFile(skeletonFile, exportSkeleton.get(), aiMatrix4x4());
 		}
 
-		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> skeletonNode)
+		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> skeletonNode, aiMatrix4x4 cumulativeMatrix)
 		{
 			aiVector3D scaling;
 			aiQuaterniont<float> rotation;
 			aiVector3D position;
-			skeletonNode->mTransformation.Decompose(scaling, rotation, position);
+
+			aiMatrix4x4 newCumulativeMatrix = skeletonNode->mTransformation;// *cumulativeMatrix;
+			newCumulativeMatrix.Decompose(scaling, rotation, position);
 
 			skeletonFile->Write(String(skeletonNode->mName.C_Str()), skeletonNode->mNumChildren);
 
@@ -91,7 +92,7 @@ namespace Data
 
 			for (uint i = 0; i < skeletonNode->mNumChildren; i++)
 			{
-				AddNodeToFile(skeletonFile, static_cast<Core::Ptr<ExportNode>>(skeletonNode->mChildren[i]));
+				AddNodeToFile(skeletonFile, static_cast<Core::Ptr<ExportNode>>(skeletonNode->mChildren[i]), newCumulativeMatrix);
 			}
 		}
 	}

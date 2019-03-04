@@ -26,10 +26,12 @@ namespace Data
 			void CleanStructure();
 
 		private:
+			int initialChildCount = 0;
 			bool IncludeIfContainsName(Core::String name);
 
 			void ExportIfChildren();
 			void RemoveNonExportChildren();
+			void CleanUpChildren();
 		};
 	}
 }

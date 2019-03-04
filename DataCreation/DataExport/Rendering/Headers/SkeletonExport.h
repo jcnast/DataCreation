@@ -5,6 +5,8 @@
 
 #include "Core/IO/Headers/File.h"
 
+#include "ASSIMP/matrix4x4.h"
+
 struct aiScene;
 struct aiMesh;
 struct aiNode;
@@ -19,6 +21,6 @@ namespace Data
 
 		void AddSkeletonToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::UniquePtr<ExportNode> exportSkeleton);
 
-		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> rootNode);
+		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> rootNode, aiMatrix4x4 cumulativeMatrix);
 	}
 }
