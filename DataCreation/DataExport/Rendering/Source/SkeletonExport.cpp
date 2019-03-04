@@ -77,7 +77,7 @@ namespace Data
 			aiQuaterniont<float> rotation;
 			aiVector3D position;
 
-			aiMatrix4x4 newCumulativeMatrix = skeletonNode->mTransformation;// *cumulativeMatrix;
+			aiMatrix4x4 newCumulativeMatrix = cumulativeMatrix * skeletonNode->mTransformation;
 			newCumulativeMatrix.Decompose(scaling, rotation, position);
 
 			skeletonFile->Write(String(skeletonNode->mName.C_Str()), skeletonNode->mNumChildren);
