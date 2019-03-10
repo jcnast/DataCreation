@@ -61,39 +61,73 @@ namespace Data
 				skeletonFile.CreateNewLine();
 			}
 
-			AddSkeletonToFile(&skeletonFile, move(exportSkeleton));
+			AddSkeletonToFile(&skeletonFile, move(exportSkeleton), mesh);
 
 			skeletonFile.Close();
 		}
 
-		void AddSkeletonToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::UniquePtr<ExportNode> exportSkeleton)
+		void AddSkeletonToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::UniquePtr<ExportNode> exportSkeleton, Core::Ptr<const aiMesh> mesh)
 		{
-			AddNodeToFile(skeletonFile, exportSkeleton.get(), aiMatrix4x4());
+			AddBoneToFile(skeletonFile, exportSkeleton.get(), mesh);
 		}
 
-		void AddNodeToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> skeletonNode, aiMatrix4x4 cumulativeMatrix)
+		void AddBoneToFile(Core::Ptr<Core::IO::File> skeletonFile, Core::Ptr<const ExportNode> exportSkeleton, Core::Ptr<const aiMesh> mesh)
 		{
-			aiVector3D scaling;
-			aiQuaterniont<float> rotation;
-			aiVector3D position;
+			Core::Ptr<const aiBone> skeletonBone = GetBoneForNode(mesh, exportSkeleton);
 
-			aiMatrix4x4 newCumulativeMatrix = cumulativeMatrix * skeletonNode->mTransformation;
-			newCumulativeMatrix.Decompose(scaling, rotation, position);
-
-			skeletonFile->Write(String(skeletonNode->mName.C_Str()), skeletonNode->mNumChildren);
-
-			skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
-
-			skeletonFile->Write(", rotation", rotation.x, rotation.y, rotation.z, rotation.w);
-
-			skeletonFile->Write(", position", position.x, position.y, position.z);
-
-			skeletonFile->CreateNewLine();
-
-			for (uint i = 0; i < skeletonNode->mNumChildren; i++)
+			if (skeletonBone != nullptr)
 			{
-				AddNodeToFile(skeletonFile, static_cast<Core::Ptr<ExportNode>>(skeletonNode->mChildren[i]), newCumulativeMatrix);
+				aiMatrix4x4 inverseBindMatrix = skeletonBone->mOffsetMatrix;
+				aiMatrix4x4 bindMatrix = inverseBindMatrix.Inverse();
+
+				aiVector3D scaling;
+				aiQuaterniont<float> rotation;
+				aiVector3D position;
+
+				bindMatrix.Decompose(scaling, rotation, position);
+
+				skeletonFile->Write(String(skeletonBone->mName.C_Str()), exportSkeleton->mNumChildren);
+				skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
+				skeletonFile->Write(", rotation", rotation.x, rotation.y, rotation.z, rotation.w);
+				skeletonFile->Write(", position", position.x, position.y, position.z);
+
+				skeletonFile->CreateNewLine();
 			}
+			else
+			{
+				aiMatrix4x4 nodeMatrix = exportSkeleton->mTransformation;
+
+				aiVector3D scaling;
+				aiQuaterniont<float> rotation;
+				aiVector3D position;
+
+				nodeMatrix.Decompose(scaling, rotation, position);
+
+				skeletonFile->Write(String(exportSkeleton->mName.C_Str()), exportSkeleton->mNumChildren);
+				skeletonFile->Write(", scaling", scaling.x, scaling.y, scaling.z);
+				skeletonFile->Write(", rotation", rotation.x, rotation.y, rotation.z, rotation.w);
+				skeletonFile->Write(", position", position.x, position.y, position.z);
+
+				skeletonFile->CreateNewLine();
+			}
+
+			for (int i = 0; i < exportSkeleton->mNumChildren; i++)
+			{
+				AddBoneToFile(skeletonFile, static_cast<Core::Ptr<const ExportNode>>(exportSkeleton->mChildren[i]), mesh);
+			}
+		}
+
+		Core::Ptr<const aiBone> GetBoneForNode(Core::Ptr<const aiMesh> mesh, Core::Ptr<const ExportNode> node)
+		{
+			for (int i = 0; i < mesh->mNumBones; i++)
+			{
+				if (mesh->mBones[i]->mName == node->mName)
+				{
+					return mesh->mBones[i];
+				}
+			}
+
+			return nullptr;
 		}
 	}
 }
