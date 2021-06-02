@@ -108,9 +108,27 @@ namespace Core
 				Z = (cosX * cosY * sinZ) + (sinX * sinY * cosZ);
 			}
 
+			template <int A>
+			Quaternion(const Deg<T>& deg, const Axis<A>& axis)
+				: Quaternion((axis == XAxis()) ? deg : T(0), (axis == YAxis()) ? deg : T(0), (axis == ZAxis()) ? deg : T(0))
+			{
+			}
+
 			operator VectorA<T, 4>() const
 			{
 				return VectorA<T, 4>(X, Y, Z, W);
+			}
+
+			Quaternion<T> Inverse() const
+			{
+				T qMagnitudeSqr = (W * W) + (X * X) + (Y * Y) + (Z * Z);
+
+				return Conjugate() / qMagnitudeSqr;
+			}
+
+			Quaternion<T> Conjugate() const
+			{
+				return Quaternion<T>(W, -X, -Y, -Z);
 			}
 
 			// operators
@@ -154,15 +172,15 @@ namespace Core
 
 			Quaternion<T>& operator/=(Quaternion<T> const& q)
 			{
-				T qMagnitude = Sqrt((q.W * q.W) + (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z));
+				Quaternion<T> qInverse = q.Inverse();
+				qInverse *= (*this);
 
-				Quaternion<T> qInverse;
-				qInverse.W = q.W / qMagnitude;
-				qInverse.X = -q.X / qMagnitude;
-				qInverse.Y = -q.Y / qMagnitude;
-				qInverse.Z = -q.Z / qMagnitude;
+				W = qInverse.W;
+				X = qInverse.X;
+				Y = qInverse.Y;
+				Z = qInverse.Z;
 
-				return ((*this) * qInverse);
+				return (*this);
 			}
 
 			Quaternion<T>& operator=(Quaternion<T> const& q)
@@ -191,7 +209,7 @@ namespace Core
 
 			friend Quaternion<T> operator*(Quaternion<T> q, Vector3<T> const& v)
 			{
-				(return q * Quaternion<T>(v));
+				return q * Quaternion<T>(v);
 			}
 
 			friend Quaternion<T> operator*(Quaternion<T> q, Quaternion<T> const& oQ)
@@ -218,19 +236,26 @@ namespace Core
 			}
 
 			// other comparison operators have no meaning
-
-			T& operator[](int axis)
+			template <int A>
+			T& operator[](Axis<A> axis)
 			{
-				auto modifiedAxis = (axis + 1) % 4;
-
-				return quat[modifiedAxis];
+				return (*this)[(int(axis) + 1) % 4];
 			}
 
-			T operator[](int axis) const
+			template <int A>
+			T& operator[](Axis<A> axis) const
 			{
-				auto modifiedAxis = (axis + 1) % 4;
+				return (*this)[(int(axis) + 1) % 4];
+			}
 
-				return quat[modifiedAxis];
+			T& operator[](int index)
+			{
+				return quat[index];
+			}
+
+			T operator[](int index) const
+			{
+				return quat[index];
 			}
 		};
 		

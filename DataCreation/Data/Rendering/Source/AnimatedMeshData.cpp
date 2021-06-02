@@ -21,6 +21,7 @@ namespace Data
 			List<Float3> normals;
 			List<Float2> uvs;
 			List<Uint4> boneIndices;
+			List<Float4> boneWeights;
 			List<Uint3> indices;
 
 			enum class ReadState
@@ -30,7 +31,7 @@ namespace Data
 				Positions,
 				Normals,
 				UVs,
-				BoneIndices,
+				Bones,
 				Indices
 			};
 			ReadState readState = ReadState::Started;
@@ -63,7 +64,7 @@ namespace Data
 						}
 						else if (word == "bones")
 						{
-							readState = ReadState::BoneIndices;
+							readState = ReadState::Bones;
 						}
 						else if (word == "indices")
 						{
@@ -110,12 +111,22 @@ namespace Data
 						case ReadState::BoneIndices:
 						{
 							Uint4 newBoneIndex;
+							Float4 newBoneWeight;
+
 							lineStream >> newBoneIndex.X;
+							lineStream >> newBoneWeight.X;
+
 							lineStream >> newBoneIndex.Y;
+							lineStream >> newBoneWeight.Y;
+
 							lineStream >> newBoneIndex.Z;
+							lineStream >> newBoneWeight.Z;
+
 							lineStream >> newBoneIndex.W;
+							lineStream >> newBoneWeight.W;
 
 							Push(boneIndices, newBoneIndex);
+							Push(boneWeights, newBoneWeight);
 
 							break;
 						}
@@ -162,7 +173,7 @@ namespace Data
 					VertexCount++;
 
 					LOG("Position values should be modified on the data side!");
-					Push(Vertices, AnimatedVertexDataBase(positions[v]*500.0f, normals[v]/10.0f, uvs[v], boneIndices[v]));
+					Push(Vertices, AnimatedVertexDataBase(positions[v]*500.0f, normals[v]/10.0f, uvs[v], boneIndices[v], boneWeights[v]));
 				}
 			}
 		}

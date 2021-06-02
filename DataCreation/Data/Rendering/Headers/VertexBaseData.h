@@ -44,15 +44,17 @@ namespace Data
 
 		struct AnimatedVertexDataBase : VertexDataBase
 		{
-			Uint4 BoneIndex;
+			String BoneName;
+			Float4 BoneWeight;
 
 			AnimatedVertexDataBase()
 			{}
 
-			AnimatedVertexDataBase(const Float3& pos, const Float3& normal, const Float2& uvs, const Uint4& boneIndex)
+			AnimatedVertexDataBase(const Float3& pos, const Float3& normal, const Float2& uvs, const String& boneName, const Float4& boneWeight)
 				: VertexDataBase(pos, normal, uvs)
 			{
-				BoneIndex = boneIndex;
+				BoneName = boneName;
+				BoneWeight = boneWeight;
 			}
 		};
 	}

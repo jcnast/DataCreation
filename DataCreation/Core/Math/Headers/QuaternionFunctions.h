@@ -58,7 +58,7 @@ namespace Core
 		template <typename T>
 		Quaternion<T> Inverse(Quaternion<T> const& q)
 		{
-			return (Conjugate(q) / Magnitude(q));
+			return q.Inverse();
 		}
 
 		template <typename T>
@@ -89,17 +89,63 @@ namespace Core
 			return (q / Magnitude(q));
 		}
 
-		/*
 		template <typename T>
 		Quaternion<T> QuatFromRotationMatrix(Matrix3x3<T> const& m)
 		{
-			// Leaving this empty for now - not convinced this method would ever (or should ever) be used.
-			// should only really need the transformation TO matrices for shaders - the matrix itself is not as efficient otherwise
+			/*
+				Note: Code taken from here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+
+				but changed because our matrices are column-major, NOT row-major.
+			*/
+			Quaternion<T> quaternion;
+
+			T trace = m[0][0] + m[1][1] + m[2][2];
+
+			T root = (T(1) / T(2)) / Sqrt(trace + T(1));
+
+			if (trace > 0)
+			{
+				quaternion.W = (T(1) / T(4)) / root;
+				quaternion.X = (m[1][2] - m[2][1]) * root;
+				quaternion.Y = (m[2][0] - m[0][2]) * root;
+				quaternion.Z = (m[0][1] - m[1][0]) * root;
+			}
+			else
+			{
+				if (m[0][0] > m[1][1] && m[0][0] > m[2][2])
+				{
+					root = T(2) * Sqrt(T(1) + m[0][0] - m[1][1] - m[2][2]);
+
+					quaternion.W = (m[1][2] - m[2][1]) / root;
+					quaternion.X = (T(1) / T(4)) * root;
+					quaternion.Y = (m[1][0] + m[0][1]) / root;
+					quaternion.Z = (m[2][0] + m[0][2]) / root;
+				}
+				else if (m[1][1] > m[2][2])
+				{
+					root = T(2) * Sqrt(T(1) + m[1][1] - m[0][0] - m[2][2]);
+
+					quaternion.W = (m[2][0] - m[0][2]) / root;
+					quaternion.X = (m[1][0] + m[0][1]) / root;
+					quaternion.Y = (T(1) / T(4)) * root;
+					quaternion.Z = (m[2][1] + m[1][2]) / root;
+				}
+				else
+				{
+					root = T(2) * Sqrt(T(1) + m[2][2] - m[0][0] - m[1][1]);
+
+					quaternion.W = (m[0][1] - m[1][0]) / root;
+					quaternion.X = (m[2][0] + m[0][2]) / root;
+					quaternion.Y = (m[2][1] + m[1][2]) / root;
+					quaternion.Z = (T(1) / T(4)) * root;
+				}
+			}
+
+			return quaternion;
 		}
-		*/
 
 		template <typename T>
-		Matrix3x3<T> CalculateRotationMatrix(Quaternion<T> quaternion)
+		Matrix3x3<T> CalculateRotationMatrix(const Quaternion<T>& quaternion)
 		{
 			Matrix3x3<T> rotationMatrix;
 
@@ -108,29 +154,19 @@ namespace Core
 			auto sqrY = Sqr(quaternion.Y);
 			auto sqrZ = Sqr(quaternion.Z);
 
-			auto inverse = 1 / (sqrX + sqrY + sqrZ + sqrW);
+			auto inverse = T(1) / (sqrX + sqrY + sqrZ + sqrW);
 
-			rotationMatrix[0][0] = (sqrX - sqrY - sqrZ + sqrW) * inverse;
-			rotationMatrix[1][1] = (-sqrX + sqrY - sqrZ + sqrW) * inverse;
-			rotationMatrix[2][2] = (sqrX - sqrY + sqrZ + sqrW) * inverse;
+			rotationMatrix[0][0] = (T(1) - (T(2) * (sqrY + sqrZ))) * inverse;
+			rotationMatrix[0][1] = (T(2) * ((quaternion.X * quaternion.Y) + (quaternion.Z * quaternion.W))) * inverse;
+			rotationMatrix[0][2] = (T(2) * ((quaternion.X * quaternion.Z) - (quaternion.Y * quaternion.W))) * inverse;
 
-			auto temp1 = quaternion.X * quaternion.Y;
-			auto temp2 = quaternion.Z * quaternion.W;
+			rotationMatrix[1][0] = (T(2) * ((quaternion.X * quaternion.Y) - (quaternion.Z * quaternion.W))) * inverse;
+			rotationMatrix[1][1] = (T(1) - (T(2) * (sqrX + sqrZ))) * inverse;
+			rotationMatrix[1][2] = (T(2) * ((quaternion.Y * quaternion.Z) + (quaternion.X * quaternion.W))) * inverse;
 
-			rotationMatrix[1][0] = 2.0f * (temp1 + temp2) * inverse;
-			rotationMatrix[0][1] = 2.0f * (temp1 - temp2) * inverse;
-
-			temp1 = quaternion.X * quaternion.Z;
-			temp2 = quaternion.Y * quaternion.W;
-
-			rotationMatrix[2][0] = 2.0f * (temp1 - temp2) * inverse;
-			rotationMatrix[0][2] = 2.0f * (temp1 + temp2) * inverse;
-
-			temp1 = quaternion.Y * quaternion.Z;
-			temp2 = quaternion.X * quaternion.W;
-
-			rotationMatrix[2][1] = 2.0f * (temp1 + temp2) * inverse;
-			rotationMatrix[1][2] = 2.0f * (temp1 - temp2) * inverse;
+			rotationMatrix[2][0] = (T(2) * ((quaternion.X * quaternion.Z) + (quaternion.Y * quaternion.W))) * inverse;
+			rotationMatrix[2][1] = (T(2) * ((quaternion.Y * quaternion.Z) - (quaternion.X * quaternion.W))) * inverse;
+			rotationMatrix[2][2] = (T(1) - (T(2) * (sqrX + sqrY))) * inverse;
 
 			return rotationMatrix;
 		}
@@ -143,22 +179,35 @@ namespace Core
 			return rotationMatrix;
 		}
 
-		template <typename T>
-		Quaternion<T> RotationBetweenVectors(Vector3<T> const& v1, Vector3<T> const& v2)
+		template <typename T, int A = 0>
+		Quaternion<T> RotationBetweenVectors(Vector3<T> const& v1, Vector3<T> const& v2, const Axis<A>& fallbackAxis = XAxis())
 		{
 			Quaternion<T> rotation;
 
-			// handle case where vectors are parrallel
-			if (Dot(Normalize(v1), Normalize(v2)) >= (1.0f - Hundredth()))
+			Vector3<T> nV1 = Normalize(v1);
+			Vector3<T> nV2 = Normalize(v2);
+
+			T dot = Dot(nV1, nV2);
+
+			if (dot >= (T(1) - Hundredth()))
 			{
 				return rotation;
 			}
+			if (dot <= Hundredth() - T(1))
+			{
+				return Quaternion<T>(Rad(PI_F), fallbackAxis);
+			}
 
-			Vector3<T> crossProduct = CrossProduct(v1, v2);
-			rotation.W = Sqrt(MagnitudeSqr(v1) * MagnitudeSqr(v2)) + Dot(v1, v2);
-			rotation.X = crossProduct.X;
-			rotation.Y = crossProduct.Y;
-			rotation.Z = crossProduct.Z;
+			T sqrt = Sqrt((T(1) + dot) * T(2));
+			T inverseSqrt = T(1) / sqrt;
+
+			Vector3<T> crossProduct = CrossProduct(nV1, nV2);
+
+			rotation.X = crossProduct.X * inverseSqrt;
+			rotation.Y = crossProduct.Y * inverseSqrt;
+			rotation.Z = crossProduct.Z * inverseSqrt;
+
+			rotation.W = sqrt * 0.5f;
 
 			rotation = Normalize(rotation);
 
@@ -194,12 +243,12 @@ namespace Core
 			T vMagnitude = Magnitude(v);
 
 			// conjugate of q
-			auto qI = Inverse(q);
+			auto rotatedV = q;
 			Quaternion<T> vAsQuaternion = Quaternion<T>(v);
-			qI *= vAsQuaternion;
-			qI *= q;
+			rotatedV *= vAsQuaternion;
+			rotatedV *= q.Inverse();
 
-			Vector3<T> rV = Vector3<T>(qI.X * vMagnitude, qI.Y * vMagnitude, qI.Z * vMagnitude);
+			Vector3<T> rV = Vector3<T>(rotatedV.X * vMagnitude, rotatedV.Y * vMagnitude, rotatedV.Z * vMagnitude);
 
 			return rV;
 		}

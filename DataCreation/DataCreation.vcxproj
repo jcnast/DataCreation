@@ -155,6 +155,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Threading\Source\Job.cpp" />
+    <ClCompile Include="Core\Threading\Source\JobHandle.cpp" />
+    <ClCompile Include="Core\Threading\Source\JobManager.cpp" />
+    <ClCompile Include="Core\Threading\Source\Semaphore.cpp" />
+    <ClCompile Include="Core\Threading\Source\Thread.cpp" />
+    <ClCompile Include="Core\Threading\Source\ThreadManager.cpp" />
     <ClCompile Include="DataExport\CustomData\Source\DataCreation.cpp" />
     <ClCompile Include="DataExport\CustomData\Source\DataExportDefs.cpp" />
     <ClCompile Include="DataExport\CustomData\Source\DataExportUtils.cpp" />
@@ -194,6 +200,13 @@
     <ClCompile Include="DataExport\SQL\Source\SQLInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Threading\Headers\Job.h" />
+    <ClInclude Include="Core\Threading\Headers\JobHandle.h" />
+    <ClInclude Include="Core\Threading\Headers\JobManager.h" />
+    <ClInclude Include="Core\Threading\Headers\Semaphore.h" />
+    <ClInclude Include="Core\Threading\Headers\Thread.h" />
+    <ClInclude Include="Core\Threading\Headers\ThreadDefs.h" />
+    <ClInclude Include="Core\Threading\Headers\ThreadManager.h" />
     <ClInclude Include="DataExport\CustomData\Headers\DataExportDefs.h" />
     <ClInclude Include="DataExport\CustomData\Headers\DataExportUtils.h" />
     <ClInclude Include="DataExport\Headers\AssetExportDefs.h" />

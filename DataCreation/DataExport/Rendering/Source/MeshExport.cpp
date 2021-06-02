@@ -154,7 +154,7 @@ namespace Data
 						meshFile.Write(boneWeights[boneIndex][referenceIndex].first, boneWeights[boneIndex][referenceIndex].second);
 						if (referenceIndex < boneWeights[boneIndex].size() - 1)
 						{
-							meshFile.Write(", ");
+							meshFile.Write(" ");
 						}
 					}
 					meshFile.CreateNewLine();
